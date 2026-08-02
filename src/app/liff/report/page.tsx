@@ -29,6 +29,9 @@ const MESSAGES = {
 type Status = "connecting" | "success" | "error" | "expired";
 type MessageSet = (typeof MESSAGES)[keyof typeof MESSAGES];
 
+const TOKEN_STORAGE_KEY = "liff-report-token";
+const LOCALE_STORAGE_KEY = "liff-report-locale";
+
 function resolveMessages(locale: string | null): MessageSet {
   if (locale === "zh-TW" || locale === "zh-CN") return MESSAGES[locale];
   return MESSAGES.ko;
@@ -40,8 +43,24 @@ export default function LiffReportPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    const locale = params.get("locale");
+
+    // liff.login()이 로그인을 위해 페이지를 한 번 리다이렉트했다가 돌아오면
+    // URL의 커스텀 쿼리 파라미터가 유지되지 않을 수 있어서, sessionStorage에
+    // 백업해두고 재진입 시 거기서 복구합니다.
+    let token = params.get("token");
+    let locale = params.get("locale");
+
+    if (token) {
+      sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
+    } else {
+      token = sessionStorage.getItem(TOKEN_STORAGE_KEY);
+    }
+
+    if (locale) {
+      sessionStorage.setItem(LOCALE_STORAGE_KEY, locale);
+    } else {
+      locale = sessionStorage.getItem(LOCALE_STORAGE_KEY);
+    }
 
     async function run() {
       setMessages(resolveMessages(locale));
@@ -72,8 +91,12 @@ export default function LiffReportPage() {
           setStatus("error");
           return;
         }
+
+        sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+        sessionStorage.removeItem(LOCALE_STORAGE_KEY);
         setStatus("success");
-      } catch {
+      } catch (e) {
+        console.error("[liff/report] failed", e);
         setStatus("error");
       }
     }
