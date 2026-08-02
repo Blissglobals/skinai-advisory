@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Dictionary } from "@/i18n/getDictionary";
 
@@ -50,6 +51,13 @@ export default function ConsentView({
       >
         {dict.consent.start}
       </button>
+
+      <Link
+        href={`/${locale}/privacy`}
+        className="text-center text-xs text-foreground/40 underline underline-offset-2"
+      >
+        {dict.privacy.linkLabel}
+      </Link>
     </div>
   );
 }

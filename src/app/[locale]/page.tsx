@@ -40,6 +40,12 @@ export default async function Home({
       </Link>
 
       <p className="text-xs text-foreground/40">{dict.home.footnote}</p>
+      <Link
+        href={`/${locale}/privacy`}
+        className="text-xs text-foreground/40 underline underline-offset-2"
+      >
+        {dict.privacy.linkLabel}
+      </Link>
     </div>
   );
 }
