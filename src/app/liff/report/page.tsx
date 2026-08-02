@@ -62,7 +62,6 @@ function extractTokenAndLocale(): { token: string | null; locale: string | null 
 export default function LiffReportPage() {
   const [status, setStatus] = useState<Status>("connecting");
   const [messages, setMessages] = useState<MessageSet>(MESSAGES.ko);
-  const [debugInfo, setDebugInfo] = useState<string | null>(null);
 
   useEffect(() => {
     // liff.login()이 로그인을 위해 페이지를 한 번 리다이렉트했다가 돌아오면
@@ -87,7 +86,6 @@ export default function LiffReportPage() {
 
       if (!token) {
         setStatus("error");
-        setDebugInfo("no token in URL or sessionStorage");
         return;
       }
       try {
@@ -112,9 +110,7 @@ export default function LiffReportPage() {
           return;
         }
         if (!res.ok) {
-          const body = await res.text();
           setStatus("error");
-          setDebugInfo(`link-session ${res.status}: ${body}`);
           return;
         }
 
@@ -124,7 +120,6 @@ export default function LiffReportPage() {
       } catch (e) {
         console.error("[liff/report] failed", e);
         setStatus("error");
-        setDebugInfo(e instanceof Error ? `${e.name}: ${e.message}` : String(e));
       }
     }
 
@@ -134,12 +129,6 @@ export default function LiffReportPage() {
   return (
     <div className="flex min-h-full flex-1 flex-col items-center justify-center gap-3 p-6 text-center">
       <p className="text-sm text-foreground/80">{messages[status]}</p>
-      {/* 임시 디버그 표시 — 원인 확인되면 제거 예정 */}
-      {debugInfo && (
-        <p className="mt-2 max-w-xs break-words rounded bg-black/5 p-2 text-[11px] text-foreground/50">
-          {debugInfo}
-        </p>
-      )}
     </div>
   );
 }
