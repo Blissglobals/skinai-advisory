@@ -25,9 +25,10 @@ function preferredLocale(request: NextRequest): Locale {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // API 라우트(LINE 웹훅 등)는 언어 프리픽스와 무관하게 고정 경로여야
-  // 하므로 로케일 리다이렉트 대상에서 제외합니다.
+  // API 라우트(LINE 웹훅 등)와 LIFF 페이지(고정 엔드포인트 URL이어야 함)는
+  // 언어 프리픽스와 무관한 고정 경로여야 하므로 리다이렉트 대상에서 제외합니다.
   if (pathname.startsWith("/api/")) return;
+  if (pathname.startsWith("/liff/")) return;
   if (localeFromPathname(pathname)) return;
 
   const locale = preferredLocale(request);
@@ -37,5 +38,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
+  matcher: ["/((?!api|liff|_next|.*\\..*).*)"],
 };

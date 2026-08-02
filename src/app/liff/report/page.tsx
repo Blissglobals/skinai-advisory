@@ -1,0 +1,89 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import liff from "@line/liff";
+
+// 이 페이지는 LIFF 엔드포인트로 등록된 고정 URL이라 [locale] 라우팅 밖에
+// 있습니다. 그래서 URL의 locale 쿼리 파라미터로 직접 문구를 선택합니다.
+const MESSAGES = {
+  ko: {
+    connecting: "연결 중...",
+    success: "연결이 완료됐어요! 곧 상세 리포트를 보내드릴게요.",
+    error: "연결에 실패했어요. 다시 시도해주세요.",
+    expired: "세션이 만료됐어요. 앱에서 다시 시도해주세요.",
+  },
+  "zh-TW": {
+    connecting: "連接中...",
+    success: "連接完成!很快就會為您發送詳細報告。",
+    error: "連接失敗,請重試。",
+    expired: "工作階段已過期,請重新從應用程式操作。",
+  },
+  "zh-CN": {
+    connecting: "连接中...",
+    success: "连接完成!很快就会为您发送详细报告。",
+    error: "连接失败,请重试。",
+    expired: "会话已过期,请重新从应用操作。",
+  },
+} as const;
+
+type Status = "connecting" | "success" | "error" | "expired";
+type MessageSet = (typeof MESSAGES)[keyof typeof MESSAGES];
+
+function resolveMessages(locale: string | null): MessageSet {
+  if (locale === "zh-TW" || locale === "zh-CN") return MESSAGES[locale];
+  return MESSAGES.ko;
+}
+
+export default function LiffReportPage() {
+  const [status, setStatus] = useState<Status>("connecting");
+  const [messages, setMessages] = useState<MessageSet>(MESSAGES.ko);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const locale = params.get("locale");
+
+    async function run() {
+      setMessages(resolveMessages(locale));
+
+      if (!token) {
+        setStatus("error");
+        return;
+      }
+      try {
+        await liff.init({ liffId: process.env.NEXT_PUBLIC_LIFF_ID! });
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
+        const profile = await liff.getProfile();
+
+        const res = await fetch("/api/line/link-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, lineUserId: profile.userId }),
+        });
+
+        if (res.status === 404) {
+          setStatus("expired");
+          return;
+        }
+        if (!res.ok) {
+          setStatus("error");
+          return;
+        }
+        setStatus("success");
+      } catch {
+        setStatus("error");
+      }
+    }
+
+    run();
+  }, []);
+
+  return (
+    <div className="flex min-h-full flex-1 flex-col items-center justify-center gap-3 p-6 text-center">
+      <p className="text-sm text-foreground/80">{messages[status]}</p>
+    </div>
+  );
+}
