@@ -227,6 +227,12 @@ const ko = {
     },
   },
 
+  promo: {
+    title: "피부 상담이 궁금하세요?",
+    body: "blissglobals 제휴 병원에서 무료 상담을 받아보실 수 있어요.",
+    cta: "라인으로 상담 문의하기",
+  },
+
   camera: {
     brightnessGood: "양호",
     brightnessLow: "어두움",

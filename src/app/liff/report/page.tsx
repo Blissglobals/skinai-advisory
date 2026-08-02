@@ -2,14 +2,10 @@
 
 import { useEffect, useState } from "react";
 import liff from "@line/liff";
+import { LINE_ADD_FRIEND_URL } from "@/lib/line/constants";
 
 // 이 페이지는 LIFF 엔드포인트로 등록된 고정 URL이라 [locale] 라우팅 밖에
 // 있습니다. 그래서 URL의 locale 쿼리 파라미터로 직접 문구를 선택합니다.
-// 라인 공식 계정 Basic ID. 친구 추가가 안 된 사용자에게 추가 유도 링크를
-// 보여줄 때 사용합니다 (https://line.me/R/ti/p/@아이디 형식은 라인이 공식
-// 문서에서 제공하는 "친구 추가" 딥링크 형식입니다).
-const LINE_BASIC_ID = "@995xwpnh";
-const ADD_FRIEND_URL = `https://line.me/R/ti/p/${LINE_BASIC_ID}`;
 
 const MESSAGES = {
   ko: {
@@ -162,7 +158,7 @@ export default function LiffReportPage() {
             <>
               <p className="text-sm font-medium text-foreground">{messages.notFriendNotice}</p>
               <a
-                href={ADD_FRIEND_URL}
+                href={LINE_ADD_FRIEND_URL}
                 className="rounded-full bg-[#06C755] px-5 py-2 text-sm font-medium text-white"
               >
                 {messages.addFriend}

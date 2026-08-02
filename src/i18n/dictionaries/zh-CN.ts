@@ -22,6 +22,12 @@ const zhCN: DeepPartial<Dictionary> = {
     footnote: "本服务仅提供一般信息,并非医学诊断。",
   },
 
+  promo: {
+    title: "想了解肌肤咨询吗?",
+    body: "欢迎通过 blissglobals 合作医院预约免费咨询。",
+    cta: "通过LINE咨询",
+  },
+
   consent: {
     badge: "开始前须知",
     heading: "开始前请先确认以下内容",

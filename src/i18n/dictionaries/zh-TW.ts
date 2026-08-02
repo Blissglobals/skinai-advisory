@@ -22,6 +22,12 @@ const zhTW: DeepPartial<Dictionary> = {
     footnote: "本服務僅提供一般資訊,並非醫學診斷。",
   },
 
+  promo: {
+    title: "想了解肌膚諮詢嗎?",
+    body: "歡迎透過 blissglobals 合作醫院預約免費諮詢。",
+    cta: "透過LINE諮詢",
+  },
+
   consent: {
     badge: "開始前須知",
     heading: "開始前請先確認以下內容",

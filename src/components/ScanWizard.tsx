@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import ProgressBar from "@/components/ProgressBar";
 import NeedChip from "@/components/NeedChip";
+import PromoBanner from "@/components/PromoBanner";
 import CameraCapture, { type CameraCaptureHandle } from "@/components/CameraCapture";
 import { analysisEngine } from "@/lib/analysis/mediapipeEngine";
 import type { DeepScanResult, FaceScanResult, SkinMetricKey } from "@/lib/analysis/types";
@@ -474,6 +475,12 @@ export default function ScanWizard({
           >
             {dict.scan.step2.next}
           </button>
+
+          <PromoBanner
+            title={dict.promo.title}
+            body={dict.promo.body}
+            cta={dict.promo.cta}
+          />
         </section>
       )}
 
@@ -652,6 +659,12 @@ export default function ScanWizard({
           )}
 
           <p className="text-xs text-foreground/50">{dict.solutionDisclaimer}</p>
+
+          <PromoBanner
+            title={dict.promo.title}
+            body={dict.promo.body}
+            cta={dict.promo.cta}
+          />
         </section>
       )}
     </div>
