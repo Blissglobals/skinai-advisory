@@ -215,6 +215,16 @@ const ko = {
     readyTitle: "준비됐어요!",
     readyBody: "아래 버튼을 눌러 라인 앱에서 계속 진행해주세요.",
     openInLine: "라인 앱에서 열기",
+    pushMessage:
+      "상세 리포트가 준비됐어요! 아래 링크에서 확인해보세요.\n{url}\n\n(다운로드 링크는 7일간 유효합니다.)",
+    pdf: {
+      title: "SkinAI Advisory 상세 리포트",
+      overallLabel: "종합 점수",
+      point: "점",
+      generatedOn: "생성일:",
+      disclaimer:
+        "본 리포트는 일반적인 참고용 정보이며 의학적 진단이 아닙니다. 피부에 이상 증상이 있다면 반드시 피부과 전문의와 상담하세요.",
+    },
   },
 
   camera: {
