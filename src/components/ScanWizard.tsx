@@ -164,6 +164,27 @@ export default function ScanWizard({
     setLiffUrl(null);
   }
 
+  // 커스텀 스킴(line://)으로 우선 앱을 열어보고, 짧은 시간 안에 화면이
+  // 백그라운드로 전환되지 않으면(=앱이 안 열린 것으로 판단) 웹 로그인
+  // 화면(https://liff.line.me/...)으로 자동 전환합니다. 앱이 설치되어
+  // 있으면 탭 없이 바로 넘어가고, 없으면 웹으로 자연스럽게 대체됩니다.
+  function tryOpenLineApp(customSchemeUrl: string, httpsFallbackUrl: string) {
+    let openedApp = false;
+    const onVisibilityChange = () => {
+      if (document.hidden) openedApp = true;
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    window.location.href = customSchemeUrl;
+
+    setTimeout(() => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      if (!openedApp) {
+        window.location.href = httpsFallbackUrl;
+      }
+    }, 1500);
+  }
+
   async function handleLineConsentConfirm() {
     if (!deepScan) return;
     setLineConnecting(true);
@@ -177,12 +198,14 @@ export default function ScanWizard({
       if (!res.ok) throw new Error("session creation failed");
       const { token } = (await res.json()) as { token: string };
       const liffId = process.env.NEXT_PUBLIC_LIFF_ID;
-      // window.location.href로 강제 이동시키면 iOS 등에서 유니버설 링크가
-      // 제대로 안 걸려 LINE 앱 대신 브라우저에서 열리는 경우가 있어서,
-      // 사용자가 직접 탭하는 실제 링크로 대체합니다.
-      setLiffUrl(
-        `https://liff.line.me/${liffId}?token=${encodeURIComponent(token)}&locale=${encodeURIComponent(locale)}`
-      );
+      const query = `token=${encodeURIComponent(token)}&locale=${encodeURIComponent(locale)}`;
+      const httpsUrl = `https://liff.line.me/${liffId}?${query}`;
+      const customSchemeUrl = `line://app/${liffId}?${query}`;
+
+      // 수동 "라인 앱에서 열기" 버튼은 안전장치로 계속 보여줍니다
+      // (자동 감지가 안 맞는 기기·브라우저 대비).
+      setLiffUrl(httpsUrl);
+      tryOpenLineApp(customSchemeUrl, httpsUrl);
     } catch {
       setLineError(dict.lineReport.error);
     } finally {
