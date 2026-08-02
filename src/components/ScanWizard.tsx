@@ -17,7 +17,17 @@ interface FailureChoice {
   allowProceed: boolean;
 }
 
-export default function ScanWizard({ dict }: { dict: Dictionary }) {
+// 라인으로 상세 리포트를 받으려면(=개인정보가 실제로 처리·보유되기
+// 시작하는 지점) 미성년자를 걸러냅니다. 재미용 스캔 자체는 나이 제한이 없습니다.
+const MIN_AGE_FOR_LINE_REPORT = 19;
+
+export default function ScanWizard({
+  dict,
+  locale,
+}: {
+  dict: Dictionary;
+  locale: string;
+}) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -30,6 +40,10 @@ export default function ScanWizard({ dict }: { dict: Dictionary }) {
   const consecutiveFailuresRef = useRef(0);
   const [retryNotice, setRetryNotice] = useState<string | null>(null);
   const [failureChoice, setFailureChoice] = useState<FailureChoice | null>(null);
+  const [showLineConsent, setShowLineConsent] = useState(false);
+  const [lineConsentAgreed, setLineConsentAgreed] = useState(false);
+  const [lineConnecting, setLineConnecting] = useState(false);
+  const [lineError, setLineError] = useState<string | null>(null);
   const { stream, error: streamError } = useCameraStream(
     dict.cameraStream.permissionError
   );
@@ -142,6 +156,33 @@ export default function ScanWizard({ dict }: { dict: Dictionary }) {
     }
   }
 
+  function closeLineConsent() {
+    setShowLineConsent(false);
+    setLineConsentAgreed(false);
+    setLineError(null);
+  }
+
+  async function handleLineConsentConfirm() {
+    if (!deepScan) return;
+    setLineConnecting(true);
+    setLineError(null);
+    try {
+      const res = await fetch("/api/scan-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deepScan, age: userAge, locale }),
+      });
+      if (!res.ok) throw new Error("session creation failed");
+      const { token } = (await res.json()) as { token: string };
+      const liffId = process.env.NEXT_PUBLIC_LIFF_ID;
+      const liffUrl = `https://liff.line.me/${liffId}?token=${encodeURIComponent(token)}&locale=${encodeURIComponent(locale)}`;
+      window.location.href = liffUrl;
+    } catch {
+      setLineError(dict.lineReport.error);
+      setLineConnecting(false);
+    }
+  }
+
   const needOptionOrder: SkinMetricKey[] = ["elasticity", "pigment", "pore", "wrinkle"];
 
   return (
@@ -194,6 +235,48 @@ export default function ScanWizard({ dict }: { dict: Dictionary }) {
                 {dict.scan.proceedAnywayHint}
               </p>
             )}
+          </div>
+        </div>
+      )}
+
+      {showLineConsent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6">
+          <div className="w-full max-w-sm rounded-xl bg-brand-surface p-5 shadow-lg">
+            <p className="text-sm font-medium">{dict.lineReport.consentTitle}</p>
+            <div className="mt-3 flex flex-col gap-2">
+              {dict.lineReport.consentBody.map((line) => (
+                <p key={line} className="text-xs text-foreground/70">
+                  {line}
+                </p>
+              ))}
+            </div>
+            <label className="mt-4 flex items-start gap-2 text-xs">
+              <input
+                type="checkbox"
+                checked={lineConsentAgreed}
+                onChange={(e) => setLineConsentAgreed(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0"
+              />
+              <span>{dict.lineReport.consentAgree}</span>
+            </label>
+            {lineError && <p className="mt-2 text-xs text-red-600">{lineError}</p>}
+            <div className="mt-4 flex gap-2">
+              <button
+                type="button"
+                onClick={closeLineConsent}
+                className="flex-1 rounded-lg border border-brand-border bg-transparent px-4 py-2.5 text-sm font-medium text-foreground transition-transform active:scale-[0.98]"
+              >
+                {dict.lineReport.consentCancel}
+              </button>
+              <button
+                type="button"
+                onClick={handleLineConsentConfirm}
+                disabled={!lineConsentAgreed || lineConnecting}
+                className="flex-[2] rounded-lg bg-brand-primary px-4 py-2.5 text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98] disabled:opacity-40"
+              >
+                {lineConnecting ? dict.lineReport.connecting : dict.lineReport.consentConfirm}
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -499,6 +582,20 @@ export default function ScanWizard({ dict }: { dict: Dictionary }) {
               <p className="text-foreground/50">{dict.scan.step4.methodologyFootnote}</p>
             </div>
           </details>
+
+          {userAge !== null && userAge < MIN_AGE_FOR_LINE_REPORT ? (
+            <p className="text-center text-xs text-foreground/40">
+              {dict.lineReport.ageRestricted}
+            </p>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowLineConsent(true)}
+              className="min-h-12 w-full rounded-lg border border-brand-border bg-transparent px-4 py-3 text-sm font-medium text-foreground transition-transform active:scale-[0.98]"
+            >
+              {dict.lineReport.cta}
+            </button>
+          )}
 
           <p className="text-xs text-foreground/50">{dict.solutionDisclaimer}</p>
         </section>

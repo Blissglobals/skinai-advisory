@@ -12,5 +12,5 @@ export default async function ScanPage({
   if (!isLocale(locale)) notFound();
   const dict = await getDictionary(locale);
 
-  return <ScanWizard dict={dict} />;
+  return <ScanWizard dict={dict} locale={locale} />;
 }
