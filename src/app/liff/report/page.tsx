@@ -8,19 +8,25 @@ import liff from "@line/liff";
 const MESSAGES = {
   ko: {
     connecting: "연결 중...",
-    success: "연결이 완료됐어요! 곧 상세 리포트를 보내드릴게요.",
+    success: "연결이 완료됐어요!",
+    successDetail: "상세 리포트는 라인 메시지로 보내드려요. 이 창은 닫으시고, 잠시 후 라인 채팅에서 확인해주세요.",
+    close: "창 닫기",
     error: "연결에 실패했어요. 다시 시도해주세요.",
     expired: "세션이 만료됐어요. 앱에서 다시 시도해주세요.",
   },
   "zh-TW": {
     connecting: "連接中...",
-    success: "連接完成!很快就會為您發送詳細報告。",
+    success: "連接完成!",
+    successDetail: "詳細報告會透過LINE訊息傳送給您。請關閉此視窗,稍後在LINE聊天室確認。",
+    close: "關閉視窗",
     error: "連接失敗,請重試。",
     expired: "工作階段已過期,請重新從應用程式操作。",
   },
   "zh-CN": {
     connecting: "连接中...",
-    success: "连接完成!很快就会为您发送详细报告。",
+    success: "连接完成!",
+    successDetail: "详细报告会通过LINE消息发送给您。请关闭此窗口,稍后在LINE聊天中确认。",
+    close: "关闭窗口",
     error: "连接失败,请重试。",
     expired: "会话已过期,请重新从应用操作。",
   },
@@ -129,6 +135,20 @@ export default function LiffReportPage() {
   return (
     <div className="flex min-h-full flex-1 flex-col items-center justify-center gap-3 p-6 text-center">
       <p className="text-sm text-foreground/80">{messages[status]}</p>
+      {status === "success" && (
+        <>
+          <p className="text-sm text-foreground/80">{messages.successDetail}</p>
+          <button
+            type="button"
+            onClick={() => {
+              if (liff.isInClient()) liff.closeWindow();
+            }}
+            className="mt-2 rounded-full bg-foreground px-5 py-2 text-sm font-medium text-background"
+          >
+            {messages.close}
+          </button>
+        </>
+      )}
     </div>
   );
 }
