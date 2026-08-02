@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
@@ -36,6 +37,13 @@ export default async function PrivacyPage({
       </div>
 
       <p className="text-xs text-foreground/40">{dict.privacy.footer}</p>
+
+      <Link
+        href={`/${locale}/consent`}
+        className="flex min-h-12 w-full items-center justify-center rounded-lg bg-brand-primary px-4 py-3 text-center text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98]"
+      >
+        {dict.privacy.continueButton}
+      </Link>
     </div>
   );
 }

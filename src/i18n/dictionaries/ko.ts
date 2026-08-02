@@ -80,6 +80,7 @@ const ko = {
     ],
     footer: "본 방침은 2026년 8월 2일부터 시행됩니다.",
     linkLabel: "개인정보처리방침",
+    continueButton: "확인했습니다, 계속하기",
   },
 
   consent: {
