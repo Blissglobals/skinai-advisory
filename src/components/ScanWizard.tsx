@@ -44,6 +44,7 @@ export default function ScanWizard({
   const [lineConsentAgreed, setLineConsentAgreed] = useState(false);
   const [lineConnecting, setLineConnecting] = useState(false);
   const [lineError, setLineError] = useState<string | null>(null);
+  const [liffUrl, setLiffUrl] = useState<string | null>(null);
   const { stream, error: streamError } = useCameraStream(
     dict.cameraStream.permissionError
   );
@@ -160,6 +161,7 @@ export default function ScanWizard({
     setShowLineConsent(false);
     setLineConsentAgreed(false);
     setLineError(null);
+    setLiffUrl(null);
   }
 
   async function handleLineConsentConfirm() {
@@ -175,10 +177,15 @@ export default function ScanWizard({
       if (!res.ok) throw new Error("session creation failed");
       const { token } = (await res.json()) as { token: string };
       const liffId = process.env.NEXT_PUBLIC_LIFF_ID;
-      const liffUrl = `https://liff.line.me/${liffId}?token=${encodeURIComponent(token)}&locale=${encodeURIComponent(locale)}`;
-      window.location.href = liffUrl;
+      // window.location.href로 강제 이동시키면 iOS 등에서 유니버설 링크가
+      // 제대로 안 걸려 LINE 앱 대신 브라우저에서 열리는 경우가 있어서,
+      // 사용자가 직접 탭하는 실제 링크로 대체합니다.
+      setLiffUrl(
+        `https://liff.line.me/${liffId}?token=${encodeURIComponent(token)}&locale=${encodeURIComponent(locale)}`
+      );
     } catch {
       setLineError(dict.lineReport.error);
+    } finally {
       setLineConnecting(false);
     }
   }
@@ -242,41 +249,65 @@ export default function ScanWizard({
       {showLineConsent && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6">
           <div className="w-full max-w-sm rounded-xl bg-brand-surface p-5 shadow-lg">
-            <p className="text-sm font-medium">{dict.lineReport.consentTitle}</p>
-            <div className="mt-3 flex flex-col gap-2">
-              {dict.lineReport.consentBody.map((line) => (
-                <p key={line} className="text-xs text-foreground/70">
-                  {line}
-                </p>
-              ))}
-            </div>
-            <label className="mt-4 flex items-start gap-2 text-xs">
-              <input
-                type="checkbox"
-                checked={lineConsentAgreed}
-                onChange={(e) => setLineConsentAgreed(e.target.checked)}
-                className="mt-0.5 h-4 w-4 shrink-0"
-              />
-              <span>{dict.lineReport.consentAgree}</span>
-            </label>
-            {lineError && <p className="mt-2 text-xs text-red-600">{lineError}</p>}
-            <div className="mt-4 flex gap-2">
-              <button
-                type="button"
-                onClick={closeLineConsent}
-                className="flex-1 rounded-lg border border-brand-border bg-transparent px-4 py-2.5 text-sm font-medium text-foreground transition-transform active:scale-[0.98]"
-              >
-                {dict.lineReport.consentCancel}
-              </button>
-              <button
-                type="button"
-                onClick={handleLineConsentConfirm}
-                disabled={!lineConsentAgreed || lineConnecting}
-                className="flex-[2] rounded-lg bg-brand-primary px-4 py-2.5 text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98] disabled:opacity-40"
-              >
-                {lineConnecting ? dict.lineReport.connecting : dict.lineReport.consentConfirm}
-              </button>
-            </div>
+            {liffUrl ? (
+              <>
+                <p className="text-sm font-medium">{dict.lineReport.readyTitle}</p>
+                <p className="mt-2 text-xs text-foreground/70">{dict.lineReport.readyBody}</p>
+                <div className="mt-4 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={closeLineConsent}
+                    className="flex-1 rounded-lg border border-brand-border bg-transparent px-4 py-2.5 text-sm font-medium text-foreground transition-transform active:scale-[0.98]"
+                  >
+                    {dict.lineReport.consentCancel}
+                  </button>
+                  <a
+                    href={liffUrl}
+                    className="flex-[2] rounded-lg bg-brand-primary px-4 py-2.5 text-center text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98]"
+                  >
+                    {dict.lineReport.openInLine}
+                  </a>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-sm font-medium">{dict.lineReport.consentTitle}</p>
+                <div className="mt-3 flex flex-col gap-2">
+                  {dict.lineReport.consentBody.map((line) => (
+                    <p key={line} className="text-xs text-foreground/70">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+                <label className="mt-4 flex items-start gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={lineConsentAgreed}
+                    onChange={(e) => setLineConsentAgreed(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 shrink-0"
+                  />
+                  <span>{dict.lineReport.consentAgree}</span>
+                </label>
+                {lineError && <p className="mt-2 text-xs text-red-600">{lineError}</p>}
+                <div className="mt-4 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={closeLineConsent}
+                    className="flex-1 rounded-lg border border-brand-border bg-transparent px-4 py-2.5 text-sm font-medium text-foreground transition-transform active:scale-[0.98]"
+                  >
+                    {dict.lineReport.consentCancel}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleLineConsentConfirm}
+                    disabled={!lineConsentAgreed || lineConnecting}
+                    className="flex-[2] rounded-lg bg-brand-primary px-4 py-2.5 text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98] disabled:opacity-40"
+                  >
+                    {lineConnecting ? dict.lineReport.connecting : dict.lineReport.consentConfirm}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

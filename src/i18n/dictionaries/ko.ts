@@ -212,6 +212,9 @@ const ko = {
     consentCancel: "취소",
     connecting: "연결 중...",
     error: "연결에 실패했어요. 잠시 후 다시 시도해주세요.",
+    readyTitle: "준비됐어요!",
+    readyBody: "아래 버튼을 눌러 라인 앱에서 계속 진행해주세요.",
+    openInLine: "라인 앱에서 열기",
   },
 
   camera: {
