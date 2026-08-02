@@ -37,19 +37,38 @@ function resolveMessages(locale: string | null): MessageSet {
   return MESSAGES.ko;
 }
 
+// LINE이 liff.line.me 링크로 접속시킬 때, 우리가 붙인 쿼리스트링(?token=...)을
+// 엔드포인트 URL에 그대로 남기지 않고 "liff.state"라는 파라미터 안에
+// 한 번 더 인코딩해서 넘겨줍니다. 그래서 최상위 쿼리에서 바로 못 찾고
+// liff.state를 한 번 더 까봐야 합니다.
+function extractTokenAndLocale(): { token: string | null; locale: string | null } {
+  const params = new URLSearchParams(window.location.search);
+  let token = params.get("token");
+  let locale = params.get("locale");
+
+  if (!token) {
+    const liffState = params.get("liff.state");
+    if (liffState) {
+      const decoded = liffState.startsWith("?") ? liffState.slice(1) : liffState;
+      const stateParams = new URLSearchParams(decoded);
+      token = stateParams.get("token");
+      locale = stateParams.get("locale") ?? locale;
+    }
+  }
+
+  return { token, locale };
+}
+
 export default function LiffReportPage() {
   const [status, setStatus] = useState<Status>("connecting");
   const [messages, setMessages] = useState<MessageSet>(MESSAGES.ko);
   const [debugInfo, setDebugInfo] = useState<string | null>(null);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-
     // liff.login()이 로그인을 위해 페이지를 한 번 리다이렉트했다가 돌아오면
     // URL의 커스텀 쿼리 파라미터가 유지되지 않을 수 있어서, sessionStorage에
     // 백업해두고 재진입 시 거기서 복구합니다.
-    let token = params.get("token");
-    let locale = params.get("locale");
+    let { token, locale } = extractTokenAndLocale();
 
     if (token) {
       sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
