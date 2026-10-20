@@ -3,17 +3,13 @@ import { notFound } from "next/navigation";
 import { isLocale, locales } from "@/i18n/config";
 import SiteShell from "@/components/SiteShell";
 import { lineConsultUrl } from "@/lib/line/consult";
-import { DRAFT_NOTICE, guides, tx, ui } from "@/content/site";
+import { getSiteContent, readyGuideSlugs } from "@/content/site";
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return locales.flatMap((locale) =>
-    guides.filter((g) => g.ready).map((g) => ({ locale, slug: g.slug }))
-  );
+  return locales.flatMap((locale) => readyGuideSlugs.map((slug) => ({ locale, slug })));
 }
-
-const AD_LABEL = { ko: "광고", "zh-TW": "廣告" };
 
 export default async function GuidePage({
   params,
@@ -22,29 +18,27 @@ export default async function GuidePage({
 }) {
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
-  const g = guides.find((x) => x.slug === slug && x.ready);
+  const c = getSiteContent(locale);
+  const g = c.guides.find((x) => x.slug === slug && x.ready);
   if (!g) notFound();
 
-  const consultUrl = lineConsultUrl([
-    tx(ui.consultTitle, locale),
-    `${tx(ui.consultTopic, locale)}: ${tx(g.title, locale)}`,
-  ]);
+  const consultUrl = lineConsultUrl([c.ui.consultMessage.title, `${c.ui.consultMessage.topic}: ${g.title}`]);
 
   return (
     <SiteShell locale={locale}>
       <section className="motion-rise flex flex-col gap-2 pt-2">
         <p className="w-fit rounded-md bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-800">
-          {tx(DRAFT_NOTICE, locale)}
+          {c.ui.draftNotice}
         </p>
-        <h1 className="text-2xl font-semibold">{tx(g.title, locale)}</h1>
+        <h1 className="text-2xl font-semibold">{g.title}</h1>
         <p className="text-xs text-foreground/50">
-          {tx(ui.guide.lastChecked, locale)}: {g.lastChecked} · {tx(ui.guide.sponsoredNote, locale)}
+          {c.guidePage.lastChecked}: {g.lastChecked} · {c.guidePage.sponsoredNote}
         </p>
       </section>
 
       {g.sections?.map((section, i) => (
         <section key={i} className="motion-scroll flex flex-col gap-3">
-          <h2 className="text-base font-semibold">{tx(section.heading, locale)}</h2>
+          <h2 className="text-base font-semibold">{section.heading}</h2>
           <ul className="flex flex-col gap-2">
             {section.spots.map((spot, j) => (
               <li
@@ -53,14 +47,14 @@ export default async function GuidePage({
               >
                 <div>
                   <p className="flex items-center gap-2 text-sm font-medium">
-                    {tx(spot.name, locale)}
+                    {spot.name}
                     {spot.sponsored && (
                       <span className="rounded bg-foreground/[.08] px-1.5 py-0.5 text-[10px] text-foreground/60">
-                        {tx(AD_LABEL, locale)}
+                        {c.ui.adLabel}
                       </span>
                     )}
                   </p>
-                  <p className="mt-1 text-xs text-foreground/60">{tx(spot.note, locale)}</p>
+                  <p className="mt-1 text-xs text-foreground/60">{spot.note}</p>
                 </div>
                 {spot.mapUrl && (
                   <a
@@ -83,10 +77,10 @@ export default async function GuidePage({
           href={consultUrl}
           className="flex min-h-12 items-center justify-center rounded-lg bg-brand-primary px-4 text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98]"
         >
-          {tx(ui.consultCta, locale)}
+          {c.ui.consultCta}
         </a>
         <Link href={`/${locale}/guide`} className="text-center text-xs text-foreground/50">
-          ← {tx(ui.guide.title, locale)}
+          ← {c.guidePage.title}
         </Link>
       </section>
     </SiteShell>

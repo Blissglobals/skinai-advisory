@@ -8,18 +8,23 @@ function localeFromPathname(pathname: string): Locale | undefined {
   );
 }
 
-// 대만(번체) 대상이 주력이라 "zh"만 있고 지역 구분이 없는 경우 번체를
-// 기본값으로 삼고, 중국 대륙/싱가포르 등 간체 지역 신호가 있을 때만
-// 간체로 분기합니다.
+// 브라우저의 첫 번째(가장 선호하는) 언어만 봅니다. 한국어 폰도 보조 언어로
+// en·zh를 함께 보내는 경우가 많아서, 포함 여부로 판단하면 잘못 분기됩니다.
+// "zh"만 있고 지역 구분이 없으면 대만 대상이 주력이라 번체로 보냅니다.
 function preferredLocale(request: NextRequest): Locale {
-  const acceptLanguage = (request.headers.get("accept-language") ?? "").toLowerCase();
-  if (!acceptLanguage.includes("zh")) return defaultLocale;
+  const primary = (request.headers.get("accept-language") ?? "")
+    .split(",")[0]
+    .trim()
+    .toLowerCase();
 
-  const isSimplifiedRegion =
-    acceptLanguage.includes("zh-cn") ||
-    acceptLanguage.includes("zh-sg") ||
-    acceptLanguage.includes("zh-hans");
-  return isSimplifiedRegion ? "zh-CN" : "zh-TW";
+  if (primary.startsWith("zh")) {
+    const isSimplified =
+      primary.startsWith("zh-cn") || primary.startsWith("zh-sg") || primary.startsWith("zh-hans");
+    return isSimplified ? "zh-CN" : "zh-TW";
+  }
+  if (primary.startsWith("en")) return "en";
+  if (primary.startsWith("ko")) return "ko";
+  return defaultLocale;
 }
 
 export function proxy(request: NextRequest) {

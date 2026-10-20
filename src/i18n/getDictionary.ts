@@ -11,6 +11,8 @@ const localeDictionaries: Record<
   Exclude<Locale, "ko">,
   () => Promise<DeepPartial<Dictionary>>
 > = {
+  // 스캔 화면 영어 번역 전 — 빠진 문구는 한국어로 보입니다.
+  en: async () => ({}),
   "zh-TW": () => import("./dictionaries/zh-TW").then((m) => m.default),
   "zh-CN": () => import("./dictionaries/zh-CN").then((m) => m.default),
 };

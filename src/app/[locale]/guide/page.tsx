@@ -2,28 +2,29 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import SiteShell from "@/components/SiteShell";
-import { guides, tx, ui } from "@/content/site";
+import { getSiteContent } from "@/content/site";
 
 export default async function GuideIndex({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
+  const c = getSiteContent(locale);
 
   return (
     <SiteShell locale={locale}>
       <section className="motion-rise flex flex-col gap-2 pt-2">
-        <h1 className="text-2xl font-semibold">{tx(ui.guide.title, locale)}</h1>
-        <p className="text-sm text-foreground/60">{tx(ui.guide.intro, locale)}</p>
+        <h1 className="text-2xl font-semibold">{c.guidePage.title}</h1>
+        <p className="text-sm text-foreground/60">{c.guidePage.intro}</p>
       </section>
 
       <section className="flex flex-col gap-3">
-        {guides.map((g) => {
+        {c.guides.map((g) => {
           const inner = (
             <>
-              <span className="text-sm font-medium">{tx(g.title, locale)}</span>
-              <span className="text-xs text-foreground/60">{tx(g.summary, locale)}</span>
+              <span className="text-sm font-medium">{g.title}</span>
+              <span className="text-xs text-foreground/60">{g.summary}</span>
               {!g.ready && (
                 <span className="w-fit rounded-full bg-foreground/[.06] px-2 py-0.5 text-[10px] text-foreground/50">
-                  {tx(ui.comingSoon, locale)}
+                  {c.ui.comingSoon}
                 </span>
               )}
             </>
