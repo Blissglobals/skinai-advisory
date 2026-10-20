@@ -3,7 +3,7 @@
 import type { CSSProperties } from "react";
 import CountUp from "@/components/CountUp";
 import PromoBanner from "@/components/PromoBanner";
-import { LINE_BASIC_ID } from "@/lib/line/constants";
+import { lineConsultUrl } from "@/lib/line/consult";
 import type { DeepScanResult, SkinMetricKey } from "@/lib/analysis/types";
 import { formatScoreOutOf10 } from "@/lib/format";
 import { estimateAgePercentile } from "@/lib/percentile";
@@ -35,9 +35,6 @@ function delay(ms: number): CSSProperties {
   return { "--d": `${ms}ms` } as CSSProperties;
 }
 
-// 서버에 아무것도 저장하지 않고, LINE 공식 계정 대화창에 결과 요약을 미리
-// 채워 넣습니다. 사용자가 직접 전송해야 상담 직원에게 전달됩니다.
-// 형식: https://developers.line.biz/en/docs/messaging-api/using-line-url-scheme/
 function buildConsultUrl(
   dict: Dictionary,
   deepScan: DeepScanResult,
@@ -52,9 +49,7 @@ function buildConsultUrl(
       .map((metric) => `${dict.metrics[metric.key].label} ${formatScoreOutOf10(metric.score)}`)
       .join(" · ")
   );
-  return `https://line.me/R/oaMessage/${encodeURIComponent(LINE_BASIC_ID)}/?${encodeURIComponent(
-    lines.join("\n")
-  )}`;
+  return lineConsultUrl(lines);
 }
 
 export default function ScanResult({
