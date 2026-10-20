@@ -76,3 +76,84 @@ body {
 .camera-flash {
   animation: camera-flash 350ms ease-out;
 }
+
+/* ── 결과 화면 모션 ──────────────────────────────────────────
+   --d(지연)는 컴포넌트에서 요소별로 넘깁니다. 시간 기반 연출은 첫 화면,
+   motion-scroll은 스크롤로 화면에 들어올 때 재생됩니다(지원 안 하는
+   브라우저에서는 애니메이션 없이 그대로 보임). */
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes bar-grow {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes ring-fill {
+  from {
+    stroke-dashoffset: var(--ring-c);
+  }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.motion-rise {
+  animation: rise 600ms var(--ease-out-expo) var(--d, 0ms) both;
+}
+
+.motion-bar {
+  animation: bar-grow 900ms var(--ease-out-expo) var(--d, 0ms) both;
+}
+
+.motion-ring {
+  animation: ring-fill 1200ms var(--ease-out-expo) var(--d, 0ms) both;
+}
+
+.motion-pop {
+  animation: pop 420ms var(--ease-out-expo) var(--d, 0ms) both;
+}
+
+@supports (animation-timeline: view()) {
+  .motion-scroll {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+
+  .motion-pop {
+    animation: pop linear both;
+    animation-timeline: view();
+    animation-range: entry 40% entry 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-rise,
+  .motion-bar,
+  .motion-ring,
+  .motion-pop,
+  .motion-scroll {
+    animation: none;
+  }
+}

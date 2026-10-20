@@ -4,12 +4,11 @@ import { useRef, useState } from "react";
 import ProgressBar from "@/components/ProgressBar";
 import NeedChip from "@/components/NeedChip";
 import PromoBanner from "@/components/PromoBanner";
+import ScanResult from "@/components/ScanResult";
 import CameraCapture, { type CameraCaptureHandle } from "@/components/CameraCapture";
 import { analysisEngine } from "@/lib/analysis/mediapipeEngine";
 import type { DeepScanResult, FaceScanResult, SkinMetricKey } from "@/lib/analysis/types";
 import { formatScoreOutOf10 } from "@/lib/format";
-import { estimateAgePercentile } from "@/lib/percentile";
-import { buildSolutionScenario } from "@/lib/solutionScenario";
 import { useCameraStream } from "@/hooks/useCameraStream";
 import type { Dictionary } from "@/i18n/getDictionary";
 
@@ -522,150 +521,14 @@ export default function ScanWizard({
       )}
 
       {step === 4 && deepScan && (
-        <section className="flex flex-col gap-5">
-          <div>
-            <p className="inline-block rounded-md bg-brand-secondary px-2 py-1 text-xs font-medium text-brand-secondary-fg">
-              {dict.scan.step4.badge}
-            </p>
-            <h1 className="mt-2 text-lg font-medium">
-              {dict.scan.step4.headingPrefix}
-              {formatScoreOutOf10(deepScan.overallScore)}
-              {dict.scan.step4.headingSuffix}{" "}
-              <span className="text-sm font-normal text-foreground/50">
-                {dict.scan.step4.outOf10}
-              </span>
-            </h1>
-            <p className="mt-1 text-xs text-foreground/50">
-              {dict.scan.step4.previewNotice}
-            </p>
-          </div>
-
-          {(faceScan?.lowConfidence || deepScan.lowConfidence) && (
-            <p className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800">
-              {dict.scan.step4.lowConfidence}
-            </p>
-          )}
-
-          {userAge !== null && (
-            <div className="rounded-xl border border-brand-border bg-brand-surface p-3">
-              <p className="text-sm font-medium">
-                {userAge}
-                {dict.scan.step4.percentilePrefix}
-                {estimateAgePercentile(deepScan.overallScore, userAge)}
-                {dict.scan.step4.percentileSuffix}
-              </p>
-              <p className="mt-1 text-xs text-foreground/50">
-                {dict.scan.step4.percentileDisclaimer}
-              </p>
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 gap-3">
-            {deepScan.metrics.map((m) => (
-              <div key={m.key} className="rounded-xl bg-black/[.03] p-3 dark:bg-white/[.06]">
-                <p className="text-xs text-foreground/60">{m.label}</p>
-                <p className="mt-1 text-xl font-medium">{formatScoreOutOf10(m.score)}</p>
-              </div>
-            ))}
-          </div>
-
-          {(() => {
-            const sortedMetrics = [...deepScan.metrics].sort((a, b) => a.score - b.score);
-            const scenario = buildSolutionScenario(deepScan.metrics, dict.scenario, metricLabels);
-
-            return (
-              <>
-                <div className="rounded-xl border border-brand-border bg-brand-surface p-3">
-                  <p className="text-sm font-medium">{scenario.overallText}</p>
-                  {scenario.interactionText && (
-                    <p className="mt-1 text-xs text-foreground/60">
-                      {scenario.interactionText}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  {sortedMetrics.map((m, i) => {
-                    const isWorst = i === 0 && sortedMetrics.length > 1;
-                    const isBest = i === sortedMetrics.length - 1 && sortedMetrics.length > 1;
-                    return (
-                      <div key={m.key} className="rounded-xl border border-brand-border p-3">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium">
-                            {m.label} · {formatScoreOutOf10(m.score)}
-                            {dict.scan.step2.point}
-                          </p>
-                          {isWorst && (
-                            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
-                              {dict.scan.step4.worstBadge}
-                            </span>
-                          )}
-                          {isBest && (
-                            <span className="rounded-full bg-brand-secondary px-2 py-0.5 text-xs font-medium text-brand-secondary-fg">
-                              {dict.scan.step4.bestBadge}
-                            </span>
-                          )}
-                        </div>
-                        <p className="mt-1 text-xs text-foreground/50">
-                          {dict.metrics[m.key].description}
-                        </p>
-                        <p className="mt-2 text-xs text-foreground/70">
-                          {scenario.metricTexts[m.key]}
-                        </p>
-                        <p className="mt-2 text-xs text-foreground/70">
-                          <span className="font-semibold text-foreground">
-                            {dict.scan.step4.procedureLabel}{" "}
-                          </span>
-                          {dict.solutions[m.key].procedureInfo}
-                        </p>
-                        <p className="mt-1 text-xs text-foreground/70">
-                          <span className="font-semibold text-foreground">
-                            {dict.scan.step4.cosmeticLabel}{" "}
-                          </span>
-                          {dict.solutions[m.key].cosmeticInfo}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </>
-            );
-          })()}
-
-          <details className="rounded-xl border border-brand-border p-3 text-xs text-foreground/70">
-            <summary className="cursor-pointer text-sm font-medium text-foreground">
-              {dict.scan.step4.methodologyToggle}
-            </summary>
-            <div className="mt-2 flex flex-col gap-1.5">
-              {dict.scan.step4.methodology.map((line) => (
-                <p key={line}>{line}</p>
-              ))}
-              <p className="text-foreground/50">{dict.scan.step4.methodologyFootnote}</p>
-            </div>
-          </details>
-
-          {userAge !== null && userAge < MIN_AGE_FOR_LINE_REPORT ? (
-            <p className="text-center text-xs text-foreground/40">
-              {dict.lineReport.ageRestricted}
-            </p>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setShowLineConsent(true)}
-              className="min-h-12 w-full rounded-lg border border-brand-border bg-transparent px-4 py-3 text-sm font-medium text-foreground transition-transform active:scale-[0.98]"
-            >
-              {dict.lineReport.cta}
-            </button>
-          )}
-
-          <p className="text-xs text-foreground/50">{dict.solutionDisclaimer}</p>
-
-          <PromoBanner
-            title={dict.promo.title}
-            body={dict.promo.body}
-            cta={dict.promo.cta}
-          />
-        </section>
+        <ScanResult
+          dict={dict}
+          deepScan={deepScan}
+          lowConfidence={!!faceScan?.lowConfidence || deepScan.lowConfidence}
+          userAge={userAge}
+          minAgeForLineReport={MIN_AGE_FOR_LINE_REPORT}
+          onRequestLineReport={() => setShowLineConsent(true)}
+        />
       )}
     </div>
   );
