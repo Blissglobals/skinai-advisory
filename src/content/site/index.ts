@@ -14,6 +14,16 @@ export interface Spot {
   mapUrl?: string;
 }
 
+export interface Concern {
+  slug: string;
+  name: string;
+  hint: string;
+  intro: string;
+  causes: string[];
+  homeCare: string[];
+  treatmentSlugs: string[];
+}
+
 export interface Treatment {
   slug: string;
   ready: boolean;
@@ -25,43 +35,71 @@ export interface Treatment {
   faq?: { q: string; a: string }[];
 }
 
+export interface GuideSection {
+  heading: string;
+  body?: string;
+  items?: string[];
+  spots?: Spot[];
+}
+
 export interface Guide {
   slug: string;
   ready: boolean;
   title: string;
   summary: string;
   lastChecked?: string;
-  sections?: { heading: string; spots: Spot[] }[];
+  sections?: GuideSection[];
 }
 
 export interface SiteContent {
   ui: {
     brand: string;
     draftNotice: string;
-    consultShort: string;
     consultCta: string;
+    consultBar: string;
     scanCta: string;
+    scanBar: string;
     comingSoon: string;
-    readMore: string;
+    seeAll: string;
     adLabel: string;
     languageLabel: string;
-    consultMessage: { title: string; interest: string; topic: string };
+    nav: { treatments: string; guide: string };
+    consultMessage: { title: string; interest: string; topic: string; concern: string };
   };
   home: {
     eyebrow: string;
     heading: string;
     subheading: string;
+    chips: string[];
     concernsTitle: string;
     treatmentsTitle: string;
     stepsTitle: string;
     guideTitle: string;
     clinicTitle: string;
     faqTitle: string;
+    finalTitle: string;
+    finalBody: string;
   };
-  treatmentPage: { forWhom: string; facts: string; cautions: string; faq: string };
+  concernPage: {
+    causes: string;
+    treatments: string;
+    homeCare: string;
+    scanTitle: string;
+    scanBody: string;
+  };
+  treatmentPage: {
+    indexTitle: string;
+    indexIntro: string;
+    relatedConcerns: string;
+    forWhom: string;
+    facts: string;
+    cautions: string;
+    faq: string;
+    related: string;
+  };
   guidePage: { title: string; intro: string; lastChecked: string; sponsoredNote: string };
   footer: { company: string; registration: string; disclaimer: string; privacy: string };
-  concerns: { slug: string; name: string; hint: string; treatmentSlugs: string[] }[];
+  concerns: Concern[];
   treatments: Treatment[];
   steps: { title: string; body: string }[];
   guides: Guide[];
@@ -78,3 +116,4 @@ export function getSiteContent(locale: Locale): SiteContent {
 // 언어와 무관하게 존재하는 페이지 목록(정적 생성용). 원본 기준입니다.
 export const readyTreatmentSlugs = ko.treatments.filter((t) => t.ready).map((t) => t.slug);
 export const readyGuideSlugs = ko.guides.filter((g) => g.ready).map((g) => g.slug);
+export const concernSlugs = ko.concerns.map((c) => c.slug);

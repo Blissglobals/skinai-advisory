@@ -157,3 +157,11 @@ body {
     animation: none;
   }
 }
+
+/* 가로 스와이프 목록에서 스크롤바를 숨깁니다(스크롤 자체는 유지). */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

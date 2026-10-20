@@ -13,7 +13,7 @@ export default function LanguageSwitcher({ locale, label }: { locale: Locale; la
       aria-label={label}
       value={locale}
       onChange={(e) => router.push(pathname.replace(`/${locale}`, `/${e.target.value}`))}
-      className="h-8 rounded-full border border-brand-border bg-transparent px-2 text-xs"
+      className="h-8 max-w-[6.5rem] rounded-full border border-brand-border bg-transparent px-2 text-xs"
     >
       {locales.map((l) => (
         <option key={l} value={l}>

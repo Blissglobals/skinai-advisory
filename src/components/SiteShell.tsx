@@ -4,43 +4,43 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { lineConsultUrl } from "@/lib/line/consult";
 import { getSiteContent } from "@/content/site";
 
-// 홈페이지 계열(홈·시술 안내·가이드) 공통 머리말/꼬리말. 스캔 화면은 앱처럼
-// 꽉 찬 화면을 쓰므로 이 껍데기를 쓰지 않습니다.
+// 홈페이지 계열 공통 껍데기. 모바일에서 엄지가 닿는 하단에 "피부 분석 /
+// LINE 상담" 고정 바를 둡니다. consultLines로 페이지별 상담 문구를 넘기면
+// 하단 상담 버튼이 그 내용으로 미리 채워집니다. 스캔 화면은 이 껍데기를 쓰지 않습니다.
 export default function SiteShell({
   locale,
+  consultLines,
   children,
 }: {
   locale: Locale;
+  consultLines?: string[];
   children: React.ReactNode;
 }) {
   const { ui, footer } = getSiteContent(locale);
+  const consultUrl = lineConsultUrl(consultLines ?? [ui.consultMessage.title]);
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-40 border-b border-brand-border bg-background/90 backdrop-blur">
-        <div className="mx-auto flex h-14 w-full max-w-xl items-center justify-between gap-2 px-4">
-          <Link href={`/${locale}`} className="text-sm font-semibold tracking-tight">
+      <header className="sticky top-0 z-40 border-b border-brand-border/70 bg-background/85 backdrop-blur-md">
+        <div className="mx-auto flex h-14 w-full max-w-xl items-center gap-4 px-4">
+          <Link href={`/${locale}`} className="mr-auto text-[15px] font-semibold tracking-tight">
             {ui.brand}
           </Link>
-          <div className="flex items-center gap-2">
-            <LanguageSwitcher locale={locale} label={ui.languageLabel} />
-            <a
-              href={lineConsultUrl([ui.consultMessage.title])}
-              className="rounded-full bg-brand-accent px-3 py-1.5 text-xs font-medium text-brand-accent-fg transition-transform active:scale-[0.97]"
-            >
-              {ui.consultShort}
-            </a>
-          </div>
+          <nav className="flex items-center gap-4 text-sm text-foreground/70">
+            <Link href={`/${locale}/treatments`}>{ui.nav.treatments}</Link>
+            <Link href={`/${locale}/guide`}>{ui.nav.guide}</Link>
+          </nav>
+          <LanguageSwitcher locale={locale} label={ui.languageLabel} />
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-10 px-4 py-6">
+      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-12 px-4 pt-5 pb-10">
         {children}
       </main>
 
-      <footer className="border-t border-brand-border">
-        <div className="mx-auto flex w-full max-w-xl flex-col gap-2 px-4 py-6 text-xs text-foreground/50">
-          <p className="font-medium text-foreground/70">{footer.company}</p>
+      <footer className="border-t border-brand-border pb-28">
+        <div className="mx-auto flex w-full max-w-xl flex-col gap-2 px-4 py-8 text-xs leading-relaxed text-foreground/50">
+          <p className="text-sm font-medium text-foreground/70">{footer.company}</p>
           <p>{footer.registration}</p>
           <p>blissglobalscs@gmail.com</p>
           <p>{footer.disclaimer}</p>
@@ -49,6 +49,23 @@ export default function SiteShell({
           </Link>
         </div>
       </footer>
+
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-brand-border/70 bg-background/90 backdrop-blur-md">
+        <div className="mx-auto flex w-full max-w-xl gap-2 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+          <Link
+            href={`/${locale}/analysis`}
+            className="flex min-h-12 flex-1 items-center justify-center rounded-xl border border-brand-border bg-brand-surface text-sm font-medium transition-transform active:scale-[0.98]"
+          >
+            {ui.scanBar}
+          </Link>
+          <a
+            href={consultUrl}
+            className="flex min-h-12 flex-[1.6] items-center justify-center gap-1.5 rounded-xl bg-brand-accent text-sm font-semibold text-brand-accent-fg shadow-sm transition-transform active:scale-[0.98]"
+          >
+            {ui.consultBar}
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
