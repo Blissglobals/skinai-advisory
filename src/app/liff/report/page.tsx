@@ -112,12 +112,11 @@ export default function LiffReportPage() {
           return;
         }
 
-        const profile = await liff.getProfile();
-
+        // userId 대신 access token을 보내고, 서버가 LINE에 직접 검증해 userId를 얻습니다.
         const res = await fetch("/api/line/link-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token, lineUserId: profile.userId }),
+          body: JSON.stringify({ token, accessToken: liff.getAccessToken() }),
         });
 
         if (res.status === 404) {

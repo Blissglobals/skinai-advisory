@@ -13,7 +13,7 @@ export interface ScanSessionData {
 
 // 사용자가 "라인으로 리포트 받기"를 누른 뒤 실제로 친구추가를 완료할 때까지
 // 기다려주는 유예 시간입니다. 이 시간이 지나면 세션은 자동으로 사라집니다.
-const SESSION_TTL_SECONDS = 60 * 30;
+export const SESSION_TTL_SECONDS = 60 * 30;
 
 export async function createScanSession(
   data: Omit<ScanSessionData, "createdAt">
