@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 import CountUp from "@/components/CountUp";
 import PromoBanner from "@/components/PromoBanner";
+import { LINE_BASIC_ID } from "@/lib/line/constants";
 import type { DeepScanResult, SkinMetricKey } from "@/lib/analysis/types";
 import { formatScoreOutOf10 } from "@/lib/format";
 import { estimateAgePercentile } from "@/lib/percentile";
@@ -14,8 +15,8 @@ interface ScanResultProps {
   deepScan: DeepScanResult;
   lowConfidence: boolean;
   userAge: number | null;
-  minAgeForLineReport: number;
-  onRequestLineReport?: () => void;
+  focusMetric?: SkinMetricKey | null;
+  minAgeForConsult: number;
 }
 
 const RING_RADIUS = 52;
@@ -34,13 +35,35 @@ function delay(ms: number): CSSProperties {
   return { "--d": `${ms}ms` } as CSSProperties;
 }
 
+// 서버에 아무것도 저장하지 않고, LINE 공식 계정 대화창에 결과 요약을 미리
+// 채워 넣습니다. 사용자가 직접 전송해야 상담 직원에게 전달됩니다.
+// 형식: https://developers.line.biz/en/docs/messaging-api/using-line-url-scheme/
+function buildConsultUrl(
+  dict: Dictionary,
+  deepScan: DeepScanResult,
+  focusMetric: SkinMetricKey | null | undefined
+): string {
+  const m = dict.consult.message;
+  const lines = [m.title];
+  if (focusMetric) lines.push(`${m.concern}: ${dict.metrics[focusMetric].label}`);
+  lines.push(`${m.overall}: ${formatScoreOutOf10(deepScan.overallScore)} ${m.outOf}`);
+  lines.push(
+    deepScan.metrics
+      .map((metric) => `${dict.metrics[metric.key].label} ${formatScoreOutOf10(metric.score)}`)
+      .join(" · ")
+  );
+  return `https://line.me/R/oaMessage/${encodeURIComponent(LINE_BASIC_ID)}/?${encodeURIComponent(
+    lines.join("\n")
+  )}`;
+}
+
 export default function ScanResult({
   dict,
   deepScan,
   lowConfidence,
   userAge,
-  minAgeForLineReport,
-  onRequestLineReport,
+  focusMetric,
+  minAgeForConsult,
 }: ScanResultProps) {
   const metricLabels: Record<SkinMetricKey, string> = {
     pore: dict.metrics.pore.label,
@@ -52,6 +75,8 @@ export default function ScanResult({
   const scenario = buildSolutionScenario(deepScan.metrics, dict.scenario, metricLabels);
   const worstKey = sortedMetrics.length > 1 ? sortedMetrics[0].key : null;
   const bestKey = sortedMetrics.length > 1 ? sortedMetrics[sortedMetrics.length - 1].key : null;
+  const canConsult = userAge === null || userAge >= minAgeForConsult;
+  const consultUrl = buildConsultUrl(dict, deepScan, focusMetric);
 
   return (
     <section className="flex flex-col gap-5">
@@ -164,6 +189,20 @@ export default function ScanResult({
         })}
       </div>
 
+      {canConsult ? (
+        <div className="motion-scroll flex flex-col gap-2">
+          <a
+            href={consultUrl}
+            className="flex min-h-12 w-full items-center justify-center rounded-lg bg-brand-primary px-4 py-3 text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98]"
+          >
+            {dict.consult.cta}
+          </a>
+          <p className="text-center text-xs text-foreground/50">{dict.consult.note}</p>
+        </div>
+      ) : (
+        <p className="text-center text-xs text-foreground/40">{dict.consult.ageRestricted}</p>
+      )}
+
       <div className="motion-scroll rounded-xl border border-brand-border bg-brand-surface p-3">
         <p className="text-sm font-medium">{scenario.overallText}</p>
         {scenario.interactionText && (
@@ -225,18 +264,6 @@ export default function ScanResult({
           <p className="text-foreground/50">{dict.scan.step4.methodologyFootnote}</p>
         </div>
       </details>
-
-      {userAge !== null && userAge < minAgeForLineReport ? (
-        <p className="text-center text-xs text-foreground/40">{dict.lineReport.ageRestricted}</p>
-      ) : (
-        <button
-          type="button"
-          onClick={onRequestLineReport}
-          className="motion-scroll min-h-12 w-full rounded-lg border border-brand-border bg-transparent px-4 py-3 text-sm font-medium text-foreground transition-transform active:scale-[0.98]"
-        >
-          {dict.lineReport.cta}
-        </button>
-      )}
 
       <p className="text-xs text-foreground/50">{dict.solutionDisclaimer}</p>
 

@@ -17,17 +17,11 @@ interface FailureChoice {
   allowProceed: boolean;
 }
 
-// 라인으로 상세 리포트를 받으려면(=개인정보가 실제로 처리·보유되기
-// 시작하는 지점) 미성년자를 걸러냅니다. 재미용 스캔 자체는 나이 제한이 없습니다.
-const MIN_AGE_FOR_LINE_REPORT = 19;
+// 시술 상담은 성인 대상이라 상담 버튼만 미성년자에게 숨깁니다.
+// 재미용 스캔 자체는 나이 제한이 없습니다.
+const MIN_AGE_FOR_CONSULT = 19;
 
-export default function ScanWizard({
-  dict,
-  locale,
-}: {
-  dict: Dictionary;
-  locale: string;
-}) {
+export default function ScanWizard({ dict }: { dict: Dictionary }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -40,11 +34,6 @@ export default function ScanWizard({
   const consecutiveFailuresRef = useRef(0);
   const [retryNotice, setRetryNotice] = useState<string | null>(null);
   const [failureChoice, setFailureChoice] = useState<FailureChoice | null>(null);
-  const [showLineConsent, setShowLineConsent] = useState(false);
-  const [lineConsentAgreed, setLineConsentAgreed] = useState(false);
-  const [lineConnecting, setLineConnecting] = useState(false);
-  const [lineError, setLineError] = useState<string | null>(null);
-  const [liffUrl, setLiffUrl] = useState<string | null>(null);
   const { stream, error: streamError } = useCameraStream(
     dict.cameraStream.permissionError
   );
@@ -157,62 +146,6 @@ export default function ScanWizard({
     }
   }
 
-  function closeLineConsent() {
-    setShowLineConsent(false);
-    setLineConsentAgreed(false);
-    setLineError(null);
-    setLiffUrl(null);
-  }
-
-  // 커스텀 스킴(line://)으로 우선 앱을 열어보고, 짧은 시간 안에 화면이
-  // 백그라운드로 전환되지 않으면(=앱이 안 열린 것으로 판단) 웹 로그인
-  // 화면(https://liff.line.me/...)으로 자동 전환합니다. 앱이 설치되어
-  // 있으면 탭 없이 바로 넘어가고, 없으면 웹으로 자연스럽게 대체됩니다.
-  function tryOpenLineApp(customSchemeUrl: string, httpsFallbackUrl: string) {
-    let openedApp = false;
-    const onVisibilityChange = () => {
-      if (document.hidden) openedApp = true;
-    };
-    document.addEventListener("visibilitychange", onVisibilityChange);
-
-    window.location.href = customSchemeUrl;
-
-    setTimeout(() => {
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      if (!openedApp) {
-        window.location.href = httpsFallbackUrl;
-      }
-    }, 1500);
-  }
-
-  async function handleLineConsentConfirm() {
-    if (!deepScan) return;
-    setLineConnecting(true);
-    setLineError(null);
-    try {
-      const res = await fetch("/api/scan-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deepScan, age: userAge, locale }),
-      });
-      if (!res.ok) throw new Error("session creation failed");
-      const { token } = (await res.json()) as { token: string };
-      const liffId = process.env.NEXT_PUBLIC_LIFF_ID;
-      const query = `token=${encodeURIComponent(token)}&locale=${encodeURIComponent(locale)}`;
-      const httpsUrl = `https://liff.line.me/${liffId}?${query}`;
-      const customSchemeUrl = `line://app/${liffId}?${query}`;
-
-      // 수동 "라인 앱에서 열기" 버튼은 안전장치로 계속 보여줍니다
-      // (자동 감지가 안 맞는 기기·브라우저 대비).
-      setLiffUrl(httpsUrl);
-      tryOpenLineApp(customSchemeUrl, httpsUrl);
-    } catch {
-      setLineError(dict.lineReport.error);
-    } finally {
-      setLineConnecting(false);
-    }
-  }
-
   const needOptionOrder: SkinMetricKey[] = ["elasticity", "pigment", "pore", "wrinkle"];
 
   return (
@@ -264,72 +197,6 @@ export default function ScanWizard({
               <p className="mt-2 text-[11px] text-foreground/40">
                 {dict.scan.proceedAnywayHint}
               </p>
-            )}
-          </div>
-        </div>
-      )}
-
-      {showLineConsent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6">
-          <div className="w-full max-w-sm rounded-xl bg-brand-surface p-5 shadow-lg">
-            {liffUrl ? (
-              <>
-                <p className="text-sm font-medium">{dict.lineReport.readyTitle}</p>
-                <p className="mt-2 text-xs text-foreground/70">{dict.lineReport.readyBody}</p>
-                <div className="mt-4 flex gap-2">
-                  <button
-                    type="button"
-                    onClick={closeLineConsent}
-                    className="flex-1 rounded-lg border border-brand-border bg-transparent px-4 py-2.5 text-sm font-medium text-foreground transition-transform active:scale-[0.98]"
-                  >
-                    {dict.lineReport.consentCancel}
-                  </button>
-                  <a
-                    href={liffUrl}
-                    className="flex-[2] rounded-lg bg-brand-primary px-4 py-2.5 text-center text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98]"
-                  >
-                    {dict.lineReport.openInLine}
-                  </a>
-                </div>
-              </>
-            ) : (
-              <>
-                <p className="text-sm font-medium">{dict.lineReport.consentTitle}</p>
-                <div className="mt-3 flex flex-col gap-2">
-                  {dict.lineReport.consentBody.map((line) => (
-                    <p key={line} className="text-xs text-foreground/70">
-                      {line}
-                    </p>
-                  ))}
-                </div>
-                <label className="mt-4 flex items-start gap-2 text-xs">
-                  <input
-                    type="checkbox"
-                    checked={lineConsentAgreed}
-                    onChange={(e) => setLineConsentAgreed(e.target.checked)}
-                    className="mt-0.5 h-4 w-4 shrink-0"
-                  />
-                  <span>{dict.lineReport.consentAgree}</span>
-                </label>
-                {lineError && <p className="mt-2 text-xs text-red-600">{lineError}</p>}
-                <div className="mt-4 flex gap-2">
-                  <button
-                    type="button"
-                    onClick={closeLineConsent}
-                    className="flex-1 rounded-lg border border-brand-border bg-transparent px-4 py-2.5 text-sm font-medium text-foreground transition-transform active:scale-[0.98]"
-                  >
-                    {dict.lineReport.consentCancel}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleLineConsentConfirm}
-                    disabled={!lineConsentAgreed || lineConnecting}
-                    className="flex-[2] rounded-lg bg-brand-primary px-4 py-2.5 text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98] disabled:opacity-40"
-                  >
-                    {lineConnecting ? dict.lineReport.connecting : dict.lineReport.consentConfirm}
-                  </button>
-                </div>
-              </>
             )}
           </div>
         </div>
@@ -526,8 +393,8 @@ export default function ScanWizard({
           deepScan={deepScan}
           lowConfidence={!!faceScan?.lowConfidence || deepScan.lowConfidence}
           userAge={userAge}
-          minAgeForLineReport={MIN_AGE_FOR_LINE_REPORT}
-          onRequestLineReport={() => setShowLineConsent(true)}
+          focusMetric={selectedNeed}
+          minAgeForConsult={MIN_AGE_FOR_CONSULT}
         />
       )}
     </div>

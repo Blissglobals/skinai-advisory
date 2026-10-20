@@ -76,7 +76,8 @@ export default function ResultPreview({ dict }: { dict: Dictionary }) {
         deepScan={deepScan}
         lowConfidence={deepScan.lowConfidence}
         userAge={age}
-        minAgeForLineReport={19}
+        focusMetric="pigment"
+        minAgeForConsult={19}
       />
     </div>
   );

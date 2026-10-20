@@ -22,6 +22,18 @@ const zhCN: DeepPartial<Dictionary> = {
     footnote: "本服务仅提供一般信息,并非医学诊断。",
   },
 
+  consult: {
+    cta: "通过LINE免费咨询",
+    note: "点击按钮后，LINE咨询窗口会自动填入您的分析结果，点击发送即可开始咨询。",
+    ageRestricted: "项目咨询仅限年满19岁的用户。",
+    message: {
+      title: "【免费咨询申请】",
+      concern: "关注部位",
+      overall: "综合分数",
+      outOf: "/ 10",
+    },
+  },
+
   promo: {
     title: "想了解肌肤咨询吗?",
     body: "欢迎通过 blissglobals 合作医院预约免费咨询。",

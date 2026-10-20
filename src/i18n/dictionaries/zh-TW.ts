@@ -22,6 +22,18 @@ const zhTW: DeepPartial<Dictionary> = {
     footnote: "本服務僅提供一般資訊,並非醫學診斷。",
   },
 
+  consult: {
+    cta: "透過LINE免費諮詢",
+    note: "按下按鈕後，LINE諮詢視窗會自動填入您的分析結果，按下傳送即可開始諮詢。",
+    ageRestricted: "療程諮詢僅限年滿19歲的使用者。",
+    message: {
+      title: "【免費諮詢申請】",
+      concern: "在意的部位",
+      overall: "綜合分數",
+      outOf: "/ 10",
+    },
+  },
+
   promo: {
     title: "想了解肌膚諮詢嗎?",
     body: "歡迎透過 blissglobals 合作醫院預約免費諮詢。",
