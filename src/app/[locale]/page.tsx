@@ -135,15 +135,17 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       {/* 제휴 의원 */}
       <section className="motion-scroll flex flex-col gap-4">
         <SectionHeader title={c.home.clinicTitle} />
-        {c.clinics.map((clinic) => (
-          <div
-            key={clinic.name}
-            className="flex flex-col gap-1 rounded-2xl border border-dashed border-brand-border p-4"
-          >
-            <span className="text-[15px] font-semibold">{clinic.name}</span>
-            <span className="text-sm text-foreground/55">{clinic.note}</span>
-          </div>
-        ))}
+        <div className="grid grid-cols-2 gap-3">
+          {c.clinics.map((clinic) => (
+            <div
+              key={clinic.name}
+              className="flex flex-col gap-1 rounded-2xl border border-dashed border-brand-border p-4"
+            >
+              <span className="text-[15px] font-semibold">{clinic.name}</span>
+              <span className="text-xs text-foreground/55">{clinic.note}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* FAQ */}

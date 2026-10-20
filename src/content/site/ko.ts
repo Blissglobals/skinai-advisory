@@ -436,7 +436,12 @@ const ko: SiteContent = {
     },
   ],
 
-  clinics: [{ name: "제로랩의원", note: "위치·의료진·진료 정보 준비 중" }],
+  clinics: [
+    { name: "제로랩의원", note: "상세 정보 준비 중" },
+    { name: "디오레의원", note: "상세 정보 준비 중" },
+    { name: "베이드의원", note: "상세 정보 준비 중" },
+    { name: "스케쥴의원", note: "상세 정보 준비 중" },
+  ],
 
   faq: [
     {
