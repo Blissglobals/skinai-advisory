@@ -14,5 +14,5 @@ export default async function ScanPage({
   const dict = await getDictionary(locale);
 
   const { ui } = getSiteContent(locale);
-  return <ScanWizard dict={dict} locale={locale} brand={ui.brand} aiLabel={ui.aiPersonLabel} />;
+  return <ScanWizard dict={dict} locale={locale} brand={ui.brand} aiNotice={ui.aiPageNotice} />;
 }

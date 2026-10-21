@@ -1,18 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { AiLabel } from "@/components/site/ui";
 
 interface NeedChipProps {
   label: string;
   image: string;
-  aiLabel: string;
   selected: boolean;
   onClick: () => void;
 }
 
 // 개선 목표 선택 타일(사진 + 이름). 선택되면 테두리와 체크 표시가 붙습니다.
-export default function NeedChip({ label, image, aiLabel, selected, onClick }: NeedChipProps) {
+export default function NeedChip({ label, image, selected, onClick }: NeedChipProps) {
   return (
     <button
       type="button"
@@ -28,7 +26,6 @@ export default function NeedChip({ label, image, aiLabel, selected, onClick }: N
           selected ? "bg-brand-accent/45" : "bg-gradient-to-t from-black/55 to-transparent"
         }`}
       />
-      {!selected && <AiLabel text={aiLabel} className="top-2 right-2" />}
       <span className="absolute bottom-3 left-3 font-display text-lg font-semibold text-white">
         {label}
       </span>

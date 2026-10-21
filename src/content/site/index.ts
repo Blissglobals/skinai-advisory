@@ -78,6 +78,7 @@ export interface SiteContent {
     seeAll: string;
     adLabel: string;
     aiPersonLabel: string;
+    aiPageNotice: string;
     languageLabel: string;
     nav: { treatments: string; guide: string };
     consultMessage: { title: string; interest: string; topic: string; concern: string };

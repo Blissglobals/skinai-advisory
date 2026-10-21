@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import SiteShell from "@/components/SiteShell";
-import { AiLabel, SectionHeader } from "@/components/site/ui";
+import { SectionHeader } from "@/components/site/ui";
 import { lineConsultUrl } from "@/lib/line/consult";
 import { getSiteContent } from "@/content/site";
 import { siteImages } from "@/content/site/images";
@@ -121,7 +121,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                   className="motion-image object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                <AiLabel text={c.ui.aiPersonLabel} className="top-2.5 right-2.5" />
                 <div className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-4 text-white">
                   <span className={`font-display font-semibold ${featured ? "text-2xl" : "text-lg"}`}>
                     {concern.name}
@@ -132,6 +131,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             );
           })}
         </div>
+        <p className="text-xs text-foreground/45">{c.ui.aiPageNotice}</p>
       </section>
 
       {/* ── 인기 시술: 가로로 넘기는 카드 ── */}

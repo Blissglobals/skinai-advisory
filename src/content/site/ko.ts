@@ -17,6 +17,7 @@ const ko: SiteContent = {
     seeAll: "전체 보기",
     adLabel: "광고",
     aiPersonLabel: "AI 생성 가상인물",
+    aiPageNotice: "본 페이지에는 AI로 생성한 가상 인물 사진이 포함되어 있습니다.",
     languageLabel: "언어",
     nav: { treatments: "시술", guide: "가이드" },
     consultMessage: {

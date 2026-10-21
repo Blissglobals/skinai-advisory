@@ -36,12 +36,12 @@ export default function ScanWizard({
   dict,
   locale,
   brand,
-  aiLabel,
+  aiNotice,
 }: {
   dict: Dictionary;
   locale: string;
   brand: string;
-  aiLabel: string;
+  aiNotice: string;
 }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -332,12 +332,12 @@ export default function ScanWizard({
                   key={key}
                   label={dict.scan.needOptions[key]}
                   image={needImage[key]}
-                  aiLabel={aiLabel}
                   selected={selectedNeed === key}
                   onClick={() => setSelectedNeed(key)}
                 />
               ))}
             </div>
+            <p className="text-xs text-foreground/45">{aiNotice}</p>
           </div>
 
           <button

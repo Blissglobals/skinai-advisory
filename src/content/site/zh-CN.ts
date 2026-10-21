@@ -16,6 +16,7 @@ const zhCN: SiteContent = {
     seeAll: "查看全部",
     adLabel: "广告",
     aiPersonLabel: "AI生成虚拟人物",
+    aiPageNotice: "本页含有AI生成的虚拟人物照片。",
     languageLabel: "语言",
     nav: { treatments: "项目", guide: "指南" },
     consultMessage: {
