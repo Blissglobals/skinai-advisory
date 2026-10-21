@@ -100,12 +100,10 @@ export default function ScanWizard({
     setLoading(true);
     setErrorMsg(null);
     try {
-      const gains = step1Ref.current?.getWhiteBalanceGains();
       const result = await analysisEngine.scanFace(
         video,
         dict.analysisMessages,
         metricLabels,
-        gains,
         forceAccept
       );
       setFaceScan(result);
@@ -131,13 +129,11 @@ export default function ScanWizard({
     setLoading(true);
     setErrorMsg(null);
     try {
-      const gains = step3Ref.current?.getWhiteBalanceGains();
       const result = await analysisEngine.scanZone(
         video,
         selectedNeed,
         dict.analysisMessages,
         metricLabels,
-        gains,
         forceAccept
       );
       setDeepScan(result);

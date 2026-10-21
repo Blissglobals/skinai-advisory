@@ -12,7 +12,9 @@ export function useCameraStream(permissionErrorMessage: string) {
 
     navigator.mediaDevices
       .getUserMedia({
-        video: { facingMode: "user", width: 640, height: 480 },
+        // 분석 크롭이 얼굴 폭 기준이라 해상도가 높을수록 피부 디테일이 남습니다.
+        // ideal이라 지원하지 않는 기기는 가능한 최대치로 내려갑니다.
+        video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } },
       })
       .then((s) => {
         if (cancelled) {

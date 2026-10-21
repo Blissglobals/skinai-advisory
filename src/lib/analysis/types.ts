@@ -1,4 +1,3 @@
-import type { WhiteBalanceGains } from "@/lib/whiteBalance";
 import type { FitzpatrickType } from "./fitzpatrick";
 
 export type SkinMetricKey = "pore" | "wrinkle" | "pigment" | "elasticity";
@@ -55,7 +54,6 @@ export interface AnalysisEngine {
     source: HTMLVideoElement | HTMLCanvasElement,
     messages: AnalysisMessages,
     metricLabels: Record<SkinMetricKey, string>,
-    gains?: WhiteBalanceGains,
     forceAccept?: boolean
   ): Promise<FaceScanResult>;
   scanZone(
@@ -63,7 +61,6 @@ export interface AnalysisEngine {
     focusMetric: SkinMetricKey,
     messages: AnalysisMessages,
     metricLabels: Record<SkinMetricKey, string>,
-    gains?: WhiteBalanceGains,
     forceAccept?: boolean
   ): Promise<DeepScanResult>;
 }

@@ -52,24 +52,34 @@ export function classifyFitzpatrick(ita: number): FitzpatrickType {
   return "VI";
 }
 
-export function computeFitzpatrickFromImageData(
-  imageData: ImageData
-): FitzpatrickType {
-  const { data } = imageData;
-  let totalR = 0;
-  let totalG = 0;
-  let totalB = 0;
-  const pixelCount = data.length / 4;
-  for (let i = 0; i < data.length; i += 4) {
-    totalR += data[i];
-    totalG += data[i + 1];
-    totalB += data[i + 2];
+/** 여러 피부 크롭의 평균 색을 Lab으로. 화이트밸런스 보정 없이 카메라 원본 색을 씁니다. */
+export function meanLab(images: ImageData[]): { l: number; a: number; b: number } {
+  let r = 0;
+  let g = 0;
+  let bl = 0;
+  let n = 0;
+  for (const { data } of images) {
+    for (let i = 0; i < data.length; i += 4) {
+      r += data[i];
+      g += data[i + 1];
+      bl += data[i + 2];
+      n++;
+    }
   }
-  const lab = rgbToLab(
-    totalR / pixelCount,
-    totalG / pixelCount,
-    totalB / pixelCount
-  );
-  const ita = computeITA(lab.l, lab.b);
-  return classifyFitzpatrick(ita);
+  return rgbToLab(r / Math.max(n, 1), g / Math.max(n, 1), bl / Math.max(n, 1));
+}
+
+export function fitzpatrickFromLab(lab: { l: number; b: number }): FitzpatrickType {
+  return classifyFitzpatrick(computeITA(lab.l, lab.b));
+}
+
+// 언더톤: Lab 색상각(노란기 b* 대 붉은기 a*). 각이 크면 노란 쪽(웜), 작으면 붉은·핑크 쪽(쿨).
+// ponytail: 고정 경계값 — 실측 데이터로 다시 맞춰야 하는 보정 값입니다.
+export const UNDERTONE_HUE = { warmAbove: 58, coolBelow: 50 };
+
+export function undertoneFromLab(lab: { a: number; b: number }): "warm" | "cool" | "neutral" {
+  const hue = (Math.atan2(lab.b, lab.a) * 180) / Math.PI;
+  if (hue > UNDERTONE_HUE.warmAbove) return "warm";
+  if (hue < UNDERTONE_HUE.coolBelow) return "cool";
+  return "neutral";
 }

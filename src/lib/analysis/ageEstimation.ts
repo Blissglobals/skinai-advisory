@@ -37,7 +37,7 @@ function formatAgeRange(age: number, messages: AgeRangeMessages): string {
 }
 
 export async function estimateAge(
-  video: HTMLVideoElement,
+  video: HTMLVideoElement | HTMLCanvasElement,
   messages: AgeRangeMessages
 ): Promise<AgeEstimate | null> {
   const faceapi = await loadFaceApi();
