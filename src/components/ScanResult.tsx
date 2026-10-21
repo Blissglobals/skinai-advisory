@@ -4,7 +4,8 @@ import type { CSSProperties } from "react";
 import CountUp from "@/components/CountUp";
 import PromoBanner from "@/components/PromoBanner";
 import { lineConsultUrl } from "@/lib/line/consult";
-import type { DeepScanResult, SkinMetricKey } from "@/lib/analysis/types";
+import type { DeepScanResult, FaceScanResult, SkinMetricKey } from "@/lib/analysis/types";
+import { BASE_METRICS, PRECISION_METRICS } from "@/lib/analysis/resultScope";
 import { formatScoreOutOf10 } from "@/lib/format";
 import { estimateAgePercentile } from "@/lib/percentile";
 import { buildSolutionScenario } from "@/lib/solutionScenario";
@@ -13,6 +14,7 @@ import type { Dictionary } from "@/i18n/getDictionary";
 interface ScanResultProps {
   dict: Dictionary;
   deepScan: DeepScanResult;
+  faceScan?: FaceScanResult | null;
   lowConfidence: boolean;
   userAge: number | null;
   focusMetric?: SkinMetricKey | null;
@@ -46,6 +48,7 @@ function buildConsultUrl(
   lines.push(`${m.overall}: ${formatScoreOutOf10(deepScan.overallScore)} ${m.outOf}`);
   lines.push(
     deepScan.metrics
+      .filter((metric) => BASE_METRICS.includes(metric.key))
       .map((metric) => `${dict.metrics[metric.key].label} ${formatScoreOutOf10(metric.score)}`)
       .join(" · ")
   );
@@ -55,6 +58,7 @@ function buildConsultUrl(
 export default function ScanResult({
   dict,
   deepScan,
+  faceScan,
   lowConfidence,
   userAge,
   focusMetric,
@@ -66,8 +70,11 @@ export default function ScanResult({
     pigment: dict.metrics.pigment.label,
     elasticity: dict.metrics.elasticity.label,
   };
-  const sortedMetrics = [...deepScan.metrics].sort((a, b) => a.score - b.score);
-  const scenario = buildSolutionScenario(deepScan.metrics, dict.scenario, metricLabels);
+  // 1차 결과는 BASE_METRICS만 점수로 보여주고, PRECISION_METRICS는 잠금 타일로 보여줍니다.
+  const baseMetrics = deepScan.metrics.filter((m) => BASE_METRICS.includes(m.key));
+  const sortedMetrics = [...baseMetrics].sort((a, b) => a.score - b.score);
+  const scenario = buildSolutionScenario(baseMetrics, dict.scenario, metricLabels);
+  const s4 = dict.scan.step4;
   const worstKey = sortedMetrics.length > 1 ? sortedMetrics[0].key : null;
   const bestKey = sortedMetrics.length > 1 ? sortedMetrics[sortedMetrics.length - 1].key : null;
   const canConsult = userAge === null || userAge >= minAgeForConsult;
@@ -161,7 +168,7 @@ export default function ScanResult({
       )}
 
       <div className="grid grid-cols-2 gap-3">
-        {deepScan.metrics.map((m, i) => {
+        {baseMetrics.map((m, i) => {
           const tileDelay = TILE_DELAY + i * TILE_STAGGER;
           return (
             <div
@@ -182,6 +189,27 @@ export default function ScanResult({
             </div>
           );
         })}
+        {PRECISION_METRICS.map((key) => (
+          <div
+            key={key}
+            className={`motion-rise col-span-2 flex items-center gap-4 rounded-3xl border border-dashed p-4 ${
+              focusMetric === key ? "border-brand-accent bg-brand-secondary" : "border-brand-border"
+            }`}
+            style={delay(TILE_DELAY + baseMetrics.length * TILE_STAGGER)}
+          >
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-foreground/[.06] text-lg" aria-hidden>
+              🔒
+            </span>
+            <div>
+              <p className="text-sm font-semibold">
+                {metricLabels[key]} · {s4.lockedLabel}
+              </p>
+              <p className="mt-0.5 text-xs text-foreground/55">
+                {focusMetric === key ? s4.lockedFocus : s4.lockedHint}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
 
       {canConsult ? (
@@ -196,6 +224,49 @@ export default function ScanResult({
         </div>
       ) : (
         <p className="text-center text-xs text-foreground/40">{dict.consult.ageRestricted}</p>
+      )}
+
+      {faceScan && (
+        <section className="motion-scroll flex flex-col gap-3">
+          <div>
+            <p className="font-display text-lg font-semibold">{s4.funTitle}</p>
+            <p className="mt-0.5 text-xs text-foreground/50">{s4.funNote}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-3xl bg-brand-surface p-4 shadow-tinted">
+              <p className="text-xs text-foreground/55">{dict.scan.step2.ageRangeLabel}</p>
+              <p className="font-display mt-1 text-lg font-semibold">{faceScan.estimatedAgeRange}</p>
+            </div>
+            <div className="rounded-3xl bg-brand-surface p-4 shadow-tinted">
+              <p className="text-xs text-foreground/55">{dict.scan.step2.symmetryLabel}</p>
+              <p className="font-display mt-1 text-lg font-semibold">
+                {formatScoreOutOf10(faceScan.symmetryScore)}
+                <span className="ml-0.5 text-sm font-normal text-foreground/50">{dict.scan.step2.point}</span>
+              </p>
+            </div>
+            <div className="col-span-2 overflow-hidden rounded-3xl bg-brand-surface shadow-tinted">
+              <div className="flex h-3">
+                {dict.personalColor[faceScan.personalColorSeason].palette.map((color) => (
+                  <span key={color} className="flex-1" style={{ backgroundColor: color }} />
+                ))}
+              </div>
+              <div className="grid grid-cols-2 gap-4 p-4">
+                <div>
+                  <p className="text-xs text-foreground/55">{dict.scan.step2.personalColorLabel}</p>
+                  <p className="font-display mt-1 text-base font-semibold">
+                    {dict.personalColor[faceScan.personalColorSeason].label}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-foreground/55">{dict.scan.step2.toneLabel}</p>
+                  <p className="font-display mt-1 text-base font-semibold">
+                    {dict.fitzpatrick[faceScan.fitzpatrick].label} · {dict.undertone[faceScan.undertone].label}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       )}
 
       <div className="motion-scroll rounded-3xl bg-brand-secondary p-5">

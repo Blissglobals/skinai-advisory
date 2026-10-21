@@ -3,14 +3,12 @@
 import { useRef, useState } from "react";
 import ProgressBar from "@/components/ProgressBar";
 import NeedChip from "@/components/NeedChip";
-import PromoBanner from "@/components/PromoBanner";
 import ScanResult from "@/components/ScanResult";
 import { ScanHeader } from "@/components/site/ui";
 import { siteImages } from "@/content/site/images";
 import CameraCapture, { type CameraCaptureHandle } from "@/components/CameraCapture";
 import { analysisEngine } from "@/lib/analysis/mediapipeEngine";
 import type { DeepScanResult, FaceScanResult, SkinMetricKey } from "@/lib/analysis/types";
-import { formatScoreOutOf10 } from "@/lib/format";
 import { useCameraStream } from "@/hooks/useCameraStream";
 import type { Dictionary } from "@/i18n/getDictionary";
 
@@ -59,8 +57,7 @@ export default function ScanWizard({
     dict.cameraStream.permissionError
   );
 
-  const step1Ref = useRef<CameraCaptureHandle>(null);
-  const step3Ref = useRef<CameraCaptureHandle>(null);
+  const cameraRef = useRef<CameraCaptureHandle>(null);
 
   const metricLabels: Record<SkinMetricKey, string> = {
     pore: dict.metrics.pore.label,
@@ -89,55 +86,21 @@ export default function ScanWizard({
     }
   }
 
-  async function handleStep1Capture(forceAccept: boolean = false) {
+  async function handleCapture(forceAccept: boolean = false) {
     if (loading) return;
-    const video = step1Ref.current?.getVideoElement();
+    const video = cameraRef.current?.getVideoElement();
     if (!video) return;
-    if (!step1Ref.current?.isReady()) {
+    if (!cameraRef.current?.isReady()) {
       setErrorMsg(dict.scan.cameraPreparing);
       return;
     }
     setLoading(true);
     setErrorMsg(null);
     try {
-      const result = await analysisEngine.scanFace(
-        video,
-        dict.analysisMessages,
-        metricLabels,
-        forceAccept
-      );
-      setFaceScan(result);
-      setStep(2);
-      consecutiveFailuresRef.current = 0;
-      setFailureChoice(null);
-    } catch (e) {
-      const reason = e instanceof Error ? e.message : dict.scan.analysisError;
-      handleCaptureFailure(reason, forceAccept);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleStep3Capture(forceAccept: boolean = false) {
-    if (loading || !selectedNeed) return;
-    const video = step3Ref.current?.getVideoElement();
-    if (!video) return;
-    if (!step3Ref.current?.isReady()) {
-      setErrorMsg(dict.scan.cameraPreparing);
-      return;
-    }
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const result = await analysisEngine.scanZone(
-        video,
-        selectedNeed,
-        dict.analysisMessages,
-        metricLabels,
-        forceAccept
-      );
-      setDeepScan(result);
-      setStep(4);
+      const { face, deep } = await analysisEngine.scan(video, dict.analysisMessages, metricLabels, forceAccept);
+      setFaceScan(face);
+      setDeepScan(deep);
+      setStep(3);
       consecutiveFailuresRef.current = 0;
       setFailureChoice(null);
     } catch (e) {
@@ -156,11 +119,7 @@ export default function ScanWizard({
 
   function handleProceedAnyway() {
     setFailureChoice(null);
-    if (step === 1) {
-      handleStep1Capture(true);
-    } else if (step === 3) {
-      handleStep3Capture(true);
-    }
+    handleCapture(true);
   }
 
   const needOptionOrder: SkinMetricKey[] = ["elasticity", "pigment", "pore", "wrinkle"];
@@ -224,78 +183,22 @@ export default function ScanWizard({
       )}
 
       {step === 1 && (
-        <section className="flex min-h-0 flex-1 flex-col gap-4">
-          <div className="shrink-0">
-            <StepTitle badge={dict.scan.step1.badge} heading={dict.scan.step1.heading} />
-            <p className="mt-1 text-sm text-foreground/55">
-              {dict.scan.step1.hintPrefix}{" "}
-              <span className="font-semibold text-brand-accent">{dict.scan.step1.hintAuto}</span>
-              {dict.scan.step1.hintSuffix}
-            </p>
-          </div>
-          <div className="min-h-0 flex-1">
-            <CameraCapture
-              key={cameraKey}
-              ref={step1Ref}
-              guideLabel={dict.scan.step1.guideLabel}
-              autoCapture
-              onAutoCapture={() => handleStep1Capture()}
-              stream={stream}
-              streamError={streamError}
-              dict={dict}
-              analyzing={loading}
-              analyzingLabel={dict.scan.step1.analyzing}
-            />
-          </div>
-        </section>
-      )}
-
-      {step === 2 && faceScan && (
         <section className="flex flex-col gap-6">
-          <StepTitle badge={dict.scan.step2.badge} heading={dict.scan.step2.heading} />
+          <StepTitle badge={dict.scan.goal.badge} heading={dict.scan.goal.heading} />
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="motion-rise rounded-3xl bg-brand-surface p-4 shadow-tinted" style={{ "--d": "80ms" } as React.CSSProperties}>
-              <p className="text-xs text-foreground/55">{dict.scan.step2.toneLabel}</p>
-              <p className="font-display mt-1 text-xl font-semibold">{dict.fitzpatrick[faceScan.fitzpatrick].label}</p>
+          <div className="flex flex-col gap-3">
+            <div className="grid grid-cols-2 gap-3">
+              {needOptionOrder.map((key) => (
+                <NeedChip
+                  key={key}
+                  label={dict.scan.needOptions[key]}
+                  image={needImage[key]}
+                  selected={selectedNeed === key}
+                  onClick={() => setSelectedNeed(key)}
+                />
+              ))}
             </div>
-            <div className="motion-rise rounded-3xl bg-brand-surface p-4 shadow-tinted" style={{ "--d": "160ms" } as React.CSSProperties}>
-              <p className="text-xs text-foreground/55">{dict.scan.step2.symmetryLabel}</p>
-              <p className="font-display mt-1 text-xl font-semibold">
-                {formatScoreOutOf10(faceScan.symmetryScore)}
-                <span className="ml-0.5 text-sm font-normal text-foreground/50">{dict.scan.step2.point}</span>
-              </p>
-            </div>
-            <div className="motion-rise col-span-2 rounded-3xl bg-brand-surface p-4 shadow-tinted" style={{ "--d": "240ms" } as React.CSSProperties}>
-              <p className="text-xs text-foreground/55">{dict.scan.step2.ageRangeLabel}</p>
-              <p className="font-display mt-1 text-xl font-semibold">{faceScan.estimatedAgeRange}</p>
-              <p className="mt-2 text-xs text-foreground/45">
-                {dict.scan.step2.fitzScaleLabel} · {dict.fitzpatrick[faceScan.fitzpatrick].hint}{" "}
-                {dict.scan.step2.fitzScaleSuffix}
-              </p>
-            </div>
-            <div className="motion-rise col-span-2 overflow-hidden rounded-3xl bg-brand-surface shadow-tinted" style={{ "--d": "320ms" } as React.CSSProperties}>
-              <div className="flex h-3">
-                {dict.personalColor[faceScan.personalColorSeason].palette.map((color) => (
-                  <span key={color} className="flex-1" style={{ backgroundColor: color }} />
-                ))}
-              </div>
-              <div className="grid grid-cols-2 gap-4 p-4">
-                <div>
-                  <p className="text-xs text-foreground/55">{dict.scan.step2.personalColorLabel}</p>
-                  <p className="font-display mt-1 text-lg font-semibold">
-                    {dict.personalColor[faceScan.personalColorSeason].label}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-foreground/55">{dict.scan.step2.undertoneLabel}</p>
-                  <p className="font-display mt-1 text-lg font-semibold">{dict.undertone[faceScan.undertone].label}</p>
-                </div>
-                <p className="col-span-2 text-xs leading-relaxed text-foreground/50">
-                  {dict.personalColor[faceScan.personalColorSeason].hint} {dict.scan.step2.personalColorSuffix}
-                </p>
-              </div>
-            </div>
+            <p className="text-xs text-foreground/45">{aiNotice}</p>
           </div>
 
           <div className="flex items-center justify-between gap-4 rounded-3xl bg-brand-secondary px-5 py-4">
@@ -320,70 +223,50 @@ export default function ScanWizard({
             />
           </div>
 
-          <div className="flex flex-col gap-3">
-            <p className="font-display text-lg font-semibold">{dict.scan.step2.needPrompt}</p>
-            <div className="grid grid-cols-2 gap-3">
-              {needOptionOrder.map((key) => (
-                <NeedChip
-                  key={key}
-                  label={dict.scan.needOptions[key]}
-                  image={needImage[key]}
-                  selected={selectedNeed === key}
-                  onClick={() => setSelectedNeed(key)}
-                />
-              ))}
-            </div>
-            <p className="text-xs text-foreground/45">{aiNotice}</p>
-          </div>
-
           <button
             type="button"
-            onClick={() => setStep(3)}
+            onClick={() => setStep(2)}
             disabled={!selectedNeed || userAge === null}
             className="min-h-14 w-full rounded-2xl bg-brand-primary px-4 text-[15px] font-semibold text-brand-primary-fg shadow-tinted active:scale-[0.98] disabled:opacity-35 disabled:active:scale-100"
           >
-            {dict.scan.step2.next}
+            {dict.scan.goal.next}
           </button>
-
-          <PromoBanner title={dict.promo.title} body={dict.promo.body} cta={dict.promo.cta} />
         </section>
       )}
 
-      {step === 3 && selectedNeed && (
+      {step === 2 && (
         <section className="flex min-h-0 flex-1 flex-col gap-4">
           <div className="shrink-0">
-            <StepTitle badge={dict.scan.step3.badge} heading={dict.scan.step3.heading} />
+            <StepTitle badge={dict.scan.step1.badge} heading={dict.scan.step1.heading} />
             <p className="mt-1 text-sm text-foreground/55">
-              {dict.scan.step3.focusPrefix}{" "}
-              <span className="font-semibold text-foreground/80">{dict.scan.focusLabel[selectedNeed]}</span>
-              {dict.scan.step3.focusSuffix}{" "}
-              {dict.scan.step3.hintPrefix}{" "}
-              <span className="font-semibold text-brand-accent">{dict.scan.step3.hintAuto}</span>
-              {dict.scan.step3.hintSuffix}
+              {dict.scan.step1.hintPrefix}{" "}
+              <span className="font-semibold text-brand-accent">{dict.scan.step1.hintAuto}</span>
+              {dict.scan.step1.hintSuffix}
             </p>
           </div>
           <div className="min-h-0 flex-1">
             <CameraCapture
               key={cameraKey}
-              ref={step3Ref}
-              guideLabel={`${dict.scan.focusLabel[selectedNeed]}${dict.scan.step3.guideLabelSuffix}`}
+              ref={cameraRef}
+              guideLabel={dict.scan.step1.guideLabel}
               autoCapture
-              onAutoCapture={() => handleStep3Capture()}
+              onAutoCapture={() => handleCapture()}
               stream={stream}
               streamError={streamError}
               dict={dict}
               analyzing={loading}
-              analyzingLabel={dict.scan.step3.analyzing}
+              analyzingLabel={dict.scan.step1.analyzing}
             />
           </div>
         </section>
       )}
 
-      {step === 4 && deepScan && (
+      {step === 3 && faceScan && deepScan && (
         <ScanResult
           dict={dict}
           deepScan={deepScan}
-          lowConfidence={!!faceScan?.lowConfidence || deepScan.lowConfidence}
+          faceScan={faceScan}
+          lowConfidence={faceScan.lowConfidence || deepScan.lowConfidence}
           userAge={userAge}
           focusMetric={selectedNeed}
           minAgeForConsult={MIN_AGE_FOR_CONSULT}

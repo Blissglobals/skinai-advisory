@@ -80,8 +80,7 @@ export default function EngineCheck({ messages }: { messages: AnalysisMessages }
         const canvas = renderVariant(img, v);
         const row: Row = { face: face.split("/").pop()!, variant: v.name };
         try {
-          const faceScan = await analysisEngine.scanFace(canvas, messages, LABELS, true);
-          const deep = await analysisEngine.scanZone(canvas, "pore", messages, LABELS, true);
+          const { face: faceScan, deep } = await analysisEngine.scan(canvas, messages, LABELS, true);
           const by = Object.fromEntries(deep.metrics.map((m) => [m.key, m.score]));
           Object.assign(row, {
             pore: by.pore,

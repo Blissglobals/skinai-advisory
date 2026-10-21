@@ -49,18 +49,17 @@ export interface AnalysisMessages {
   ageRangeDecade: string;
 }
 
+export interface ScanOutcome {
+  face: FaceScanResult;
+  deep: DeepScanResult;
+}
+
 export interface AnalysisEngine {
-  scanFace(
+  /** 한 번의 촬영 프레임으로 얼굴 정보(재미 요소)와 피부 지표를 함께 계산합니다. */
+  scan(
     source: HTMLVideoElement | HTMLCanvasElement,
     messages: AnalysisMessages,
     metricLabels: Record<SkinMetricKey, string>,
     forceAccept?: boolean
-  ): Promise<FaceScanResult>;
-  scanZone(
-    source: HTMLVideoElement | HTMLCanvasElement,
-    focusMetric: SkinMetricKey,
-    messages: AnalysisMessages,
-    metricLabels: Record<SkinMetricKey, string>,
-    forceAccept?: boolean
-  ): Promise<DeepScanResult>;
+  ): Promise<ScanOutcome>;
 }

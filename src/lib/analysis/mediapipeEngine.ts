@@ -3,7 +3,6 @@ import {
   getFaceLandmarker,
   detectLandmarksForVideoFrame,
   computeSymmetryScore,
-  computeElasticityScore,
   cropSquare,
   faceWidthPx,
   zoneCenters,
@@ -21,11 +20,11 @@ import {
   HARD_CAST_DEVIATION,
   type FrameLightAnalysis,
 } from "@/lib/whiteBalance";
+import { BASE_METRICS } from "./resultScope";
 import type {
   AnalysisEngine,
   AnalysisMessages,
-  DeepScanResult,
-  FaceScanResult,
+  ScanOutcome,
   PersonalColorSeason,
   SkinMetricKey,
   SkinMetricScore,
@@ -128,20 +127,20 @@ function estimateAgeRangeFallback(compositeScore: number, messages: AnalysisMess
  * "가까이 찍을수록 쿨톤·밝은 피부"로 쏠리는 문제가 있었습니다.
  */
 export class MediaPipeAnalysisEngine implements AnalysisEngine {
-  async scanFace(
+  async scan(
     source: Source,
     messages: AnalysisMessages,
-    _metricLabels: Record<SkinMetricKey, string>,
+    metricLabels: Record<SkinMetricKey, string>,
     forceAccept: boolean = false
-  ): Promise<FaceScanResult> {
+  ): Promise<ScanOutcome> {
     const landmarker = await getFaceLandmarker();
 
     const symmetryScores: number[] = [];
     const lightness: number[] = [];
     const undertones: UndertoneKey[] = [];
     const fitzpatricks: FitzpatrickType[] = [];
-    const textureScores: number[] = [];
     const rawAnalyses: FrameLightAnalysis[] = [];
+    const samples: Partial<Record<SkinMetricKey, number[]>> = { pore: [], wrinkle: [], pigment: [] };
 
     for (let i = 0; i < SAMPLE_COUNT; i++) {
       const landmarks = detectLandmarksForVideoFrame(
@@ -151,91 +150,55 @@ export class MediaPipeAnalysisEngine implements AnalysisEngine {
         messages.cameraNotReady
       );
       if (landmarks) {
-        symmetryScores.push(computeSymmetryScore(landmarks));
-        const colorCrops = skinCrops(source, landmarks, "pigment");
         rawAnalyses.push(analyzeFrameLighting(lightingCrop(source, landmarks)));
-        const lab = meanLab(colorCrops);
+        symmetryScores.push(computeSymmetryScore(landmarks));
+
+        const pigmentCrops = skinCrops(source, landmarks, "pigment");
+        const lab = meanLab(pigmentCrops);
         lightness.push(lab.l);
         undertones.push(undertoneFromLab(lab));
         fitzpatricks.push(fitzpatrickFromLab(lab));
-        textureScores.push(average(skinCrops(source, landmarks, "pore").map(poreScore)));
+
+        samples.pigment!.push(average(pigmentCrops.map(pigmentScore)));
+        samples.pore!.push(average(skinCrops(source, landmarks, "pore").map(poreScore)));
+        samples.wrinkle!.push(average(skinCrops(source, landmarks, "wrinkle").map(wrinkleScore)));
       }
       if (i < SAMPLE_COUNT - 1) await sleep(SAMPLE_INTERVAL_MS);
     }
 
     const { lowConfidence } = assessCaptureQuality(symmetryScores.length, rawAnalyses, messages, forceAccept);
 
+    const metrics: SkinMetricScore[] = (Object.keys(samples) as SkinMetricKey[]).map((key) => ({
+      key,
+      label: metricLabels[key],
+      score: Math.round(trimmedMean(samples[key]!)),
+    }));
+    const base = metrics.filter((m) => BASE_METRICS.includes(m.key));
+    const overallScore = Math.round(base.reduce((sum, m) => sum + m.score, 0) / base.length);
+
     const symmetryScore = Math.round(trimmedMean(symmetryScores));
     const undertone = mostFrequent(undertones);
-    const compositeScore = Math.round((symmetryScore + trimmedMean(textureScores)) / 2);
-
     let estimatedAgeRange: string;
     try {
       const ageEstimate = await estimateAge(source, messages);
       estimatedAgeRange = ageEstimate
         ? ageEstimate.ageRangeLabel
-        : estimateAgeRangeFallback(compositeScore, messages);
+        : estimateAgeRangeFallback(overallScore, messages);
     } catch {
-      estimatedAgeRange = estimateAgeRangeFallback(compositeScore, messages);
+      estimatedAgeRange = estimateAgeRangeFallback(overallScore, messages);
     }
 
     return {
-      fitzpatrick: mostFrequent(fitzpatricks),
-      undertone,
-      personalColorSeason: classifyPersonalColorSeason(average(lightness), undertone),
-      symmetryScore,
-      estimatedAgeRange,
-      lowConfidence,
+      face: {
+        fitzpatrick: mostFrequent(fitzpatricks),
+        undertone,
+        personalColorSeason: classifyPersonalColorSeason(average(lightness), undertone),
+        symmetryScore,
+        estimatedAgeRange,
+        lowConfidence,
+      },
+      deep: { metrics, overallScore, lowConfidence },
     };
-  }
-
-  async scanZone(
-    source: Source,
-    _focusMetric: SkinMetricKey,
-    messages: AnalysisMessages,
-    metricLabels: Record<SkinMetricKey, string>,
-    forceAccept: boolean = false
-  ): Promise<DeepScanResult> {
-    const landmarker = await getFaceLandmarker();
-    const scoreSamples: Record<SkinMetricKey, number[]> = {
-      pore: [],
-      wrinkle: [],
-      pigment: [],
-      elasticity: [],
-    };
-    const rawAnalyses: FrameLightAnalysis[] = [];
-    let sampledCount = 0;
-
-    for (let i = 0; i < SAMPLE_COUNT; i++) {
-      const landmarks = detectLandmarksForVideoFrame(
-        landmarker,
-        source,
-        performance.now(),
-        messages.cameraNotReady
-      );
-      if (landmarks) {
-        sampledCount++;
-        const pigmentCrops = skinCrops(source, landmarks, "pigment");
-        rawAnalyses.push(analyzeFrameLighting(lightingCrop(source, landmarks)));
-        scoreSamples.pore.push(average(skinCrops(source, landmarks, "pore").map(poreScore)));
-        scoreSamples.wrinkle.push(average(skinCrops(source, landmarks, "wrinkle").map(wrinkleScore)));
-        scoreSamples.pigment.push(average(pigmentCrops.map(pigmentScore)));
-        scoreSamples.elasticity.push(computeElasticityScore(landmarks));
-      }
-      if (i < SAMPLE_COUNT - 1) await sleep(SAMPLE_INTERVAL_MS);
-    }
-
-    const { lowConfidence } = assessCaptureQuality(sampledCount, rawAnalyses, messages, forceAccept);
-
-    const metricKeys = Object.keys(scoreSamples) as SkinMetricKey[];
-    const metrics: SkinMetricScore[] = metricKeys.map((key) => ({
-      key,
-      label: metricLabels[key],
-      score: Math.round(trimmedMean(scoreSamples[key])),
-    }));
-    const overallScore = Math.round(metrics.reduce((sum, m) => sum + m.score, 0) / metrics.length);
-
-    return { metrics, overallScore, lowConfidence };
   }
 }
 

@@ -2,13 +2,24 @@
 
 import { useRef, useState } from "react";
 import ScanResult from "@/components/ScanResult";
-import type { DeepScanResult, SkinMetricKey } from "@/lib/analysis/types";
+import type { DeepScanResult, FaceScanResult, SkinMetricKey } from "@/lib/analysis/types";
+import { BASE_METRICS } from "@/lib/analysis/resultScope";
 import type { Dictionary } from "@/i18n/getDictionary";
 
-const SAMPLES: Record<string, { scores: Record<SkinMetricKey, number>; lowConfidence: boolean }> = {
-  보통: { scores: { pore: 62, wrinkle: 71, pigment: 54, elasticity: 78 }, lowConfidence: false },
-  높음: { scores: { pore: 88, wrinkle: 84, pigment: 91, elasticity: 86 }, lowConfidence: false },
-  낮음: { scores: { pore: 41, wrinkle: 38, pigment: 47, elasticity: 52 }, lowConfidence: true },
+type Scores = Partial<Record<SkinMetricKey, number>>;
+const SAMPLES: Record<string, { scores: Scores; lowConfidence: boolean }> = {
+  보통: { scores: { pore: 62, wrinkle: 71, pigment: 54 }, lowConfidence: false },
+  높음: { scores: { pore: 88, wrinkle: 84, pigment: 91 }, lowConfidence: false },
+  낮음: { scores: { pore: 41, wrinkle: 38, pigment: 47 }, lowConfidence: true },
+};
+
+const SAMPLE_FACE: FaceScanResult = {
+  fitzpatrick: "III",
+  undertone: "warm",
+  personalColorSeason: "spring_warm",
+  symmetryScore: 82,
+  estimatedAgeRange: "30대 초반 (32세)",
+  lowConfidence: false,
 };
 
 export default function ResultPreview({ dict }: { dict: Dictionary }) {
@@ -22,11 +33,12 @@ export default function ResultPreview({ dict }: { dict: Dictionary }) {
   const metrics = (Object.keys(sample.scores) as SkinMetricKey[]).map((key) => ({
     key,
     label: dict.metrics[key].label,
-    score: sample.scores[key],
+    score: sample.scores[key]!,
   }));
+  const base = metrics.filter((m) => BASE_METRICS.includes(m.key));
   const deepScan: DeepScanResult = {
     metrics,
-    overallScore: Math.round(metrics.reduce((sum, m) => sum + m.score, 0) / metrics.length),
+    overallScore: Math.round(base.reduce((sum, m) => sum + m.score, 0) / base.length),
     lowConfidence: sample.lowConfidence,
   };
 
@@ -74,6 +86,7 @@ export default function ResultPreview({ dict }: { dict: Dictionary }) {
         key={replayKey}
         dict={dict}
         deepScan={deepScan}
+        faceScan={SAMPLE_FACE}
         lowConfidence={deepScan.lowConfidence}
         userAge={age}
         focusMetric="pigment"
