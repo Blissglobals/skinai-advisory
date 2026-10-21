@@ -1,6 +1,8 @@
 import type { Locale } from "@/i18n/config";
 import { deepMerge, type DeepPartial } from "@/i18n/deepMerge";
 import ko from "./ko";
+import zhCN from "./zh-CN";
+import zhTW from "./zh-TW";
 
 // 홈페이지 콘텐츠는 한국어(ko.ts)가 원본입니다. 번역은 같은 모양의 파일을
 // 만들어 아래 translations에 넣으면 되고, 빠진 항목은 한국어로 보입니다.
@@ -143,7 +145,10 @@ export interface SiteContent {
   faq: { q: string; a: string }[];
 }
 
-const translations: Partial<Record<Locale, DeepPartial<SiteContent>>> = {};
+const translations: Partial<Record<Locale, DeepPartial<SiteContent>>> = {
+  "zh-TW": zhTW,
+  "zh-CN": zhCN,
+};
 
 export function getSiteContent(locale: Locale): SiteContent {
   return deepMerge<SiteContent>(ko, translations[locale]);
