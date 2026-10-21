@@ -71,6 +71,9 @@ export interface SiteContent {
     heading: string;
     subheading: string;
     chips: string[];
+    marquee: string[];
+    quote: string;
+    quoteBy: string;
     concernsTitle: string;
     treatmentsTitle: string;
     stepsTitle: string;

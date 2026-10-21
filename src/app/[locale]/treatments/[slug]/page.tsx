@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, locales } from "@/i18n/config";
 import SiteShell from "@/components/SiteShell";
-import { Chip, DraftBadge, SectionHeader } from "@/components/site/ui";
+import { Chip, DraftBadge, PhotoHero, SectionHeader } from "@/components/site/ui";
+import { siteImages } from "@/content/site/images";
 import { getSiteContent, readyTreatmentSlugs } from "@/content/site";
 
 export const dynamicParams = false;
@@ -31,9 +32,11 @@ export default async function TreatmentPage({
       locale={locale}
       consultLines={[c.ui.consultMessage.title, `${c.ui.consultMessage.interest}: ${t.name}`]}
     >
-      <section className="motion-rise flex flex-col gap-4 pt-2">
-        <DraftBadge>{c.ui.draftNotice}</DraftBadge>
-        <h1 className="text-[26px] font-bold tracking-tight">{t.name}</h1>
+      <PhotoHero
+        src={siteImages.concern[concerns[0]?.slug ?? ""] ?? siteImages.space}
+        eyebrow={<DraftBadge>{c.ui.draftNotice}</DraftBadge>}
+        title={t.name}
+      >
         <p className="text-[15px] leading-relaxed text-foreground/70">{t.summary}</p>
         {concerns.length > 0 && (
           <div className="flex flex-wrap items-center gap-2">
@@ -45,16 +48,16 @@ export default async function TreatmentPage({
             ))}
           </div>
         )}
-      </section>
+      </PhotoHero>
 
       {t.facts && (
         <section className="motion-scroll flex flex-col gap-4">
           <SectionHeader title={c.treatmentPage.facts} />
           <dl className="grid grid-cols-2 gap-3">
             {t.facts.map((f) => (
-              <div key={f.label} className="flex flex-col gap-1 rounded-2xl bg-foreground/[.03] p-4">
+              <div key={f.label} className="flex flex-col gap-1.5 rounded-3xl bg-brand-surface p-4 shadow-tinted">
                 <dt className="text-xs text-foreground/55">{f.label}</dt>
-                <dd className="text-[15px] font-semibold">{f.value}</dd>
+                <dd className="font-display text-[17px] font-semibold">{f.value}</dd>
               </div>
             ))}
           </dl>

@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, locales } from "@/i18n/config";
 import SiteShell from "@/components/SiteShell";
-import { DraftBadge, SectionHeader } from "@/components/site/ui";
+import { DraftBadge, PhotoHero, SectionHeader } from "@/components/site/ui";
+import { siteImages } from "@/content/site/images";
 import { getSiteContent, readyGuideSlugs } from "@/content/site";
 
 export const dynamicParams = false;
@@ -28,13 +29,15 @@ export default async function GuidePage({
       locale={locale}
       consultLines={[c.ui.consultMessage.title, `${c.ui.consultMessage.topic}: ${g.title}`]}
     >
-      <section className="motion-rise flex flex-col gap-3 pt-2">
-        <DraftBadge>{c.ui.draftNotice}</DraftBadge>
-        <h1 className="text-[26px] leading-tight font-bold tracking-tight">{g.title}</h1>
+      <PhotoHero
+        src={siteImages.guide[g.slug] ?? siteImages.space}
+        eyebrow={<DraftBadge>{c.ui.draftNotice}</DraftBadge>}
+        title={g.title}
+      >
         <p className="text-xs text-foreground/50">
           {c.guidePage.lastChecked}: {g.lastChecked} · {c.guidePage.sponsoredNote}
         </p>
-      </section>
+      </PhotoHero>
 
       {g.sections?.map((section) => (
         <section key={section.heading} className="motion-scroll flex flex-col gap-3">

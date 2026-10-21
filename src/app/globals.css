@@ -165,3 +165,154 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* ── 홈페이지 테마 (.site-theme) ───────────────────────────────
+   스캔 앱과 색·서체를 분리합니다. 크림 배경 + 잉크색 글자 + 딥그린 포인트
+   하나. 기존 brand-* 토큰을 이 범위 안에서만 덮어씁니다. */
+.site-theme {
+  --background: #f7f3ec;
+  --foreground: #23201c;
+  --brand-primary: #23201c;
+  --brand-primary-fg: #f7f3ec;
+  --brand-secondary: #ebe4d8;
+  --brand-secondary-fg: #3d352c;
+  --brand-accent: #1f4d43;
+  --brand-accent-fg: #f7f3ec;
+  --brand-surface: #fffdf9;
+  --brand-border: #e3dacc;
+  --shadow-tint: 35 32 28;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-noto-sans-kr), var(--font-geist-sans), system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .site-theme {
+    --background: #151412;
+    --foreground: #ede6db;
+    --brand-primary: #ede6db;
+    --brand-primary-fg: #151412;
+    --brand-secondary: #262420;
+    --brand-secondary-fg: #ddd3c4;
+    --brand-accent: #7fb7a6;
+    --brand-accent-fg: #0f1f1b;
+    --brand-surface: #1d1b18;
+    --brand-border: #34302a;
+    --shadow-tint: 0 0 0;
+  }
+}
+
+.site-theme h1,
+.site-theme h2,
+.site-theme h3 {
+  text-wrap: balance;
+}
+
+.site-theme p {
+  text-wrap: pretty;
+}
+
+.font-display {
+  font-family: var(--font-noto-serif-kr), "Noto Serif", Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+/* 배경색을 띤 그림자 — 검정 그림자 대신 따뜻한 톤 */
+.shadow-tinted {
+  box-shadow:
+    0 1px 2px rgb(var(--shadow-tint) / 0.06),
+    0 12px 32px -12px rgb(var(--shadow-tint) / 0.22);
+}
+
+/* 화면 전체에 아주 옅은 필름 그레인 */
+.site-theme::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.site-theme :focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+.site-theme a,
+.site-theme button {
+  transition:
+    transform 200ms var(--ease-out-expo),
+    background-color 200ms ease,
+    opacity 200ms ease;
+}
+
+/* 키워드가 끝없이 흘러가는 띠. 같은 목록을 두 번 넣고 절반만큼 이동합니다. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.motion-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+/* 첫 화면 사진이 천천히 확대되는 효과(켄 번즈) */
+@keyframes slow-zoom {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.motion-kenburns {
+  animation: slow-zoom 2.4s var(--ease-out-expo) both;
+}
+
+@keyframes image-reveal {
+  from {
+    clip-path: inset(14% 8% 14% 8% round 1.5rem);
+    transform: scale(1.08);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 1.5rem);
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-parallax {
+  to {
+    transform: translateY(18%) scale(1.06);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  /* 사진이 화면에 들어오며 가장자리가 열리듯 드러남 */
+  .motion-image {
+    animation: image-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+
+  /* 스크롤하면 첫 화면 사진이 글자보다 느리게 내려감 */
+  .motion-parallax {
+    animation: hero-parallax linear both;
+    animation-timeline: scroll();
+    animation-range: 0 80vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-marquee,
+  .motion-kenburns,
+  .motion-image,
+  .motion-parallax {
+    animation: none;
+  }
+}

@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, locales } from "@/i18n/config";
 import SiteShell from "@/components/SiteShell";
-import { ConcernIcon, DraftBadge, SectionHeader } from "@/components/site/ui";
+import { DraftBadge, PhotoHero, SectionHeader } from "@/components/site/ui";
+import { siteImages } from "@/content/site/images";
 import { concernSlugs, getSiteContent } from "@/content/site";
 
 export const dynamicParams = false;
@@ -28,14 +29,13 @@ export default async function ConcernPage({
       locale={locale}
       consultLines={[c.ui.consultMessage.title, `${c.ui.consultMessage.concern}: ${concern.name}`]}
     >
-      <section className="motion-rise flex flex-col gap-4 pt-2">
-        <DraftBadge>{c.ui.draftNotice}</DraftBadge>
-        <div className="flex items-center gap-3">
-          <ConcernIcon slug={concern.slug} />
-          <h1 className="text-[26px] font-bold tracking-tight">{concern.name}</h1>
-        </div>
+      <PhotoHero
+        src={siteImages.concern[concern.slug]}
+        eyebrow={<DraftBadge>{c.ui.draftNotice}</DraftBadge>}
+        title={concern.name}
+      >
         <p className="text-[15px] leading-relaxed text-foreground/70">{concern.intro}</p>
-      </section>
+      </PhotoHero>
 
       <section className="motion-scroll flex flex-col gap-4">
         <SectionHeader title={c.concernPage.causes} />
@@ -58,10 +58,10 @@ export default async function ConcernPage({
             <Link
               key={t.slug}
               href={`/${locale}/treatments/${t.slug}`}
-              className="flex items-center justify-between gap-3 rounded-2xl border border-brand-border bg-brand-surface p-4 transition-transform active:scale-[0.98]"
+              className="shadow-tinted flex items-center justify-between gap-3 rounded-3xl bg-brand-surface p-5 active:scale-[0.98]"
             >
               <span className="flex flex-col gap-1">
-                <span className="text-base font-semibold">{t.name}</span>
+                <span className="font-display text-lg font-semibold">{t.name}</span>
                 <span className="text-sm leading-relaxed text-foreground/60">{t.summary}</span>
               </span>
               <span className="text-foreground/30">›</span>
@@ -82,8 +82,8 @@ export default async function ConcernPage({
         </ul>
       </section>
 
-      <section className="motion-scroll flex flex-col gap-3 rounded-2xl bg-brand-secondary/70 p-5">
-        <p className="text-base font-semibold">{c.concernPage.scanTitle}</p>
+      <section className="motion-scroll flex flex-col gap-3 rounded-3xl bg-brand-secondary p-6">
+        <p className="font-display text-xl font-semibold">{c.concernPage.scanTitle}</p>
         <p className="text-sm text-foreground/65">{c.concernPage.scanBody}</p>
         <Link
           href={`/${locale}/analysis`}
