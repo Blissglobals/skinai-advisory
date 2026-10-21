@@ -1,4 +1,4 @@
-import type { SiteContent } from "./index";
+import { mapsUrl, type SiteContent } from "./index";
 
 // 원칙: 확인되지 않은 사실(가격, 횟수, 의원·업체 정보, 등록번호 등)은 지어내지
 // 않고 "상담 시 안내" / "확인 필요"로 남깁니다. 시술 설명은 일반적인 원리
@@ -28,10 +28,10 @@ const ko: SiteContent = {
   },
 
   home: {
-    eyebrow: "한국 피부과 시술 여행",
-    heading: "한국 피부과,\n상담부터 예약까지\n한 번에.",
+    eyebrow: "서울 피부 시술 여행",
+    heading: "서울 피부 클리닉,\n상담부터 예약까지\n한 번에.",
     subheading: "내 피부 고민에 맞는 시술을 알아보고, 무료 상담으로 일정과 비용을 미리 확인하세요.",
-    chips: ["무료 상담", "맞춤 의원 연결", "시술 여행 가이드"],
+    chips: ["무료 상담", "통역·예약 무료", "맞춤 의원 연결"],
     marquee: ["피코토닝", "스킨부스터", "초음파 리프팅", "고주파 리프팅", "프락셔널 레이저", "여드름 관리", "혈관 레이저"],
     quote: "상담은 가볍게,\n결정은 진료 후에.",
     quoteBy: "시술 여부는 의료진 진료 후 직접 결정하세요.",
@@ -47,7 +47,7 @@ const ko: SiteContent = {
 
   concernPage: {
     causes: "왜 생길까요?",
-    treatments: "한국 피부과에서는 이렇게 관리해요",
+    treatments: "서울 피부 클리닉에서는 이렇게 관리해요",
     homeCare: "평소에 이렇게 관리해요",
     scanTitle: "내 피부 상태가 궁금하다면",
     scanBody: "사진 한 장으로 피부 상태를 가볍게 확인해보세요. 사진은 기기 안에서만 분석돼요.",
@@ -55,7 +55,7 @@ const ko: SiteContent = {
 
   treatmentPage: {
     indexTitle: "시술 안내",
-    indexIntro: "한국 피부과에서 많이 받는 시술을 고민별로 정리했어요.",
+    indexIntro: "서울 피부 클리닉에서 많이 받는 시술을 고민별로 정리했어요.",
     relatedConcerns: "이런 고민에",
     forWhom: "이런 분께 맞아요",
     facts: "한눈에 보기",
@@ -438,7 +438,7 @@ const ko: SiteContent = {
           heading: "어디서 사나요?",
           items: [
             "드럭스토어(H&B 스토어) — 종류가 가장 많아요",
-            "약국 — 피부과 시술 후 관리용 제품",
+            "약국 — 피부 시술 후 관리용 제품",
             "면세점 — 출국 전에 들르기 좋아요",
           ],
         },
@@ -454,9 +454,9 @@ const ko: SiteContent = {
     {
       slug: "food",
       ready: true,
-      lastChecked: "2026-10-21",
+      lastChecked: "2026-10-22",
       title: "시술 후 식사 가이드",
-      summary: "시술 후에도 부담 없는 메뉴",
+      summary: "시술 후에도 부담 없는 메뉴와 지역별 식당",
       sections: [
         {
           heading: "시술 직후에는 이렇게",
@@ -468,12 +468,50 @@ const ko: SiteContent = {
           ],
         },
         {
-          heading: "부담 없는 한식 메뉴",
-          items: ["죽", "비빔밥", "맑은 국물 요리", "생선구이 정식", "두부 요리 (맵지 않게)"],
+          heading: "홍대",
+          body: "제로랩의원 근처",
+          spots: [
+            { name: "옥동식 서교점", note: "돼지곰탕 · 맑은 국물이라 시술 후에도 부담 없어요 · 좌석이 적어 대기가 있을 수 있어요", sponsored: false, mapUrl: mapsUrl("옥동식 서교점 서울 마포구 양화로7길 44-10") },
+            { name: "합정옥", note: "곰탕 · 담백한 국물", sponsored: false, mapUrl: mapsUrl("합정옥 서울 마포구 양화로1길 21") },
+            { name: "서교난면방", note: "우리밀 국수", sponsored: false, mapUrl: mapsUrl("서교난면방 서울 마포구 동교로12길 16") },
+            { name: "백년토종삼계탕 본점", note: "삼계탕", sponsored: false, mapUrl: mapsUrl("백년토종삼계탕 본점 서울 마포구 양화로 118") },
+            { name: "진진", note: "중식 · 매운 메뉴는 시술 직후 피하세요 · 예약 가능", sponsored: false, mapUrl: mapsUrl("진진 서울 마포구 월드컵북로1길 60") },
+          ],
         },
         {
-          heading: "의원 근처 맛집",
-          body: "실제 식당 정보는 확인 후 추가할 예정이에요.",
+          heading: "강남·신사",
+          body: "디오레·베이드·스케줄의원 근처",
+          spots: [
+            { name: "3대 삼계장인", note: "삼계탕 · 대기가 있을 수 있어요", sponsored: false, mapUrl: mapsUrl("3대 삼계장인 서울 서초구 반포대로28길 56-3") },
+            { name: "진미평양냉면 본관", note: "평양냉면·만두", sponsored: false, mapUrl: mapsUrl("진미평양냉면 본관 서울 강남구 학동로 307") },
+            { name: "유정식당", note: "쌈밥 정식 · 제육·김치는 매운 편 · 2인 이상", sponsored: false, mapUrl: mapsUrl("유정식당 서울 강남구 도산대로28길 14") },
+          ],
+        },
+        {
+          heading: "명동",
+          body: "관광 동선",
+          spots: [
+            { name: "하동관", note: "곰탕 · 오후 일찍 닫고 일요일 휴무", sponsored: false, mapUrl: mapsUrl("하동관 서울 중구 명동9길 12") },
+            { name: "신선설농탕 명동점", note: "설렁탕", sponsored: false, mapUrl: mapsUrl("신선설농탕 명동점 서울 중구 명동길 56") },
+            { name: "영양센타 본점", note: "삼계탕·전기구이 통닭", sponsored: false, mapUrl: mapsUrl("영양센타 본점 서울 중구 명동2길 52") },
+            { name: "능라도 명동점", note: "평양냉면·온반", sponsored: false, mapUrl: mapsUrl("능라도 명동점 서울 중구 명동길 53") },
+            { name: "명동교자", note: "칼국수 · 김치 마늘이 강한 편 · 대기 줄이 길어요", sponsored: false, mapUrl: mapsUrl("명동교자 서울 중구 명동10길 29") },
+            { name: "우래옥 본점", note: "평양냉면 · 을지로 쪽", sponsored: false, mapUrl: mapsUrl("우래옥 본점 서울 중구 창경궁로 62-29") },
+          ],
+        },
+        {
+          heading: "성수",
+          body: "관광 동선",
+          spots: [
+            { name: "능동미나리 성수점", note: "곰탕", sponsored: false, mapUrl: mapsUrl("능동미나리 성수점 서울 성동구 연무장길 42") },
+            { name: "조조칼국수 성수점", note: "조개칼국수", sponsored: false, mapUrl: mapsUrl("조조칼국수 성수점 서울 성동구 성수일로8길 55") },
+            { name: "성수다락", note: "오므라이스", sponsored: false, mapUrl: mapsUrl("성수다락 서울 성동구 뚝섬로9길 20") },
+            { name: "꿉당 성수점", note: "돼지고기 구이 · 시술 직후에는 기름진 구이를 피하는 게 좋아요", sponsored: false, mapUrl: mapsUrl("꿉당 성수점 서울 성동구 성수이로20길 10") },
+          ],
+        },
+        {
+          heading: "알아두세요",
+          body: "유명한 곳은 대기가 길 수 있고, 영업시간·휴무는 자주 바뀌어요. 방문 전에 지도에서 확인해주세요. 제휴·협찬 관계가 없는 정보예요.",
         },
       ],
     },
@@ -508,12 +546,69 @@ const ko: SiteContent = {
     },
   ],
 
+  // 출처: 각 의원 공식 홈페이지·카카오맵(2026-10-22 조사). 진료시간은 출처마다
+  // 달라서 싣지 않고 공식 홈페이지로 안내합니다. 시술 목록도 의원 광고 영역이라 싣지 않습니다.
   clinics: [
-    { name: "제로랩의원", note: "상세 정보 준비 중" },
-    { name: "디오레의원", note: "상세 정보 준비 중" },
-    { name: "베이드의원", note: "상세 정보 준비 중" },
-    { name: "스케쥴의원", note: "상세 정보 준비 중" },
+    {
+      slug: "zerolab",
+      name: "제로랩의원",
+      formerName: "샤인빔의원 홍대",
+      area: "홍대",
+      address: "서울 마포구 양화로 151 욱도빌딩 5~7층",
+      station: "홍대입구역 1번 출구",
+      phone: "1544-5598",
+      homepage: "http://zerolabclinic.com",
+      languages: "중국어(간체·번체)·영어·일본어·태국어 안내 페이지",
+      links: [{ label: "Instagram", url: "https://www.instagram.com/zerolabclinic_global/" }],
+    },
+    {
+      slug: "diore",
+      name: "디오레의원",
+      area: "강남역·신논현",
+      address: "서울 강남구 강남대로 428 만이빌딩 9층",
+      station: "신논현역 6번 출구 · 강남역 11번 출구 도보 5분",
+      phone: "02-553-5533",
+      homepage: "https://dioreclinic.com/ko",
+      languages: "영어·일본어·중국어·태국어 홈페이지",
+      links: [{ label: "Instagram", url: "https://www.instagram.com/diore_clinic_eng/" }],
+    },
+    {
+      slug: "baid",
+      name: "베이드의원",
+      area: "압구정·신사",
+      address: "서울 강남구 논현로 839 서원식스 4층",
+      station: "압구정역 4번 출구 도보 2분",
+      phone: "02-511-1985",
+      homepage: "https://www.baidclinic.com",
+      languages: "외국어 응대 범위는 상담 시 안내",
+      links: [{ label: "Instagram", url: "https://www.instagram.com/baidclinic_kor/" }],
+    },
+    {
+      slug: "schedule",
+      name: "스케줄의원",
+      area: "압구정로데오·도산공원",
+      address: "서울 강남구 도산대로49길 11 IVY빌딩 3층",
+      station: "압구정로데오역 5번 출구",
+      phone: "02-511-7773",
+      homepage: "http://scheduleclinic.kr",
+      languages: "외국어 응대 범위는 상담 시 안내",
+      links: [{ label: "Instagram", url: "https://www.instagram.com/schedule_clinic/" }],
+    },
   ],
+
+  clinicPage: {
+    title: "제휴 의원",
+    intro: "고민과 일정에 맞는 의원을 상담에서 안내해드려요. 진료시간과 시술 정보는 각 의원 홈페이지에서 확인할 수 있어요.",
+    address: "주소",
+    station: "가까운 역",
+    phone: "전화",
+    languages: "외국어 안내",
+    homepage: "의원 홈페이지",
+    map: "지도에서 보기",
+    formerName: "구",
+    detailNote: "진료시간·시술 정보는 의원 홈페이지 기준이며 바뀔 수 있어요. 방문 전 상담에서 다시 확인해드려요.",
+    consultInterest: "희망 의원",
+  },
 
   faq: [
     {
@@ -526,7 +621,11 @@ const ko: SiteContent = {
     },
     {
       q: "한국어를 못해도 괜찮나요?",
-      a: "외국어로 상담할 수 있어요. 진료 통역 지원 범위는 상담 때 안내해드려요. (지원 언어·범위 확인 필요)",
+      a: "괜찮아요. 진료 통역과 예약 대행은 무료로 도와드려요.",
+    },
+    {
+      q: "무료 통역·예약 대행은 누구나 받을 수 있나요?",
+      a: "한국 건강보험에 가입하지 않았고 한국 외국인등록이 없는 단기 방문객이 대상이에요. 상담 때 간단히 확인해드려요.",
     },
     {
       q: "결제는 어떻게 하나요?",

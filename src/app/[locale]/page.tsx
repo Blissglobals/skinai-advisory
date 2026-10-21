@@ -254,12 +254,17 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
       {/* ── 제휴 의원 ── */}
       <section className="flex flex-col gap-5">
-        <SectionHeader title={c.home.clinicTitle} />
+        <SectionHeader title={c.home.clinicTitle} href={`/${locale}/clinics`} linkLabel={c.ui.seeAll} />
         <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-brand-border bg-brand-border">
           {c.clinics.map((clinic) => (
-            <li key={clinic.name} className="flex flex-col gap-1 bg-brand-surface p-5">
-              <span className="font-display text-lg font-semibold">{clinic.name}</span>
-              <span className="text-xs text-foreground/50">{clinic.note}</span>
+            <li key={clinic.slug} className="bg-brand-surface">
+              <Link
+                href={`/${locale}/clinics/${clinic.slug}`}
+                className="flex h-full flex-col gap-1 p-5 active:bg-foreground/[.03]"
+              >
+                <span className="font-display text-lg font-semibold">{clinic.name}</span>
+                <span className="text-xs text-foreground/50">{clinic.area}</span>
+              </Link>
             </li>
           ))}
         </ul>

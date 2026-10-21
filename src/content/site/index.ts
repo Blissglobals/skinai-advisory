@@ -14,6 +14,19 @@ export interface Spot {
   mapUrl?: string;
 }
 
+export interface Clinic {
+  slug: string;
+  name: string;
+  formerName?: string;
+  area: string;
+  address: string;
+  station: string;
+  phone: string;
+  homepage: string;
+  languages: string;
+  links: { label: string; url: string }[];
+}
+
 export interface Concern {
   slug: string;
   name: string;
@@ -113,7 +126,20 @@ export interface SiteContent {
   treatments: Treatment[];
   steps: { title: string; body: string }[];
   guides: Guide[];
-  clinics: { name: string; note: string }[];
+  clinics: Clinic[];
+  clinicPage: {
+    title: string;
+    intro: string;
+    address: string;
+    station: string;
+    phone: string;
+    languages: string;
+    homepage: string;
+    map: string;
+    formerName: string;
+    detailNote: string;
+    consultInterest: string;
+  };
   faq: { q: string; a: string }[];
 }
 
@@ -127,3 +153,9 @@ export function getSiteContent(locale: Locale): SiteContent {
 export const readyTreatmentSlugs = ko.treatments.filter((t) => t.ready).map((t) => t.slug);
 export const readyGuideSlugs = ko.guides.filter((g) => g.ready).map((g) => g.slug);
 export const concernSlugs = ko.concerns.map((c) => c.slug);
+export const clinicSlugs = ko.clinics.map((c) => c.slug);
+
+// 구글 지도 검색 링크(대만 관광객은 주로 구글 지도를 씁니다).
+export function mapsUrl(query: string): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
