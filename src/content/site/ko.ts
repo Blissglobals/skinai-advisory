@@ -385,18 +385,10 @@ const ko: SiteContent = {
     {
       slug: "pharmacies",
       ready: true,
-      lastChecked: "2026-10-21",
-      title: "의원 근처 약국 & 회복 키트",
-      summary: "시술 후 챙길 것과 살 수 있는 곳",
+      lastChecked: "2026-10-22",
+      title: "약국 & 코스메틱 스토어",
+      summary: "시술 후 챙길 것과 의원 근처에서 살 수 있는 곳",
       sections: [
-        {
-          heading: "제휴 의원 근처 약국",
-          body: "실제 약국 정보는 확인 후 추가할 예정이에요.",
-          spots: [
-            { name: "예시 약국 A", note: "의원에서 도보 거리 · 외국어 안내 여부 확인 필요", sponsored: false },
-            { name: "예시 약국 B", note: "영업시간·위치 확인 필요", sponsored: false },
-          ],
-        },
         {
           heading: "시술 후 회복 키트",
           body: "새 제품은 의료진이 괜찮다고 한 뒤에 쓰는 게 안전해요.",
@@ -408,12 +400,53 @@ const ko: SiteContent = {
           ],
         },
         {
+          heading: "홍대",
+          body: "제로랩의원 근처",
+          spots: [
+            { name: "홍익약국", note: "약국 · 중국어 상담 가능 · 여권 제시 시 즉시 환급", sponsored: false, mapUrl: mapsUrl("홍익약국 서울 마포구 양화로18길 7") },
+            { name: "레디영약국 홍대", note: "약국 · 택스리펀 가능", sponsored: false, mapUrl: mapsUrl("레디영약국 홍대 서울 마포구 홍익로6길 8") },
+            { name: "올리브영 홍대타운", note: "코스메틱 스토어 · 대형 매장", sponsored: false, mapUrl: mapsUrl("올리브영 홍대타운 서울 마포구 홍익로6길 57") },
+          ],
+        },
+        {
+          heading: "강남역",
+          body: "디오레의원 근처",
+          spots: [
+            { name: "옵티마웰니스뮤지엄약국 강남", note: "약국 · 도보 약 7분 · 중국어·영어·일본어 상담 · 즉시 환급", sponsored: false, mapUrl: mapsUrl("옵티마웰니스뮤지엄약국 강남 서울 강남구 강남대로102길 42") },
+            { name: "강남 레디영약국", note: "약국 · 도보 약 6분 · 중국어·영어·일본어 상담 · 택스프리", sponsored: false, mapUrl: mapsUrl("강남 레디영약국 서울 서초구 서초대로77길 5") },
+            { name: "강남드림약국", note: "약국 · 도보 약 3분 · 택스리펀 가맹점", sponsored: false, mapUrl: mapsUrl("강남드림약국 서울 서초구 강남대로 435") },
+            { name: "올리브영 센트럴 강남 타운", note: "코스메틱 스토어 · 도보 약 5분 · 외국어 응대 직원", sponsored: false, mapUrl: mapsUrl("올리브영 센트럴 강남 타운 서울 서초구 강남대로 403") },
+          ],
+        },
+        {
+          heading: "압구정·신사",
+          body: "베이드·스케줄의원 근처 · 외국인 전문 약국은 많지 않은 지역이에요",
+          spots: [
+            { name: "압구정퀸약국", note: "약국 · 베이드의원에서 도보 약 3분 · 택스리펀 가맹점", sponsored: false, mapUrl: mapsUrl("압구정퀸약국 서울 강남구 논현로 853") },
+            { name: "올리브영 압구정", note: "코스메틱 스토어 · 베이드의원에서 도보 약 2분", sponsored: false, mapUrl: mapsUrl("올리브영 압구정 서울 강남구 논현로 842") },
+            { name: "올리브영 압구정로데오역점", note: "코스메틱 스토어 · 스케줄의원에서 도보 약 7분", sponsored: false, mapUrl: mapsUrl("올리브영 압구정로데오역점 서울 강남구 선릉로 817") },
+          ],
+        },
+        {
+          heading: "명동",
+          body: "관광 동선 · 외국인 대상 약국이 모여 있는 곳",
+          spots: [
+            { name: "명동레디영약국", note: "약국 · 중국어·영어·일본어 직원 · 택스리펀 가능", sponsored: false, mapUrl: mapsUrl("명동레디영약국 서울 중구 명동8나길 7") },
+            { name: "명동타운 레디영약국", note: "약국 · 중국어·영어·일본어 상담 · 위챗페이·알리페이", sponsored: false, mapUrl: mapsUrl("명동타운 레디영약국 서울 중구 명동8가길 31") },
+            { name: "올리브영 명동타운", note: "코스메틱 스토어 · 대형 매장", sponsored: false, mapUrl: mapsUrl("올리브영 명동타운 서울 중구 명동길 53") },
+          ],
+        },
+        {
           heading: "약국에서 이렇게 보여주세요",
           items: [
             "자외선 차단제 있나요?",
             "피부 시술 후에 쓸 순한 보습제 추천해 주세요.",
             "이거 하루에 몇 번 바르나요?",
           ],
+        },
+        {
+          heading: "알아두세요",
+          body: "환급 방식(즉시·사후)과 영업시간은 매장 사정에 따라 바뀔 수 있어요. 방문 전에 지도에서 확인하고, 환급은 여권을 꼭 챙겨주세요. 제휴·협찬 관계가 없는 정보예요.",
         },
       ],
     },
