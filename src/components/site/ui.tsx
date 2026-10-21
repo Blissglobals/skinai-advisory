@@ -92,3 +92,22 @@ export function PhotoHero({
     </section>
   );
 }
+
+// 피부 분석 화면 상단: 브랜드(홈으로) + 닫기. 스캔 흐름은 앱처럼 꽉 찬 화면이라
+// 홈페이지 머리말 대신 이 얇은 줄만 둡니다.
+export function ScanHeader({ homeHref, brand }: { homeHref: string; brand: string }) {
+  return (
+    <div className="flex shrink-0 items-center justify-between">
+      <Link href={homeHref} className="font-display text-[17px] font-semibold">
+        {brand}
+      </Link>
+      <Link
+        href={homeHref}
+        aria-label="close"
+        className="flex size-9 items-center justify-center rounded-full text-xl text-foreground/50 hover:bg-foreground/[.05]"
+      >
+        ×
+      </Link>
+    </div>
+  );
+}

@@ -20,6 +20,7 @@ const zhTW: DeepPartial<Dictionary> = {
     ],
     cta: "免費開始掃描",
     footnote: "本服務僅提供一般資訊,並非醫學診斷。",
+    privacyNote: "照片只在這台裝置上分析，不會被儲存到任何地方。",
   },
 
   consult: {

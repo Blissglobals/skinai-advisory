@@ -74,16 +74,16 @@ export default function ScanResult({
   const consultUrl = buildConsultUrl(dict, deepScan, focusMetric);
 
   return (
-    <section className="flex flex-col gap-5">
+    <section className="flex flex-col gap-6">
       <div className="motion-rise" style={delay(0)}>
-        <p className="inline-block rounded-md bg-brand-secondary px-2 py-1 text-xs font-medium text-brand-secondary-fg">
+        <p className="text-xs font-medium tracking-wide text-brand-accent">
           {dict.scan.step4.badge}
         </p>
         <p className="mt-1 text-xs text-foreground/50">{dict.scan.step4.previewNotice}</p>
       </div>
 
       <div className="motion-rise flex flex-col items-center gap-2 py-2" style={delay(RING_DELAY)}>
-        <div className="relative size-40">
+        <div className="relative size-48">
           <svg viewBox="0 0 120 120" className="size-full -rotate-90" aria-hidden>
             <circle
               cx="60"
@@ -112,7 +112,7 @@ export default function ScanResult({
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-semibold tracking-tight">
+            <span className="font-display text-5xl font-semibold">
               <CountUp
                 value={deepScan.overallScore}
                 format={formatScoreOutOf10}
@@ -123,7 +123,7 @@ export default function ScanResult({
             <span className="text-xs text-foreground/50">{dict.scan.step4.outOf10}</span>
           </div>
         </div>
-        <h1 className="text-base font-medium">
+        <h1 className="font-display text-xl font-semibold">
           {dict.scan.step4.headingPrefix}
           {formatScoreOutOf10(deepScan.overallScore)}
           {dict.scan.step4.headingSuffix}
@@ -132,7 +132,7 @@ export default function ScanResult({
 
       {lowConfidence && (
         <p
-          className="motion-rise rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800"
+          className="motion-rise rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200"
           style={delay(RING_DELAY + 100)}
         >
           {dict.scan.step4.lowConfidence}
@@ -141,10 +141,10 @@ export default function ScanResult({
 
       {userAge !== null && (
         <div
-          className="motion-rise rounded-xl border border-brand-border bg-brand-surface p-3"
+          className="motion-rise rounded-3xl bg-brand-secondary p-5"
           style={delay(RING_DELAY + 200)}
         >
-          <p className="text-sm font-medium">
+          <p className="font-display text-lg font-semibold">
             {userAge}
             {dict.scan.step4.percentilePrefix}
             <CountUp
@@ -166,11 +166,11 @@ export default function ScanResult({
           return (
             <div
               key={m.key}
-              className="motion-rise rounded-xl bg-black/[.03] p-3 dark:bg-white/[.06]"
+              className="motion-rise rounded-3xl bg-brand-surface p-4 shadow-tinted"
               style={delay(tileDelay)}
             >
-              <p className="text-xs text-foreground/60">{m.label}</p>
-              <p className="mt-1 text-xl font-medium">
+              <p className="text-xs text-foreground/55">{m.label}</p>
+              <p className="font-display mt-1 text-2xl font-semibold">
                 <CountUp value={m.score} format={formatScoreOutOf10} delayMs={tileDelay} />
               </p>
               <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-brand-border">
@@ -188,7 +188,7 @@ export default function ScanResult({
         <div className="motion-scroll flex flex-col gap-2">
           <a
             href={consultUrl}
-            className="flex min-h-12 w-full items-center justify-center rounded-lg bg-brand-primary px-4 py-3 text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98]"
+            className="shadow-tinted flex min-h-14 w-full items-center justify-center rounded-2xl bg-brand-accent px-4 text-[15px] font-semibold text-brand-accent-fg active:scale-[0.98]"
           >
             {dict.consult.cta}
           </a>
@@ -198,18 +198,18 @@ export default function ScanResult({
         <p className="text-center text-xs text-foreground/40">{dict.consult.ageRestricted}</p>
       )}
 
-      <div className="motion-scroll rounded-xl border border-brand-border bg-brand-surface p-3">
-        <p className="text-sm font-medium">{scenario.overallText}</p>
+      <div className="motion-scroll rounded-3xl bg-brand-secondary p-5">
+        <p className="font-display text-lg leading-snug font-semibold">{scenario.overallText}</p>
         {scenario.interactionText && (
-          <p className="mt-1 text-xs text-foreground/60">{scenario.interactionText}</p>
+          <p className="mt-2 text-sm text-foreground/65">{scenario.interactionText}</p>
         )}
       </div>
 
       <div className="flex flex-col gap-3">
         {sortedMetrics.map((m) => (
-          <div key={m.key} className="motion-scroll rounded-xl border border-brand-border p-3">
+          <div key={m.key} className="motion-scroll rounded-3xl bg-brand-surface p-5 shadow-tinted">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">
+              <p className="font-display text-lg font-semibold">
                 {m.label} · {formatScoreOutOf10(m.score)}
                 {dict.scan.step2.point}
               </p>
@@ -230,25 +230,23 @@ export default function ScanResult({
                 </span>
               )}
             </div>
-            <p className="mt-1 text-xs text-foreground/50">{dict.metrics[m.key].description}</p>
-            <p className="mt-2 text-xs text-foreground/70">{scenario.metricTexts[m.key]}</p>
-            <p className="mt-2 text-xs text-foreground/70">
-              <span className="font-semibold text-foreground">
-                {dict.scan.step4.procedureLabel}{" "}
-              </span>
-              {dict.solutions[m.key].procedureInfo}
-            </p>
-            <p className="mt-1 text-xs text-foreground/70">
-              <span className="font-semibold text-foreground">
-                {dict.scan.step4.cosmeticLabel}{" "}
-              </span>
-              {dict.solutions[m.key].cosmeticInfo}
-            </p>
+            <p className="mt-1.5 text-xs text-foreground/50">{dict.metrics[m.key].description}</p>
+            <p className="mt-3 text-sm leading-relaxed text-foreground/75">{scenario.metricTexts[m.key]}</p>
+            <div className="mt-4 flex flex-col gap-2 rounded-2xl bg-foreground/[.035] p-3.5 text-xs leading-relaxed text-foreground/70">
+              <p>
+                <span className="font-semibold text-foreground">{dict.scan.step4.procedureLabel} </span>
+                {dict.solutions[m.key].procedureInfo}
+              </p>
+              <p>
+                <span className="font-semibold text-foreground">{dict.scan.step4.cosmeticLabel} </span>
+                {dict.solutions[m.key].cosmeticInfo}
+              </p>
+            </div>
           </div>
         ))}
       </div>
 
-      <details className="motion-scroll rounded-xl border border-brand-border p-3 text-xs text-foreground/70">
+      <details className="motion-scroll rounded-3xl border border-brand-border p-5 text-xs leading-relaxed text-foreground/70">
         <summary className="cursor-pointer text-sm font-medium text-foreground">
           {dict.scan.step4.methodologyToggle}
         </summary>

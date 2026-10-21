@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
 import ScanWizard from "@/components/ScanWizard";
+import { getSiteContent } from "@/content/site";
 
 export default async function ScanPage({
   params,
@@ -12,5 +13,5 @@ export default async function ScanPage({
   if (!isLocale(locale)) notFound();
   const dict = await getDictionary(locale);
 
-  return <ScanWizard dict={dict} />;
+  return <ScanWizard dict={dict} locale={locale} brand={getSiteContent(locale).ui.brand} />;
 }

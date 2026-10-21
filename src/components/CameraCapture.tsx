@@ -41,13 +41,16 @@ interface CameraCaptureProps {
   stream: MediaStream | null;
   streamError?: string | null;
   dict: Dictionary;
+  // 촬영 직후 분석이 도는 동안 정지 화면 위에 스캔 연출을 보여줍니다.
+  analyzing?: boolean;
+  analyzingLabel?: string;
 }
 
 const HOLD_SECONDS = 3;
 const POLL_INTERVAL_MS = 150;
 const CALIBRATION_INTERVAL_MS = 300;
 const INSTRUCTION_SECONDS = 3;
-const ALIGNED_GUIDE_COLOR = "#BFE8B0";
+const ALIGNED_GUIDE_COLOR = "#8FD9BC";
 const FLASH_DURATION_MS = 350;
 export const FREEZE_HOLD_MS = 1000;
 
@@ -66,6 +69,8 @@ const CameraCapture = forwardRef<CameraCaptureHandle, CameraCaptureProps>(
       stream,
       streamError,
       dict,
+      analyzing = false,
+      analyzingLabel,
     },
     ref
   ) {
@@ -292,7 +297,7 @@ const CameraCapture = forwardRef<CameraCaptureHandle, CameraCaptureProps>(
     const guideColor = aligned ? ALIGNED_GUIDE_COLOR : "white";
 
     return (
-      <div className="flex h-full w-full min-h-40 flex-col overflow-hidden rounded-2xl bg-black">
+      <div className="flex h-full w-full min-h-40 flex-col overflow-hidden rounded-[1.75rem] bg-black shadow-tinted">
         <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
           <defs>
             <filter id={filterId}>
@@ -324,12 +329,10 @@ const CameraCapture = forwardRef<CameraCaptureHandle, CameraCaptureProps>(
           )}
 
           {phase === "instruction" && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/75 p-6 text-center">
-              <p className="text-base font-medium text-white">
-                {instructionCountdown}
-                {dict.camera.instructionCountdownSuffix}
-              </p>
-              <p className="text-sm text-white/80">{dict.camera.instructionHint}</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/65 p-6 text-center backdrop-blur-sm">
+              <p className="font-display text-6xl font-semibold text-white">{instructionCountdown}</p>
+              <p className="text-sm text-white/70">{dict.camera.instructionCountdownSuffix}</p>
+              <p className="max-w-[26ch] text-sm text-white/85">{dict.camera.instructionHint}</p>
             </div>
           )}
 
@@ -351,20 +354,38 @@ const CameraCapture = forwardRef<CameraCaptureHandle, CameraCaptureProps>(
                   />
                 </svg>
               </div>
-              <div className="absolute left-3 top-3 rounded-md bg-black/50 px-2 py-1 text-xs text-white">
+              <div className="absolute top-4 left-4 rounded-full bg-black/35 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md">
                 {aligned && autoCapture ? dict.camera.alignedLabel : guideLabel}
               </div>
               {countdown !== null && (
-                <div className="absolute right-4 top-3 text-3xl font-bold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
+                <div className="font-display absolute top-3 right-4 flex size-12 items-center justify-center rounded-full bg-black/35 text-2xl font-semibold text-white backdrop-blur-md">
                   {countdown}
                 </div>
               )}
             </>
           )}
 
-          <div className="absolute bottom-3 left-3 rounded-md bg-black/50 px-2 py-1 text-xs text-white">
+          <div className="absolute bottom-4 left-4 rounded-full bg-black/35 px-3 py-1.5 text-xs text-white backdrop-blur-md">
             {dict.camera.lightingLabel} {brightnessWordMap[brightness]}
           </div>
+          {analyzing && freezeFrameUrl && (
+            <div className="pointer-events-none absolute inset-0 overflow-hidden bg-black/25">
+              <div
+                className="absolute inset-0 opacity-30"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1.2px)",
+                  backgroundSize: "14px 14px",
+                }}
+              />
+              <div className="motion-scan absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-transparent via-[#8FD9BC]/50 to-transparent" />
+              <div className="absolute inset-x-0 bottom-6 flex justify-center">
+                <span className="motion-pulse rounded-full bg-black/45 px-4 py-2 text-sm font-medium text-white backdrop-blur-md">
+                  {analyzingLabel}
+                </span>
+              </div>
+            </div>
+          )}
           {flash && (
             <div className="pointer-events-none absolute inset-0 bg-white camera-flash" />
           )}
@@ -376,8 +397,8 @@ const CameraCapture = forwardRef<CameraCaptureHandle, CameraCaptureProps>(
         </div>
 
         {phase === "adjust" && (
-          <div className="flex shrink-0 items-center justify-center bg-black/85 px-4 py-3">
-            <p className="text-center text-xs text-white/70">{calibrationHint}</p>
+          <div className="flex shrink-0 items-center justify-center bg-black px-4 py-3.5">
+            <p className="motion-pulse text-center text-xs text-white/75">{calibrationHint}</p>
           </div>
         )}
       </div>

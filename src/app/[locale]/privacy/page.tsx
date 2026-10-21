@@ -13,9 +13,9 @@ export default async function PrivacyPage({
   const dict = await getDictionary(locale);
 
   return (
-    <div className="app-shell gap-6 overflow-y-auto">
+    <div className="site-theme app-shell gap-6 overflow-y-auto">
       <div>
-        <h1 className="text-xl font-medium">{dict.privacy.title}</h1>
+        <h1 className="font-display text-[26px] font-semibold">{dict.privacy.title}</h1>
         <p className="mt-1 text-xs text-foreground/50">{dict.privacy.effectiveDate}</p>
       </div>
 

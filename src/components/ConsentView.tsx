@@ -3,61 +3,73 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ScanHeader } from "@/components/site/ui";
 import type { Dictionary } from "@/i18n/getDictionary";
 
 export default function ConsentView({
   dict,
   locale,
+  brand,
 }: {
   dict: Dictionary;
   locale: string;
+  brand: string;
 }) {
   const [agreed, setAgreed] = useState(false);
   const router = useRouter();
 
   return (
-    <div className="app-shell justify-center gap-6">
-      <div>
-        <p className="inline-block rounded-md bg-brand-secondary px-2 py-1 text-xs font-medium text-brand-secondary-fg">
-          {dict.consent.badge}
-        </p>
-        <h1 className="mt-3 text-xl font-medium">{dict.consent.heading}</h1>
+    <div className="site-theme mx-auto flex min-h-dvh w-full max-w-xl flex-col px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-36">
+      <ScanHeader homeHref={`/${locale}`} brand={brand} />
+
+      <div className="motion-rise mt-8 flex flex-col gap-3">
+        <p className="text-xs font-medium tracking-wide text-brand-accent">{dict.consent.badge}</p>
+        <h1 className="font-display text-[28px] leading-snug font-semibold">{dict.consent.heading}</h1>
       </div>
 
-      <ul className="flex flex-col gap-3 text-sm text-foreground/80">
+      <ul className="mt-6 flex flex-col gap-3">
         {dict.consent.notices.map((text, i) => (
-          <li key={text} className="flex gap-2">
-            <span className="shrink-0 text-foreground/40">{i + 1}.</span>
+          <li
+            key={text}
+            className="motion-rise flex gap-3 rounded-2xl bg-brand-surface p-4 text-sm leading-relaxed text-foreground/80 shadow-tinted"
+            style={{ "--d": `${120 + i * 70}ms` } as React.CSSProperties}
+          >
+            <span className="font-display shrink-0 text-base text-brand-accent">
+              {String(i + 1).padStart(2, "0")}
+            </span>
             <span>{text}</span>
           </li>
         ))}
       </ul>
 
-      <label className="flex items-start gap-2 rounded-xl border border-brand-border p-3 text-sm">
-        <input
-          type="checkbox"
-          checked={agreed}
-          onChange={(e) => setAgreed(e.target.checked)}
-          className="mt-0.5 h-4 w-4 shrink-0"
-        />
-        <span>{dict.consent.agree}</span>
-      </label>
-
-      <button
-        type="button"
-        onClick={() => router.push(`/${locale}/scan`)}
-        disabled={!agreed}
-        className="flex min-h-12 w-full items-center justify-center rounded-lg bg-brand-primary px-4 py-3 text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98] disabled:opacity-40 disabled:active:scale-100"
-      >
-        {dict.consent.start}
-      </button>
-
       <Link
         href={`/${locale}/privacy`}
-        className="text-center text-xs text-foreground/40 underline underline-offset-2"
+        className="mt-5 w-fit text-xs text-foreground/45 underline underline-offset-2"
       >
         {dict.privacy.linkLabel}
       </Link>
+
+      <div className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <div className="shadow-tinted mx-auto flex w-full max-w-xl flex-col gap-2 rounded-3xl border border-white/40 bg-brand-surface/85 p-3 backdrop-blur-xl dark:border-white/10">
+          <label className="flex cursor-pointer items-start gap-3 px-1 py-1 text-sm">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+              className="mt-0.5 size-5 shrink-0 accent-[var(--brand-accent)]"
+            />
+            <span>{dict.consent.agree}</span>
+          </label>
+          <button
+            type="button"
+            onClick={() => router.push(`/${locale}/scan`)}
+            disabled={!agreed}
+            className="flex min-h-13 w-full items-center justify-center rounded-2xl bg-brand-primary text-[15px] font-semibold text-brand-primary-fg active:scale-[0.98] disabled:opacity-35 disabled:active:scale-100"
+          >
+            {dict.consent.start}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

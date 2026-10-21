@@ -185,6 +185,9 @@ body {
   color: var(--foreground);
   font-family: var(--font-noto-sans-kr), var(--font-geist-sans), system-ui, sans-serif;
   letter-spacing: -0.01em;
+  /* 한국어는 기본값이면 음절 단위로 줄이 바뀌어 "상태/를"처럼 끊깁니다. */
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -313,6 +316,48 @@ body {
   .motion-kenburns,
   .motion-image,
   .motion-parallax {
+    animation: none;
+  }
+}
+
+/* 테마 화면이 좁은 앱 레이아웃(.app-shell)일 때 바깥 여백도 같은 크림색으로 */
+body:has(.site-theme) {
+  background: #f7f3ec;
+}
+
+@media (prefers-color-scheme: dark) {
+  body:has(.site-theme) {
+    background: #151412;
+  }
+}
+
+/* 분석 중: 빛 띠가 사진 위를 위아래로 훑고 지나갑니다(연출용, 실제 촬영과 무관). */
+@keyframes scan-sweep {
+  0% {
+    transform: translateY(-120%);
+  }
+  100% {
+    transform: translateY(420%);
+  }
+}
+
+.motion-scan {
+  animation: scan-sweep 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+@keyframes soft-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.motion-pulse {
+  animation: soft-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-scan,
+  .motion-pulse {
     animation: none;
   }
 }

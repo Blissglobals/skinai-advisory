@@ -5,6 +5,8 @@ import ProgressBar from "@/components/ProgressBar";
 import NeedChip from "@/components/NeedChip";
 import PromoBanner from "@/components/PromoBanner";
 import ScanResult from "@/components/ScanResult";
+import { ScanHeader } from "@/components/site/ui";
+import { siteImages } from "@/content/site/images";
 import CameraCapture, { type CameraCaptureHandle } from "@/components/CameraCapture";
 import { analysisEngine } from "@/lib/analysis/mediapipeEngine";
 import type { DeepScanResult, FaceScanResult, SkinMetricKey } from "@/lib/analysis/types";
@@ -21,7 +23,24 @@ interface FailureChoice {
 // 재미용 스캔 자체는 나이 제한이 없습니다.
 const MIN_AGE_FOR_CONSULT = 19;
 
-export default function ScanWizard({ dict }: { dict: Dictionary }) {
+function StepTitle({ badge, heading }: { badge: string; heading: string }) {
+  return (
+    <div className="motion-rise shrink-0">
+      <p className="text-xs font-medium tracking-wide text-brand-accent">{badge}</p>
+      <h1 className="font-display mt-1.5 text-[24px] leading-snug font-semibold">{heading}</h1>
+    </div>
+  );
+}
+
+export default function ScanWizard({
+  dict,
+  locale,
+  brand,
+}: {
+  dict: Dictionary;
+  locale: string;
+  brand: string;
+}) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -147,39 +166,45 @@ export default function ScanWizard({ dict }: { dict: Dictionary }) {
   }
 
   const needOptionOrder: SkinMetricKey[] = ["elasticity", "pigment", "pore", "wrinkle"];
+  // 목표 선택 타일 사진(홈페이지 분위기 이미지 재사용).
+  const needImage: Record<SkinMetricKey, string> = {
+    pigment: siteImages.concern.pigment,
+    pore: siteImages.concern.pore,
+    wrinkle: siteImages.space,
+    elasticity: siteImages.concern.wrinkle,
+  };
 
   return (
-    <div className="app-shell gap-6">
+    <div className="site-theme app-shell gap-5">
+      <ScanHeader homeHref={`/${locale}`} brand={brand} />
       <ProgressBar currentStep={step} labels={dict.scan.stepLabels} />
 
       {errorMsg && (
-        <p className="rounded-lg border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
           {errorMsg}
         </p>
       )}
 
       {retryNotice && (
         <div className="fixed inset-x-0 top-6 z-50 flex justify-center px-6">
-          <div className="rounded-full bg-black/80 px-4 py-2 text-xs font-medium text-white shadow-lg">
+          <div className="rounded-full bg-black/70 px-4 py-2 text-xs font-medium text-white shadow-lg backdrop-blur">
             {retryNotice}
           </div>
         </div>
       )}
 
       {failureChoice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6">
-          <div className="w-full max-w-xs rounded-xl bg-brand-surface p-5 text-center shadow-lg">
-            <p className="text-sm font-medium">
-              {failureChoice.allowProceed
-                ? dict.scan.persistentFailureTitle
-                : dict.scan.retakeNeeded}
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4 backdrop-blur-sm sm:items-center">
+          <div className="motion-rise w-full max-w-sm rounded-3xl bg-brand-surface p-6 text-center shadow-tinted">
+            <p className="font-display text-lg font-semibold">
+              {failureChoice.allowProceed ? dict.scan.persistentFailureTitle : dict.scan.retakeNeeded}
             </p>
-            <p className="mt-2 text-xs text-foreground/70">{failureChoice.reason}</p>
-            <div className="mt-4 flex flex-col gap-2">
+            <p className="mt-2 text-sm text-foreground/65">{failureChoice.reason}</p>
+            <div className="mt-5 flex flex-col gap-2">
               <button
                 type="button"
                 onClick={handleRetake}
-                className="min-h-11 w-full rounded-lg bg-brand-primary px-4 py-2.5 text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98]"
+                className="min-h-12 w-full rounded-2xl bg-brand-primary px-4 text-sm font-semibold text-brand-primary-fg active:scale-[0.98]"
               >
                 {dict.scan.retakeButton}
               </button>
@@ -187,33 +212,26 @@ export default function ScanWizard({ dict }: { dict: Dictionary }) {
                 <button
                   type="button"
                   onClick={handleProceedAnyway}
-                  className="min-h-11 w-full rounded-lg border border-brand-border bg-transparent px-4 py-2.5 text-sm font-medium text-foreground transition-transform active:scale-[0.98]"
+                  className="min-h-12 w-full rounded-2xl px-4 text-sm font-medium text-foreground/70 hover:bg-foreground/[.04] active:scale-[0.98]"
                 >
                   {dict.scan.proceedAnyway}
                 </button>
               )}
             </div>
             {failureChoice.allowProceed && (
-              <p className="mt-2 text-[11px] text-foreground/40">
-                {dict.scan.proceedAnywayHint}
-              </p>
+              <p className="mt-2 text-[11px] text-foreground/40">{dict.scan.proceedAnywayHint}</p>
             )}
           </div>
         </div>
       )}
 
       {step === 1 && (
-        <section className="flex min-h-0 flex-1 flex-col gap-3">
+        <section className="flex min-h-0 flex-1 flex-col gap-4">
           <div className="shrink-0">
-            <p className="inline-block rounded-md bg-brand-secondary px-2 py-1 text-xs font-medium text-brand-secondary-fg">
-              {dict.scan.step1.badge}
-            </p>
-            <h1 className="mt-2 text-lg font-medium">{dict.scan.step1.heading}</h1>
-            <p className="mt-0.5 text-xs text-foreground/50">
+            <StepTitle badge={dict.scan.step1.badge} heading={dict.scan.step1.heading} />
+            <p className="mt-1 text-sm text-foreground/55">
               {dict.scan.step1.hintPrefix}{" "}
-              <span className="font-bold text-blue-600 dark:text-blue-400">
-                {dict.scan.step1.hintAuto}
-              </span>
+              <span className="font-semibold text-brand-accent">{dict.scan.step1.hintAuto}</span>
               {dict.scan.step1.hintSuffix}
             </p>
           </div>
@@ -227,80 +245,70 @@ export default function ScanWizard({ dict }: { dict: Dictionary }) {
               stream={stream}
               streamError={streamError}
               dict={dict}
+              analyzing={loading}
+              analyzingLabel={dict.scan.step1.analyzing}
             />
           </div>
         </section>
       )}
 
       {step === 2 && faceScan && (
-        <section className="flex flex-col gap-5">
-          <div>
-            <p className="inline-block rounded-md bg-brand-secondary px-2 py-1 text-xs font-medium text-brand-secondary-fg">
-              {dict.scan.step2.badge}
-            </p>
-            <h1 className="mt-2 text-lg font-medium">{dict.scan.step2.heading}</h1>
-          </div>
+        <section className="flex flex-col gap-6">
+          <StepTitle badge={dict.scan.step2.badge} heading={dict.scan.step2.heading} />
 
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-xl bg-black/[.03] p-3 dark:bg-white/[.06]">
-              <p className="text-xs text-foreground/60">{dict.scan.step2.toneLabel}</p>
-              <p className="mt-1 text-base font-medium">
-                {dict.fitzpatrick[faceScan.fitzpatrick].label}
-              </p>
+            <div className="motion-rise rounded-3xl bg-brand-surface p-4 shadow-tinted" style={{ "--d": "80ms" } as React.CSSProperties}>
+              <p className="text-xs text-foreground/55">{dict.scan.step2.toneLabel}</p>
+              <p className="font-display mt-1 text-xl font-semibold">{dict.fitzpatrick[faceScan.fitzpatrick].label}</p>
             </div>
-            <div className="rounded-xl bg-black/[.03] p-3 dark:bg-white/[.06]">
-              <p className="text-xs text-foreground/60">{dict.scan.step2.symmetryLabel}</p>
-              <p className="mt-1 text-base font-medium">
+            <div className="motion-rise rounded-3xl bg-brand-surface p-4 shadow-tinted" style={{ "--d": "160ms" } as React.CSSProperties}>
+              <p className="text-xs text-foreground/55">{dict.scan.step2.symmetryLabel}</p>
+              <p className="font-display mt-1 text-xl font-semibold">
                 {formatScoreOutOf10(faceScan.symmetryScore)}
-                {dict.scan.step2.point}
+                <span className="ml-0.5 text-sm font-normal text-foreground/50">{dict.scan.step2.point}</span>
               </p>
             </div>
-            <div className="col-span-2 rounded-xl bg-black/[.03] p-3 dark:bg-white/[.06]">
-              <p className="text-xs text-foreground/60">{dict.scan.step2.fitzScaleLabel}</p>
-              <p className="mt-1 text-xs text-foreground/50">
-                {dict.fitzpatrick[faceScan.fitzpatrick].hint} {dict.scan.step2.fitzScaleSuffix}
+            <div className="motion-rise col-span-2 rounded-3xl bg-brand-surface p-4 shadow-tinted" style={{ "--d": "240ms" } as React.CSSProperties}>
+              <p className="text-xs text-foreground/55">{dict.scan.step2.ageRangeLabel}</p>
+              <p className="font-display mt-1 text-xl font-semibold">{faceScan.estimatedAgeRange}</p>
+              <p className="mt-2 text-xs text-foreground/45">
+                {dict.scan.step2.fitzScaleLabel} · {dict.fitzpatrick[faceScan.fitzpatrick].hint}{" "}
+                {dict.scan.step2.fitzScaleSuffix}
               </p>
             </div>
-            <div className="col-span-2 rounded-xl bg-black/[.03] p-3 dark:bg-white/[.06]">
-              <p className="text-xs text-foreground/60">{dict.scan.step2.ageRangeLabel}</p>
-              <p className="mt-1 text-base font-medium">{faceScan.estimatedAgeRange}</p>
-            </div>
-            <div className="col-span-2 rounded-xl bg-black/[.03] p-3 dark:bg-white/[.06]">
-              <p className="text-xs text-foreground/60">{dict.scan.step2.undertoneLabel}</p>
-              <p className="mt-1 text-base font-medium">
-                {dict.undertone[faceScan.undertone].label}
-              </p>
-              <p className="mt-1 text-xs text-foreground/50">
-                {dict.undertone[faceScan.undertone].hint}
-              </p>
-            </div>
-            <div className="col-span-2 rounded-xl bg-black/[.03] p-3 dark:bg-white/[.06]">
-              <p className="text-xs text-foreground/60">
-                {dict.scan.step2.personalColorLabel}
-              </p>
-              <p className="mt-1 text-base font-medium">
-                {dict.personalColor[faceScan.personalColorSeason].label}
-              </p>
-              <p className="mt-1 text-xs text-foreground/50">
-                {dict.personalColor[faceScan.personalColorSeason].hint}{" "}
-                {dict.scan.step2.personalColorSuffix}
-              </p>
-              <div className="mt-2 flex gap-1.5">
+            <div className="motion-rise col-span-2 overflow-hidden rounded-3xl bg-brand-surface shadow-tinted" style={{ "--d": "320ms" } as React.CSSProperties}>
+              <div className="flex h-3">
                 {dict.personalColor[faceScan.personalColorSeason].palette.map((color) => (
-                  <span
-                    key={color}
-                    className="h-5 w-5 rounded-full border border-black/10"
-                    style={{ backgroundColor: color }}
-                  />
+                  <span key={color} className="flex-1" style={{ backgroundColor: color }} />
                 ))}
+              </div>
+              <div className="grid grid-cols-2 gap-4 p-4">
+                <div>
+                  <p className="text-xs text-foreground/55">{dict.scan.step2.personalColorLabel}</p>
+                  <p className="font-display mt-1 text-lg font-semibold">
+                    {dict.personalColor[faceScan.personalColorSeason].label}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-foreground/55">{dict.scan.step2.undertoneLabel}</p>
+                  <p className="font-display mt-1 text-lg font-semibold">{dict.undertone[faceScan.undertone].label}</p>
+                </div>
+                <p className="col-span-2 text-xs leading-relaxed text-foreground/50">
+                  {dict.personalColor[faceScan.personalColorSeason].hint} {dict.scan.step2.personalColorSuffix}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="rounded-xl bg-black/[.03] p-3 dark:bg-white/[.06]">
-            <label className="text-xs text-foreground/60" htmlFor="user-age">
-              {dict.scan.step2.ageInputLabel}
-            </label>
+          <div className="flex items-center justify-between gap-4 rounded-3xl bg-brand-secondary px-5 py-4">
+            <div>
+              <label className="text-sm font-medium" htmlFor="user-age">
+                {dict.scan.step2.ageInputLabel}
+              </label>
+              {userAge === null && (
+                <p className="mt-0.5 text-xs text-foreground/50">{dict.scan.step2.ageRequired}</p>
+              )}
+            </div>
             <input
               id="user-age"
               type="number"
@@ -310,22 +318,18 @@ export default function ScanWizard({ dict }: { dict: Dictionary }) {
               placeholder={dict.scan.step2.agePlaceholder}
               value={userAge ?? ""}
               onChange={(e) => setUserAge(e.target.value ? Number(e.target.value) : null)}
-              className="mt-1.5 h-9 w-24 rounded-md border border-brand-border bg-transparent px-2 text-sm"
+              className="font-display h-12 w-20 shrink-0 rounded-xl border border-brand-border bg-brand-surface text-center text-lg font-semibold"
             />
-            {userAge === null && (
-              <p className="mt-1.5 text-xs text-foreground/40">
-                {dict.scan.step2.ageRequired}
-              </p>
-            )}
           </div>
 
-          <div>
-            <p className="mb-2 text-sm text-foreground/60">{dict.scan.step2.needPrompt}</p>
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col gap-3">
+            <p className="font-display text-lg font-semibold">{dict.scan.step2.needPrompt}</p>
+            <div className="grid grid-cols-2 gap-3">
               {needOptionOrder.map((key) => (
                 <NeedChip
                   key={key}
                   label={dict.scan.needOptions[key]}
+                  image={needImage[key]}
                   selected={selectedNeed === key}
                   onClick={() => setSelectedNeed(key)}
                 />
@@ -337,38 +341,25 @@ export default function ScanWizard({ dict }: { dict: Dictionary }) {
             type="button"
             onClick={() => setStep(3)}
             disabled={!selectedNeed || userAge === null}
-            className="min-h-12 w-full rounded-lg bg-brand-primary px-4 py-3 text-sm font-medium text-brand-primary-fg transition-transform active:scale-[0.98] disabled:opacity-40 disabled:active:scale-100"
+            className="min-h-14 w-full rounded-2xl bg-brand-primary px-4 text-[15px] font-semibold text-brand-primary-fg shadow-tinted active:scale-[0.98] disabled:opacity-35 disabled:active:scale-100"
           >
             {dict.scan.step2.next}
           </button>
 
-          <PromoBanner
-            title={dict.promo.title}
-            body={dict.promo.body}
-            cta={dict.promo.cta}
-          />
+          <PromoBanner title={dict.promo.title} body={dict.promo.body} cta={dict.promo.cta} />
         </section>
       )}
 
       {step === 3 && selectedNeed && (
-        <section className="flex min-h-0 flex-1 flex-col gap-3">
+        <section className="flex min-h-0 flex-1 flex-col gap-4">
           <div className="shrink-0">
-            <p className="inline-block rounded-md bg-brand-secondary px-2 py-1 text-xs font-medium text-brand-secondary-fg">
-              {dict.scan.step3.badge}
-            </p>
-            <h1 className="mt-2 text-lg font-medium">{dict.scan.step3.heading}</h1>
-            <p className="mt-0.5 text-xs text-foreground/50">
+            <StepTitle badge={dict.scan.step3.badge} heading={dict.scan.step3.heading} />
+            <p className="mt-1 text-sm text-foreground/55">
               {dict.scan.step3.focusPrefix}{" "}
-              <span className="font-medium text-foreground/70">
-                {dict.scan.focusLabel[selectedNeed]}
-              </span>
-              {dict.scan.step3.focusSuffix}
-            </p>
-            <p className="mt-0.5 text-xs text-foreground/50">
+              <span className="font-semibold text-foreground/80">{dict.scan.focusLabel[selectedNeed]}</span>
+              {dict.scan.step3.focusSuffix}{" "}
               {dict.scan.step3.hintPrefix}{" "}
-              <span className="font-bold text-blue-600 dark:text-blue-400">
-                {dict.scan.step3.hintAuto}
-              </span>
+              <span className="font-semibold text-brand-accent">{dict.scan.step3.hintAuto}</span>
               {dict.scan.step3.hintSuffix}
             </p>
           </div>
@@ -382,6 +373,8 @@ export default function ScanWizard({ dict }: { dict: Dictionary }) {
               stream={stream}
               streamError={streamError}
               dict={dict}
+              analyzing={loading}
+              analyzingLabel={dict.scan.step3.analyzing}
             />
           </div>
         </section>

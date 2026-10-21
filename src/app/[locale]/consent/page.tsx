@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
 import ConsentView from "@/components/ConsentView";
+import { getSiteContent } from "@/content/site";
 
 export default async function ConsentPage({
   params,
@@ -12,5 +13,5 @@ export default async function ConsentPage({
   if (!isLocale(locale)) notFound();
   const dict = await getDictionary(locale);
 
-  return <ConsentView dict={dict} locale={locale} />;
+  return <ConsentView dict={dict} locale={locale} brand={getSiteContent(locale).ui.brand} />;
 }

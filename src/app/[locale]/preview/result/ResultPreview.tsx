@@ -31,7 +31,7 @@ export default function ResultPreview({ dict }: { dict: Dictionary }) {
   };
 
   return (
-    <div ref={shellRef} className="app-shell gap-4">
+    <div ref={shellRef} className="site-theme app-shell gap-4">
       <div className="flex flex-wrap items-center gap-2 rounded-lg border border-dashed border-brand-border p-2 text-xs">
         <span className="font-medium text-foreground/60">미리보기</span>
         {Object.keys(SAMPLES).map((name) => (

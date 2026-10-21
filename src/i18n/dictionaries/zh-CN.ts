@@ -20,6 +20,7 @@ const zhCN: DeepPartial<Dictionary> = {
     ],
     cta: "免费开始扫描",
     footnote: "本服务仅提供一般信息,并非医学诊断。",
+    privacyNote: "照片只在本设备上分析，不会被保存到任何地方。",
   },
 
   consult: {
