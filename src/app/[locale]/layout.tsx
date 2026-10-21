@@ -65,9 +65,14 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const dict = await getDictionary(locale);
+  // 공유 썸네일. [locale] 안에 opengraph-image 파일을 두면 Vercel 빌드가
+  // 실패해서(정적 이미지 + 동적 경로 조합) public 파일을 직접 지정합니다.
   return {
     title: dict.meta.title,
     description: dict.meta.description,
+    openGraph: {
+      images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Bliss Globals (AI-generated image)" }],
+    },
   };
 }
 
