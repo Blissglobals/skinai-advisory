@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import SiteShell from "@/components/SiteShell";
-import { SectionHeader } from "@/components/site/ui";
+import { AiLabel, SectionHeader } from "@/components/site/ui";
 import { lineConsultUrl } from "@/lib/line/consult";
 import { getSiteContent } from "@/content/site";
 import { siteImages } from "@/content/site/images";
@@ -121,6 +121,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                   className="motion-image object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                <AiLabel text={c.ui.aiPersonLabel} className="top-2.5 right-2.5" />
                 <div className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-4 text-white">
                   <span className={`font-display font-semibold ${featured ? "text-2xl" : "text-lg"}`}>
                     {concern.name}
@@ -291,7 +292,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       {/* ── 마무리 ── */}
       <section className="relative -mx-5 -mb-14 overflow-hidden rounded-t-[2rem] bg-brand-accent px-5 py-12 text-brand-accent-fg">
         <Image
-          src={siteImages.concern.acne}
+          src={siteImages.space}
           alt=""
           fill
           sizes="100vw"

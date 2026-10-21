@@ -33,6 +33,7 @@ export default async function ConcernPage({
         src={siteImages.concern[concern.slug]}
         eyebrow={<DraftBadge>{c.ui.draftNotice}</DraftBadge>}
         title={concern.name}
+        aiLabel={c.ui.aiPersonLabel}
       >
         <p className="text-[15px] leading-relaxed text-foreground/70">{concern.intro}</p>
       </PhotoHero>

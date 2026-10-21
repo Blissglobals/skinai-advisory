@@ -36,10 +36,12 @@ export default function ScanWizard({
   dict,
   locale,
   brand,
+  aiLabel,
 }: {
   dict: Dictionary;
   locale: string;
   brand: string;
+  aiLabel: string;
 }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -170,8 +172,8 @@ export default function ScanWizard({
   const needImage: Record<SkinMetricKey, string> = {
     pigment: siteImages.concern.pigment,
     pore: siteImages.concern.pore,
-    wrinkle: siteImages.space,
-    elasticity: siteImages.concern.wrinkle,
+    wrinkle: siteImages.concern.wrinkle,
+    elasticity: siteImages.concern.elasticity,
   };
 
   return (
@@ -330,6 +332,7 @@ export default function ScanWizard({
                   key={key}
                   label={dict.scan.needOptions[key]}
                   image={needImage[key]}
+                  aiLabel={aiLabel}
                   selected={selectedNeed === key}
                   onClick={() => setSelectedNeed(key)}
                 />

@@ -44,14 +44,27 @@ export function DraftBadge({ children }: { children: React.ReactNode }) {
   );
 }
 
+// AI 가상인물 사진 위에 얹는 표시(공정위 추천·보증 지침: 인물이 보이는 동안 근처에 표시).
+export function AiLabel({ text, className = "top-3 right-3" }: { text: string; className?: string }) {
+  return (
+    <span
+      className={`absolute z-10 rounded-full bg-black/45 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur ${className}`}
+    >
+      {text}
+    </span>
+  );
+}
+
 // 하위 페이지 상단: 화면 폭 가득 찬 사진 위에 제목을 얹습니다.
 export function PhotoHero({
   src,
   eyebrow,
   title,
+  aiLabel,
   children,
 }: {
   src: string;
+  aiLabel?: string;
   eyebrow?: React.ReactNode;
   title: string;
   children?: React.ReactNode;
@@ -70,6 +83,7 @@ export function PhotoHero({
           />
         </div>
         <div className="absolute inset-x-0 top-0 -bottom-px bg-gradient-to-b from-black/10 via-transparent via-55% to-background" />
+        {aiLabel && <AiLabel text={aiLabel} />}
       </div>
       <div className="relative -mt-20 flex flex-col gap-4 px-5">
         {eyebrow && (

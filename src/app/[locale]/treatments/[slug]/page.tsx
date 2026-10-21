@@ -36,6 +36,7 @@ export default async function TreatmentPage({
         src={siteImages.concern[concerns[0]?.slug ?? ""] ?? siteImages.space}
         eyebrow={<DraftBadge>{c.ui.draftNotice}</DraftBadge>}
         title={t.name}
+        aiLabel={concerns[0] ? c.ui.aiPersonLabel : undefined}
       >
         <p className="text-[15px] leading-relaxed text-foreground/70">{t.summary}</p>
         {concerns.length > 0 && (
