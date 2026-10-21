@@ -34,6 +34,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             />
           </div>
           <div className="absolute inset-x-0 top-0 -bottom-px bg-gradient-to-b from-transparent via-transparent via-55% to-background" />
+          <span className="absolute top-3 right-3 rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">
+            {c.ui.aiPersonLabel}
+          </span>
         </div>
 
         <div className="relative -mt-36 flex flex-col gap-5 px-5">

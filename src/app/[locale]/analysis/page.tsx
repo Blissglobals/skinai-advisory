@@ -44,6 +44,9 @@ export default async function AnalysisIntro({
             <span key={pos} className={`absolute size-7 rounded-[4px] border-white/80 ${pos}`} />
           )
         )}
+        <span className="absolute top-6 left-1/2 -translate-x-1/2 rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">
+          {ui.aiPersonLabel}
+        </span>
         <p className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-black/35 px-3 py-1 text-xs font-medium tracking-wide text-white backdrop-blur">
           {dict.home.badge}
         </p>

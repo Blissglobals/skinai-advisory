@@ -16,6 +16,7 @@ const ko: SiteContent = {
     comingSoon: "준비 중",
     seeAll: "전체 보기",
     adLabel: "광고",
+    aiPersonLabel: "AI 생성 가상인물",
     languageLabel: "언어",
     nav: { treatments: "시술", guide: "가이드" },
     consultMessage: {
@@ -75,6 +76,8 @@ const ko: SiteContent = {
     registration: "외국인환자 유치업 등록번호 A-2025-01-01-06361",
     disclaimer:
       "본 사이트의 정보는 일반적인 안내이며 의학적 진단이나 처방이 아닙니다. 시술 여부는 반드시 의료진과 상담 후 결정하세요.",
+    aiNotice:
+      "이 사이트의 사진은 AI로 생성한 이미지이며, 실제 인물·의원·시술 결과가 아닙니다. 피부 분석 점수는 AI가 계산한 참고용 정보입니다.",
     privacy: "개인정보처리방침",
   },
 

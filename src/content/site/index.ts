@@ -62,6 +62,7 @@ export interface SiteContent {
     comingSoon: string;
     seeAll: string;
     adLabel: string;
+    aiPersonLabel: string;
     languageLabel: string;
     nav: { treatments: string; guide: string };
     consultMessage: { title: string; interest: string; topic: string; concern: string };
@@ -101,7 +102,13 @@ export interface SiteContent {
     related: string;
   };
   guidePage: { title: string; intro: string; lastChecked: string; sponsoredNote: string };
-  footer: { company: string; registration: string; disclaimer: string; privacy: string };
+  footer: {
+    company: string;
+    registration: string;
+    disclaimer: string;
+    aiNotice: string;
+    privacy: string;
+  };
   concerns: Concern[];
   treatments: Treatment[];
   steps: { title: string; body: string }[];

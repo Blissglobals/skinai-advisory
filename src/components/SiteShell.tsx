@@ -48,6 +48,7 @@ export default function SiteShell({
           <p>{footer.registration}</p>
           <p>blissglobalscs@gmail.com</p>
           <p className="max-w-[60ch]">{footer.disclaimer}</p>
+          <p className="max-w-[60ch]">{footer.aiNotice}</p>
           <Link href={`/${locale}/privacy`} className="w-fit underline underline-offset-2">
             {footer.privacy}
           </Link>
