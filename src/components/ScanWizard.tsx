@@ -61,6 +61,11 @@ export default function ScanWizard({
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [step]);
+  // 새로고침 등으로 처음부터 시작하게 됐으면 주소도 처음으로 맞춥니다
+  // (안 그러면 나이를 입력하는 순간 주소에 남은 단계로 건너뜁니다).
+  useEffect(() => {
+    if (urlStep !== step) window.history.replaceState(null, "", window.location.pathname);
+  }, [urlStep, step]);
   const consecutiveFailuresRef = useRef(0);
   const [retryNotice, setRetryNotice] = useState<string | null>(null);
   const [failureChoice, setFailureChoice] = useState<FailureChoice | null>(null);

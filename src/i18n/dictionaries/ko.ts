@@ -239,7 +239,7 @@ const ko = {
     badge: "정밀 분석 · 테스트 버전",
     introHeading: "사진 4장으로\n더 자세히 볼게요",
     introSteps: [
-      "전체 얼굴 · 화면을 조명처럼 밝게 켜고 찍어요",
+      "전체 얼굴 · 정면으로 한 장",
       "광대 주변 확대 · 색소",
       "눈가 확대 · 주름",
       "코 옆 볼 확대 · 모공",
@@ -254,7 +254,12 @@ const ko = {
     modeSelf: "전면 카메라로 간편하게",
     modeSelfHint: "거울이 없을 때 · 정확도가 낮아 참고용이에요",
     mirrorGuideTitle: "거울 촬영 방법",
-    mirrorDiagram: { face: "얼굴", camera: "뒷면 카메라", screen: "화면", mirror: "거울" },
+    mirrorDiagram: {
+      look: "① 눈은 거울을 봐요",
+      reflect: ["② 거울에 비친", "화면을 확인해요"],
+      camera: ["뒷면 카메라는", "얼굴 쪽으로"],
+      mirror: "거울",
+    },
     mirrorGuideSteps: [
       "화면은 거울 쪽, 뒷면 카메라는 얼굴 쪽을 향하게 들어주세요.",
       "거울에 비친 화면을 보며 얼굴을 가이드에 맞추면 자동으로 찍혀요.",

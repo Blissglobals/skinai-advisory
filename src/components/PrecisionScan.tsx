@@ -439,28 +439,87 @@ function CloseupCard({ label, shot, dict }: { label: string; shot: CloseupShot; 
   );
 }
 
-// 거울 촬영 자세 그림(위에서 본 모습): 뒷면 카메라는 얼굴, 화면은 거울 쪽.
-// AI 생성 사진은 렌즈 방향이 반대로(일반 거울 셀카) 나와서 그림으로 안내합니다.
-function MirrorDiagram({ labels }: { labels: { face: string; camera: string; screen: string; mirror: string } }) {
+// 거울 촬영 자세 일러스트(옆모습): 뒷면 카메라는 얼굴을, 화면은 거울을 향하고
+// 눈은 거울을 봅니다. 화살표: 눈 → 거울 → (반사) → 휴대폰 화면.
+// AI 생성 사진은 렌즈 방향이 반대로(일반 거울 셀카) 나와서 직접 그렸습니다.
+const INK = "#23201c";
+const SKIN = "#f1dccb";
+const HAIR = "#2f2925";
+const TOP = "#1f4d43";
+const GLOW = "#8FD9BC";
+
+function MirrorDiagram({ labels }: { labels: { look: string; reflect: string[]; camera: string[]; mirror: string } }) {
   return (
-    <svg viewBox="0 0 260 110" className="mt-3 w-full" role="img" aria-label={`${labels.camera} → ${labels.face}, ${labels.screen} → ${labels.mirror}`}>
+    <svg
+      viewBox="0 0 320 230"
+      className="mt-3 w-full"
+      role="img"
+      aria-label={`${labels.look}, ${labels.reflect.join(" ")}, ${labels.camera.join(" ")}`}
+    >
       <defs>
-        <marker id="mirror-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <marker id="mirror-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M0 0 L10 5 L0 10 z" fill="var(--brand-accent)" />
         </marker>
+        <linearGradient id="mirror-glass" x1="0" x2="1">
+          <stop offset="0" stopColor="#dfe8e7" />
+          <stop offset="1" stopColor="#f7fbfa" />
+        </linearGradient>
       </defs>
-      <g className="text-brand-accent" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="40" cy="55" r="22" fill="var(--brand-surface)" />
-        <path d="M114 55 L66 55" markerEnd="url(#mirror-arrow)" />
-        <rect x="118" y="35" width="10" height="40" rx="3" fill="currentColor" />
-        <path d="M132 55 L222 55" markerEnd="url(#mirror-arrow)" strokeDasharray="4 4" />
-        <line x1="232" y1="10" x2="232" y2="100" strokeWidth="5" opacity="0.5" />
-      </g>
-      <g className="fill-current text-foreground/70" fontSize="10" textAnchor="middle">
-        <text x="40" y="95">{labels.face}</text>
-        <text x="90" y="28">{labels.camera}</text>
-        <text x="178" y="45">{labels.screen}</text>
-        <text x="232" y="108">{labels.mirror}</text>
+
+      {/* 거울 + 거울에 비친 화면 */}
+      <rect x="266" y="12" width="16" height="206" rx="4" fill="url(#mirror-glass)" stroke={INK} strokeWidth="1.5" />
+      <line x1="271" y1="24" x2="271" y2="60" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+      <rect x="269" y="42" width="9" height="20" rx="2" fill={GLOW} opacity="0.8" />
+
+      {/* 몸·목 */}
+      <path d="M58 230 C60 176 80 150 104 142 L128 142 C152 150 162 176 164 230 Z" fill={TOP} stroke={INK} strokeWidth="1.5" />
+      <path d="M104 104 L102 143 L128 143 L125 108 Z" fill={SKIN} stroke={INK} strokeWidth="1.5" />
+
+      {/* 얼굴(옆모습, 오른쪽=거울 방향) */}
+      <path
+        d="M100 36 C120 28 140 36 142 56 C143 62 141 66 140 68 C142 73 147 80 149 85 C150 88 147 89 143 89 C145 92 144 94 142 95 C144 97 143 100 141 101 C140 107 137 111 130 113 C120 116 108 112 100 104 C90 96 86 84 86 70 C86 52 90 40 100 36 Z"
+        fill={SKIN}
+        stroke={INK}
+        strokeWidth="1.5"
+      />
+      {/* 머리카락 */}
+      <circle cx="80" cy="46" r="12" fill={HAIR} />
+      <path d="M84 76 C79 50 92 30 112 28 C130 26 143 38 143 54 C134 45 120 43 109 48 C100 53 97 63 97 78 C95 90 91 97 87 99 C83 93 83 84 84 76 Z" fill={HAIR} />
+      <ellipse cx="104" cy="76" rx="4.5" ry="7.5" fill={SKIN} stroke={INK} strokeWidth="1.2" />
+      {/* 눈·눈썹 */}
+      <path d="M127 64 Q133 61 139 63" fill="none" stroke={HAIR} strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M129 70 Q133 67.5 137 70" fill="none" stroke={INK} strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="135.5" cy="70" r="1.4" fill={INK} />
+
+      {/* 팔과 손 */}
+      <path d="M136 152 L170 172 L186 120" fill="none" stroke={INK} strokeWidth="14" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M136 152 L170 172 L186 120" fill="none" stroke={SKIN} strokeWidth="11" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M136 152 L156 165" stroke={TOP} strokeWidth="12" strokeLinecap="round" />
+
+      {/* 휴대폰(옆면): 왼쪽 = 뒷면 카메라(얼굴 쪽), 오른쪽 = 화면(거울 쪽) */}
+      <rect x="180" y="76" width="10" height="48" rx="2.5" fill={INK} />
+      <line x1="191" y1="79" x2="191" y2="121" stroke={GLOW} strokeWidth="3" strokeLinecap="round" />
+      <circle cx="179.5" cy="83" r="2.6" fill="#9aa5a3" stroke={INK} strokeWidth="1" />
+      <ellipse cx="186" cy="118" rx="7" ry="6" fill={SKIN} stroke={INK} strokeWidth="1.2" />
+
+      {/* 시선: 눈 → 거울 → 휴대폰 화면 */}
+      <path d="M140 67 L262 46" fill="none" stroke="var(--brand-accent)" strokeWidth="1.8" strokeDasharray="5 4" markerEnd="url(#mirror-arrow)" />
+      <path d="M264 58 L198 98" fill="none" stroke="var(--brand-accent)" strokeWidth="1.8" strokeDasharray="5 4" markerEnd="url(#mirror-arrow)" />
+      {/* 뒷면 카메라 → 얼굴 */}
+      <path d="M175 86 L154 86" fill="none" stroke={INK} strokeWidth="1.6" markerEnd="url(#mirror-arrow)" />
+
+      <g fontSize="11" fill="currentColor" className="text-foreground/75">
+        <text x="200" y="40" textAnchor="middle">{labels.look}</text>
+        {[labels.reflect, labels.camera].map((lines, group) => (
+          <text key={group} y={group === 0 ? 134 : 176} fontSize="10" textAnchor="end">
+            {lines.map((line, i) => (
+              <tspan key={line} x="258" dy={i === 0 ? 0 : 13}>
+                {line}
+              </tspan>
+            ))}
+          </text>
+        ))}
+        <text x="274" y="228" textAnchor="middle" fontSize="10">{labels.mirror}</text>
       </g>
     </svg>
   );
