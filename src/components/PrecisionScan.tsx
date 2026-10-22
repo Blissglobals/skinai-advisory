@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import CameraCapture, { type CameraCaptureHandle } from "@/components/CameraCapture";
@@ -13,6 +14,7 @@ import type { DeepScanResult, SkinMetricKey } from "@/lib/analysis/types";
 import { formatScoreOutOf10 } from "@/lib/format";
 import { lineConsultUrl } from "@/lib/line/consult";
 import type { Dictionary } from "@/i18n/getDictionary";
+import { siteImages } from "@/content/site/images";
 
 // mirror: 후면 카메라로 거울을 보며 혼자, helper: 다른 사람이 후면으로, self: 전면(정확도 낮음).
 type Mode = "mirror" | "helper" | "self";
@@ -184,12 +186,13 @@ export default function PrecisionScan({
           {mode === "mirror" && (
             <div className="rounded-3xl bg-brand-secondary p-4">
               <p className="text-sm font-semibold">{p.mirrorGuideTitle}</p>
-              <MirrorDiagram labels={p.mirrorDiagram} />
-              <ol className="mt-2 flex list-decimal flex-col gap-1 pl-4 text-xs leading-relaxed text-foreground/70">
+              <MirrorGuide alt={p.mirrorGuideAlt} />
+              <ol className="mt-3 flex list-decimal flex-col gap-1 pl-4 text-xs leading-relaxed text-foreground/70">
                 {p.mirrorGuideSteps.map((line) => (
                   <li key={line}>{line}</li>
                 ))}
               </ol>
+              <p className="mt-1.5 text-xs text-foreground/55">{p.mirrorGuideNote}</p>
             </div>
           )}
           <p className="text-xs text-foreground/50">{p.notice}</p>
@@ -439,88 +442,50 @@ function CloseupCard({ label, shot, dict }: { label: string; shot: CloseupShot; 
   );
 }
 
-// 거울 촬영 자세 일러스트(옆모습): 뒷면 카메라는 얼굴을, 화면은 거울을 향하고
-// 눈은 거울을 봅니다. 화살표: 눈 → 거울 → (반사) → 휴대폰 화면.
-// AI 생성 사진은 렌즈 방향이 반대로(일반 거울 셀카) 나와서 직접 그렸습니다.
-const INK = "#23201c";
-const SKIN = "#f1dccb";
-const HAIR = "#2f2925";
-const TOP = "#1f4d43";
-const GLOW = "#8FD9BC";
-
-function MirrorDiagram({ labels }: { labels: { look: string; reflect: string[]; camera: string[]; mirror: string } }) {
+// 거울 촬영 안내 일러스트(AI 생성) 위에 번호를 겹쳐 그립니다.
+// ① 실제 휴대폰 뒷면 카메라(얼굴 쪽) ② 거울에 비친 휴대폰 앞면(화면) ③ 시선: 눈 → 거울 속 화면.
+// 글자는 그림에 넣지 않고 아래 목록 번호와 맞춰서, 번역 때 그림을 다시 만들 필요가 없게 합니다.
+// 좌표는 원본 일러스트(1168×880) 기준입니다.
+function MirrorGuide({ alt }: { alt: string }) {
+  const badge = (x: number, y: number, n: number) => (
+    <g key={n}>
+      <circle cx={x} cy={y} r="30" fill="var(--brand-accent)" stroke="#fff" strokeWidth="5" />
+      <text x={x} y={y + 11} textAnchor="middle" fontSize="32" fontWeight="700" fill="#fff">
+        {n}
+      </text>
+    </g>
+  );
+  const gaze = "M470 150 Q600 40 700 270";
   return (
-    <svg
-      viewBox="0 0 320 230"
-      className="mt-3 w-full"
-      role="img"
-      aria-label={`${labels.look}, ${labels.reflect.join(" ")}, ${labels.camera.join(" ")}`}
-    >
-      <defs>
-        <marker id="mirror-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0 0 L10 5 L0 10 z" fill="var(--brand-accent)" />
-        </marker>
-        <linearGradient id="mirror-glass" x1="0" x2="1">
-          <stop offset="0" stopColor="#dfe8e7" />
-          <stop offset="1" stopColor="#f7fbfa" />
-        </linearGradient>
-      </defs>
-
-      {/* 거울 + 거울에 비친 화면 */}
-      <rect x="266" y="12" width="16" height="206" rx="4" fill="url(#mirror-glass)" stroke={INK} strokeWidth="1.5" />
-      <line x1="271" y1="24" x2="271" y2="60" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-      <rect x="269" y="42" width="9" height="20" rx="2" fill={GLOW} opacity="0.8" />
-
-      {/* 몸·목 */}
-      <path d="M58 230 C60 176 80 150 104 142 L128 142 C152 150 162 176 164 230 Z" fill={TOP} stroke={INK} strokeWidth="1.5" />
-      <path d="M104 104 L102 143 L128 143 L125 108 Z" fill={SKIN} stroke={INK} strokeWidth="1.5" />
-
-      {/* 얼굴(옆모습, 오른쪽=거울 방향) */}
-      <path
-        d="M100 36 C120 28 140 36 142 56 C143 62 141 66 140 68 C142 73 147 80 149 85 C150 88 147 89 143 89 C145 92 144 94 142 95 C144 97 143 100 141 101 C140 107 137 111 130 113 C120 116 108 112 100 104 C90 96 86 84 86 70 C86 52 90 40 100 36 Z"
-        fill={SKIN}
-        stroke={INK}
-        strokeWidth="1.5"
+    <div className="relative mt-3 overflow-hidden rounded-2xl">
+      <Image
+        src={siteImages.mirrorShot}
+        alt={alt}
+        width={960}
+        height={723}
+        sizes="(max-width: 640px) 100vw, 560px"
+        className="w-full"
       />
-      {/* 머리카락 */}
-      <circle cx="80" cy="46" r="12" fill={HAIR} />
-      <path d="M84 76 C79 50 92 30 112 28 C130 26 143 38 143 54 C134 45 120 43 109 48 C100 53 97 63 97 78 C95 90 91 97 87 99 C83 93 83 84 84 76 Z" fill={HAIR} />
-      <ellipse cx="104" cy="76" rx="4.5" ry="7.5" fill={SKIN} stroke={INK} strokeWidth="1.2" />
-      {/* 눈·눈썹 */}
-      <path d="M127 64 Q133 61 139 63" fill="none" stroke={HAIR} strokeWidth="1.6" strokeLinecap="round" />
-      <path d="M129 70 Q133 67.5 137 70" fill="none" stroke={INK} strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="135.5" cy="70" r="1.4" fill={INK} />
-
-      {/* 팔과 손 */}
-      <path d="M136 152 L170 172 L186 120" fill="none" stroke={INK} strokeWidth="14" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M136 152 L170 172 L186 120" fill="none" stroke={SKIN} strokeWidth="11" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M136 152 L156 165" stroke={TOP} strokeWidth="12" strokeLinecap="round" />
-
-      {/* 휴대폰(옆면): 왼쪽 = 뒷면 카메라(얼굴 쪽), 오른쪽 = 화면(거울 쪽) */}
-      <rect x="180" y="76" width="10" height="48" rx="2.5" fill={INK} />
-      <line x1="191" y1="79" x2="191" y2="121" stroke={GLOW} strokeWidth="3" strokeLinecap="round" />
-      <circle cx="179.5" cy="83" r="2.6" fill="#9aa5a3" stroke={INK} strokeWidth="1" />
-      <ellipse cx="186" cy="118" rx="7" ry="6" fill={SKIN} stroke={INK} strokeWidth="1.2" />
-
-      {/* 시선: 눈 → 거울 → 휴대폰 화면 */}
-      <path d="M140 67 L262 46" fill="none" stroke="var(--brand-accent)" strokeWidth="1.8" strokeDasharray="5 4" markerEnd="url(#mirror-arrow)" />
-      <path d="M264 58 L198 98" fill="none" stroke="var(--brand-accent)" strokeWidth="1.8" strokeDasharray="5 4" markerEnd="url(#mirror-arrow)" />
-      {/* 뒷면 카메라 → 얼굴 */}
-      <path d="M175 86 L154 86" fill="none" stroke={INK} strokeWidth="1.6" markerEnd="url(#mirror-arrow)" />
-
-      <g fontSize="11" fill="currentColor" className="text-foreground/75">
-        <text x="200" y="40" textAnchor="middle">{labels.look}</text>
-        {[labels.reflect, labels.camera].map((lines, group) => (
-          <text key={group} y={group === 0 ? 134 : 176} fontSize="10" textAnchor="end">
-            {lines.map((line, i) => (
-              <tspan key={line} x="258" dy={i === 0 ? 0 : 13}>
-                {line}
-              </tspan>
-            ))}
-          </text>
-        ))}
-        <text x="274" y="228" textAnchor="middle" fontSize="10">{labels.mirror}</text>
-      </g>
-    </svg>
+      <svg viewBox="0 0 1168 880" className="absolute inset-0 size-full" aria-hidden>
+        <defs>
+          <marker id="guide-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--brand-accent)" />
+          </marker>
+        </defs>
+        <path d={gaze} fill="none" stroke="#fff" strokeWidth="16" strokeLinecap="round" />
+        <path
+          d={gaze}
+          fill="none"
+          stroke="var(--brand-accent)"
+          strokeWidth="8"
+          strokeDasharray="18 14"
+          strokeLinecap="round"
+          markerEnd="url(#guide-arrow)"
+        />
+        {badge(500, 330, 1)}
+        {badge(800, 420, 2)}
+        {badge(585, 72, 3)}
+      </svg>
+    </div>
   );
 }

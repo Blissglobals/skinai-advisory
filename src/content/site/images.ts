@@ -16,6 +16,8 @@ export const siteImages = {
     // 피부 분석의 "탄력" 목표 선택 타일용
     elasticity: `${base}/concern-elasticity.webp`,
   } as Record<string, string>,
+  // 정밀 분석 거울 촬영 안내 일러스트(AI 생성 일러스트, 실제 인물 아님)
+  mirrorShot: `${base}/guide-mirror.webp`,
   guide: {
     pharmacies: `${base}/guide-pharmacies.webp`,
     "must-buy": `${base}/guide-must-buy.webp`,
