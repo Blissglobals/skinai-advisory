@@ -505,7 +505,7 @@ const zhCN: SiteContent = {
           body: "2、6号线合井站・2号线弘大入口站",
           spots: [
             { name: "합정옥", note: "合井站8号出口步行4分钟・牛骨汤・汤底清淡", sponsored: false, mapUrl: mapsUrl("합정옥 서울 마포구 양화로1길 21") },
-            { name: "옥동식 서교점（玉东植）", note: "合井站2号出口步行5分钟・猪肉清汤饭・汤底清爽，做完项目吃也没负担・座位少，可能需要排队", sponsored: false, mapUrl: mapsUrl("옥동식 서교점 서울 마포구 양화로7길 44-10") },
+            { name: "옥동식 서교점（玉东植）", note: "合井站2号出口步行5分钟・猪肉清汤饭・汤底清爽，做完项目吃也没负担・座位少，可能需要排队", sponsored: false, badges: ["hot"], mapUrl: mapsUrl("옥동식 서교점 서울 마포구 양화로7길 44-10") },
             { name: "진진", note: "合井站2号出口步行7分钟・中餐・刚做完项目请避开辣的菜・可预约", sponsored: false, mapUrl: mapsUrl("진진 서울 마포구 월드컵북로1길 60") },
             { name: "백년토종삼계탕 본점（百年土种参鸡汤）", note: "弘大入口站9号出口步行7分钟・参鸡汤", sponsored: false, mapUrl: mapsUrl("백년토종삼계탕 본점 서울 마포구 양화로 118") },
             { name: "서교난면방", note: "望远站步行7分钟・韩国本土小麦面", sponsored: false, mapUrl: mapsUrl("서교난면방 서울 마포구 동교로12길 16") },
@@ -515,7 +515,7 @@ const zhCN: SiteContent = {
           heading: "教大・江南区厅・鹤洞",
           body: "2、3号线教大站・7号线江南区厅站、鹤洞站",
           spots: [
-            { name: "3대 삼계장인", note: "教大站14号出口步行4分钟・参鸡汤・可能需要排队", sponsored: false, mapUrl: mapsUrl("3대 삼계장인 서울 서초구 반포대로28길 56-3") },
+            { name: "3대 삼계장인", note: "教大站14号出口步行4分钟・参鸡汤・可能需要排队", sponsored: false, badges: ["hot"], mapUrl: mapsUrl("3대 삼계장인 서울 서초구 반포대로28길 56-3") },
             { name: "진미평양냉면 본관", note: "江南区厅站3号出口步行7分钟・平壤冷面・饺子", sponsored: false, mapUrl: mapsUrl("진미평양냉면 본관 서울 강남구 학동로 307") },
             { name: "유정식당（有情餐馆）", note: "鹤洞站步行12分钟・包饭套餐・辣炒猪肉和泡菜偏辣・2人起点", sponsored: false, mapUrl: mapsUrl("유정식당 서울 강남구 도산대로28길 14") },
           ],
@@ -525,7 +525,7 @@ const zhCN: SiteContent = {
           body: "4号线明洞站・2号线乙支路入口站・2、5号线乙支路4街站",
           spots: [
             { name: "우래옥 본점", note: "乙支路4街站4号出口步行2分钟・平壤冷面", sponsored: false, mapUrl: mapsUrl("우래옥 본점 서울 중구 창경궁로 62-29") },
-            { name: "명동교자 본점（明洞饺子）", note: "明洞站9号出口步行2分钟・韩式刀切面・泡菜蒜味较重・排队的人很多", sponsored: false, mapUrl: mapsUrl("명동교자 본점 서울 중구 퇴계로 129") },
+            { name: "명동교자 본점（明洞饺子）", note: "明洞站9号出口步行2分钟・韩式刀切面・泡菜蒜味较重・排队的人很多", sponsored: false, badges: ["hot"], mapUrl: mapsUrl("명동교자 본점 서울 중구 퇴계로 129") },
             { name: "영양센타 본점（明洞营养中心）", note: "明洞站6号出口步行3分钟・参鸡汤・电烤全鸡", sponsored: false, mapUrl: mapsUrl("영양센타 본점 서울 중구 명동2길 52") },
             { name: "하동관（河东馆）", note: "乙支路入口站5号出口步行5分钟・牛骨汤・下午较早关门，周日休息", sponsored: false, mapUrl: mapsUrl("하동관 서울 중구 명동9길 12") },
             { name: "신선설농탕 명동점（神仙雪浓汤）", note: "明洞站8号出口步行6分钟・雪浓汤", sponsored: false, mapUrl: mapsUrl("신선설농탕 명동점 서울 중구 명동길 56") },

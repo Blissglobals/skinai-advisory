@@ -507,7 +507,7 @@ const ko: SiteContent = {
           body: "2·6호선 합정역, 2호선 홍대입구역",
           spots: [
             { name: "합정옥", note: "합정역 8번 출구 도보 4분 · 곰탕 · 담백한 국물", sponsored: false, mapUrl: mapsUrl("합정옥 서울 마포구 양화로1길 21") },
-            { name: "옥동식 서교점", note: "합정역 2번 출구 도보 5분 · 돼지곰탕 · 맑은 국물이라 시술 후에도 부담 없어요 · 좌석이 적어 대기가 있을 수 있어요", sponsored: false, mapUrl: mapsUrl("옥동식 서교점 서울 마포구 양화로7길 44-10") },
+            { name: "옥동식 서교점", note: "합정역 2번 출구 도보 5분 · 돼지곰탕 · 맑은 국물이라 시술 후에도 부담 없어요 · 좌석이 적어 대기가 있을 수 있어요", sponsored: false, badges: ["hot"], mapUrl: mapsUrl("옥동식 서교점 서울 마포구 양화로7길 44-10") },
             { name: "진진", note: "합정역 2번 출구 도보 7분 · 중식 · 매운 메뉴는 시술 직후 피하세요 · 예약 가능", sponsored: false, mapUrl: mapsUrl("진진 서울 마포구 월드컵북로1길 60") },
             { name: "백년토종삼계탕 본점", note: "홍대입구역 9번 출구 도보 7분 · 삼계탕", sponsored: false, mapUrl: mapsUrl("백년토종삼계탕 본점 서울 마포구 양화로 118") },
             { name: "서교난면방", note: "망원역 도보 7분 · 우리밀 국수", sponsored: false, mapUrl: mapsUrl("서교난면방 서울 마포구 동교로12길 16") },
@@ -517,7 +517,7 @@ const ko: SiteContent = {
           heading: "교대·강남구청·학동",
           body: "2·3호선 교대역, 7호선 강남구청역·학동역",
           spots: [
-            { name: "3대 삼계장인", note: "교대역 14번 출구 도보 4분 · 삼계탕 · 대기가 있을 수 있어요", sponsored: false, mapUrl: mapsUrl("3대 삼계장인 서울 서초구 반포대로28길 56-3") },
+            { name: "3대 삼계장인", note: "교대역 14번 출구 도보 4분 · 삼계탕 · 대기가 있을 수 있어요", sponsored: false, badges: ["hot"], mapUrl: mapsUrl("3대 삼계장인 서울 서초구 반포대로28길 56-3") },
             { name: "진미평양냉면 본관", note: "강남구청역 3번 출구 도보 7분 · 평양냉면·만두", sponsored: false, mapUrl: mapsUrl("진미평양냉면 본관 서울 강남구 학동로 307") },
             { name: "유정식당", note: "학동역 도보 12분 · 쌈밥 정식 · 제육·김치는 매운 편 · 2인 이상", sponsored: false, mapUrl: mapsUrl("유정식당 서울 강남구 도산대로28길 14") },
           ],
@@ -527,7 +527,7 @@ const ko: SiteContent = {
           body: "4호선 명동역, 2호선 을지로입구역, 2·5호선 을지로4가역",
           spots: [
             { name: "우래옥 본점", note: "을지로4가역 4번 출구 도보 2분 · 평양냉면", sponsored: false, mapUrl: mapsUrl("우래옥 본점 서울 중구 창경궁로 62-29") },
-            { name: "명동교자 본점", note: "명동역 9번 출구 도보 2분 · 칼국수 · 김치 마늘이 강한 편 · 대기 줄이 길어요", sponsored: false, mapUrl: mapsUrl("명동교자 본점 서울 중구 퇴계로 129") },
+            { name: "명동교자 본점", note: "명동역 9번 출구 도보 2분 · 칼국수 · 김치 마늘이 강한 편 · 대기 줄이 길어요", sponsored: false, badges: ["hot"], mapUrl: mapsUrl("명동교자 본점 서울 중구 퇴계로 129") },
             { name: "영양센타 본점", note: "명동역 6번 출구 도보 3분 · 삼계탕·전기구이 통닭", sponsored: false, mapUrl: mapsUrl("영양센타 본점 서울 중구 명동2길 52") },
             { name: "하동관", note: "을지로입구역 5번 출구 도보 5분 · 곰탕 · 오후 일찍 닫고 일요일 휴무", sponsored: false, mapUrl: mapsUrl("하동관 서울 중구 명동9길 12") },
             { name: "신선설농탕 명동점", note: "명동역 8번 출구 도보 6분 · 설렁탕", sponsored: false, mapUrl: mapsUrl("신선설농탕 명동점 서울 중구 명동길 56") },
