@@ -524,11 +524,11 @@ const zhCN: SiteContent = {
           body: "4号线明洞站・2号线乙支路入口站・2、5号线乙支路4街站",
           spots: [
             { name: "우래옥 본점", note: "乙支路4街站4号出口步行2分钟・平壤冷面", sponsored: false, mapUrl: mapsUrl("우래옥 본점 서울 중구 창경궁로 62-29") },
+            { name: "명동교자 본점（明洞饺子）", note: "明洞站9号出口步行2分钟・韩式刀切面・泡菜蒜味较重・排队的人很多", sponsored: false, mapUrl: mapsUrl("명동교자 본점 서울 중구 퇴계로 129") },
             { name: "영양센타 본점（明洞营养中心）", note: "明洞站6号出口步行3分钟・参鸡汤・电烤全鸡", sponsored: false, mapUrl: mapsUrl("영양센타 본점 서울 중구 명동2길 52") },
             { name: "하동관（河东馆）", note: "乙支路入口站5号出口步行5分钟・牛骨汤・下午较早关门，周日休息", sponsored: false, mapUrl: mapsUrl("하동관 서울 중구 명동9길 12") },
             { name: "신선설농탕 명동점（神仙雪浓汤）", note: "明洞站8号出口步行6分钟・雪浓汤", sponsored: false, mapUrl: mapsUrl("신선설농탕 명동점 서울 중구 명동길 56") },
             { name: "능라도 명동점（绫罗岛冷面）", note: "明洞站8号出口步行6分钟・平壤冷面・温汤饭", sponsored: false, mapUrl: mapsUrl("능라도 명동점 서울 중구 명동길 53") },
-            { name: "명동교자（明洞饺子）", note: "明洞站附近・韩式刀切面・泡菜蒜味较重・排队的人很多", sponsored: false, mapUrl: mapsUrl("명동교자 본점 서울 중구 명동") },
           ],
         },
         {

@@ -526,11 +526,11 @@ const ko: SiteContent = {
           body: "4호선 명동역, 2호선 을지로입구역, 2·5호선 을지로4가역",
           spots: [
             { name: "우래옥 본점", note: "을지로4가역 4번 출구 도보 2분 · 평양냉면", sponsored: false, mapUrl: mapsUrl("우래옥 본점 서울 중구 창경궁로 62-29") },
+            { name: "명동교자 본점", note: "명동역 9번 출구 도보 2분 · 칼국수 · 김치 마늘이 강한 편 · 대기 줄이 길어요", sponsored: false, mapUrl: mapsUrl("명동교자 본점 서울 중구 퇴계로 129") },
             { name: "영양센타 본점", note: "명동역 6번 출구 도보 3분 · 삼계탕·전기구이 통닭", sponsored: false, mapUrl: mapsUrl("영양센타 본점 서울 중구 명동2길 52") },
             { name: "하동관", note: "을지로입구역 5번 출구 도보 5분 · 곰탕 · 오후 일찍 닫고 일요일 휴무", sponsored: false, mapUrl: mapsUrl("하동관 서울 중구 명동9길 12") },
             { name: "신선설농탕 명동점", note: "명동역 8번 출구 도보 6분 · 설렁탕", sponsored: false, mapUrl: mapsUrl("신선설농탕 명동점 서울 중구 명동길 56") },
             { name: "능라도 명동점", note: "명동역 8번 출구 도보 6분 · 평양냉면·온반", sponsored: false, mapUrl: mapsUrl("능라도 명동점 서울 중구 명동길 53") },
-            { name: "명동교자", note: "명동역 인근 · 칼국수 · 김치 마늘이 강한 편 · 대기 줄이 길어요", sponsored: false, mapUrl: mapsUrl("명동교자 본점 서울 중구 명동") },
           ],
         },
         {
