@@ -54,7 +54,8 @@ export default function ScanWizard({
   // 단계는 주소(?s=)에 남겨서 휴대폰 뒤로가기가 이전 단계로 가게 합니다.
   // 데이터 없이 중간 단계 주소로 들어오면(새로고침 등) 처음부터 시작합니다.
   const urlStep = Number(useSearchParams().get("s")) || 1;
-  const step = (urlStep >= 2 && userAge === null) || (urlStep >= 3 && !deepScan) ? 1 : urlStep;
+  // 정밀 분석(4)은 기본 촬영 없이 바로 들어올 수 있습니다.
+  const step = (urlStep >= 2 && userAge === null) || (urlStep === 3 && !deepScan) ? 1 : urlStep;
   const goStep = (n: number, replace = false) =>
     window.history[replace ? "replaceState" : "pushState"](null, "", `?s=${n}`);
   useEffect(() => {
@@ -244,6 +245,17 @@ export default function ScanWizard({
           >
             {dict.scan.goal.next}
           </button>
+
+          {/* ponytail: LINE 로그인(2-4) 완성 전이라 바로 정밀 분석으로 갑니다. 로그인 연결 시 여기서 로그인 후 goStep(4). */}
+          <button
+            type="button"
+            onClick={() => goStep(4)}
+            disabled={userAge === null}
+            className="-mt-3 flex min-h-14 w-full flex-col items-center justify-center rounded-2xl border border-brand-border px-4 py-2 active:scale-[0.98] disabled:opacity-35 disabled:active:scale-100"
+          >
+            <span className="text-[15px] font-semibold">{dict.precision.directEntry}</span>
+            <span className="text-xs text-foreground/55">{dict.precision.directEntryNote}</span>
+          </button>
         </section>
       )}
 
@@ -291,7 +303,8 @@ export default function ScanWizard({
         <PrecisionScan
           dict={dict}
           canConsult={userAge === null || userAge >= MIN_AGE_FOR_CONSULT}
-          onBack={() => goStep(3)}
+          hasBaseResult={!!deepScan}
+          onBack={() => goStep(deepScan ? 3 : 1)}
         />
       )}
     </div>

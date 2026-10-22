@@ -233,6 +233,9 @@ const ko = {
   precision: {
     entry: "정밀 분석 해보기",
     entryNote: "테스트 버전 · 사진 4장 · 약 2분",
+    directEntry: "LINE 로그인하고 정밀 분석부터 하기",
+    directEntryNote: "사진 4장 · 약 2분 · 지금은 테스트라 로그인 없이 바로 시작돼요",
+    backToStart: "처음 화면으로 돌아가기",
     badge: "정밀 분석 · 테스트 버전",
     introHeading: "사진 4장으로\n더 자세히 볼게요",
     introSteps: [

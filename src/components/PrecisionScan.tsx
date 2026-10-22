@@ -48,13 +48,17 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 export default function PrecisionScan({
   dict,
   canConsult,
+  hasBaseResult,
   onBack,
 }: {
   dict: Dictionary;
   canConsult: boolean;
+  // 기본 결과 없이 바로 정밀 분석으로 들어왔으면 "처음 화면으로"로 돌아갑니다.
+  hasBaseResult: boolean;
   onBack: () => void;
 }) {
   const p = dict.precision;
+  const backLabel = hasBaseResult ? p.backToBase : p.backToStart;
   const [mode, setMode] = useState<Mode>("self");
   const [deep, setDeep] = useState<DeepScanResult | null>(null);
   const [faceInfo, setFaceInfo] = useState<{ resolution: string; pxPerMm: number | null } | null>(null);
@@ -176,7 +180,7 @@ export default function PrecisionScan({
             {p.start}
           </button>
           <button type="button" onClick={onBack} className="text-sm text-foreground/55 underline underline-offset-4">
-            {p.backToBase}
+            {backLabel}
           </button>
         </section>
       )}
@@ -250,6 +254,7 @@ export default function PrecisionScan({
           faceInfo={faceInfo}
           closeInfo={closeInfo}
           canConsult={canConsult}
+          backLabel={backLabel}
           onBack={onBack}
         />
       )}
@@ -264,9 +269,11 @@ function PrecisionResult({
   faceInfo,
   closeInfo,
   canConsult,
+  backLabel,
   onBack,
 }: {
   dict: Dictionary;
+  backLabel: string;
   deep: DeepScanResult;
   shots: Partial<Record<CloseupKind, CloseupShot>>;
   faceInfo: { resolution: string; pxPerMm: number | null } | null;
@@ -360,7 +367,7 @@ function PrecisionResult({
       </div>
 
       <button type="button" onClick={onBack} className="text-sm text-foreground/55 underline underline-offset-4">
-        {p.backToBase}
+        {backLabel}
       </button>
     </section>
   );
