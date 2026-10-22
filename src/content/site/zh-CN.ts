@@ -11,7 +11,7 @@ const zhCN: SiteContent = {
     consultCta: "通过LINE免费咨询",
     consultBar: "LINE免费咨询",
     scanCta: "试试免费皮肤分析",
-    scanBar: "皮肤分析",
+    scanBar: "免费皮肤分析",
     comingSoon: "准备中",
     seeAll: "查看全部",
     adLabel: "广告",
@@ -28,10 +28,10 @@ const zhCN: SiteContent = {
   },
 
   home: {
-    eyebrow: "首尔皮肤美容之旅",
-    heading: "首尔皮肤诊所，\n从咨询到预约\n一站搞定。",
-    subheading: "了解适合您皮肤困扰的项目，通过免费咨询提前确认行程和费用。",
-    chips: ["免费咨询", "免费翻译与预约", "匹配合适诊所"],
+    eyebrow: "免费皮肤分析",
+    heading: "一张照片，\n先了解\n自己的皮肤。",
+    subheading: "用一张自拍立即查看色斑和皱纹状态。想进一步了解，还可以免费咨询首尔诊所。",
+    chips: ["免费皮肤分析", "照片仅在手机内分析", "咨询与翻译免费"],
     marquee: ["皮秒激光", "水光针", "超声提拉", "射频提拉", "点阵激光", "祛痘护理", "血管激光"],
     quote: "咨询可以轻松问，\n决定留到面诊后。",
     quoteBy: "是否做项目，请在医生面诊后自行决定。",

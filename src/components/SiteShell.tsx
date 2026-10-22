@@ -5,7 +5,7 @@ import { lineConsultUrl } from "@/lib/line/consult";
 import { getSiteContent } from "@/content/site";
 
 // 홈페이지 계열 공통 껍데기. .site-theme이 색·서체를 스캔 앱과 분리합니다.
-// 모바일 엄지 위치에 "피부 분석 / LINE 상담" 고정 바를 두고, consultLines로
+// 모바일 엄지 위치에 "피부 분석(주) / LINE 상담(보조)" 고정 바를 두고, consultLines로
 // 페이지별 상담 문구를 넘기면 그 내용이 미리 채워집니다.
 export default function SiteShell({
   locale,
@@ -59,13 +59,13 @@ export default function SiteShell({
         <div className="shadow-tinted mx-auto flex w-full max-w-xl gap-2 rounded-2xl border border-white/40 bg-brand-surface/80 p-2 backdrop-blur-xl dark:border-white/10">
           <Link
             href={`/${locale}/analysis`}
-            className="flex min-h-12 flex-1 items-center justify-center rounded-xl text-sm font-medium hover:bg-foreground/[.04] active:scale-[0.98]"
+            className="flex min-h-12 flex-[1.6] items-center justify-center rounded-xl bg-brand-accent text-sm font-semibold text-brand-accent-fg hover:opacity-90 active:scale-[0.98]"
           >
             {ui.scanBar}
           </Link>
           <a
             href={consultUrl}
-            className="flex min-h-12 flex-[1.6] items-center justify-center rounded-xl bg-brand-accent text-sm font-semibold text-brand-accent-fg hover:opacity-90 active:scale-[0.98]"
+            className="flex min-h-12 flex-1 items-center justify-center rounded-xl text-sm font-medium hover:bg-foreground/[.04] active:scale-[0.98]"
           >
             {ui.consultBar}
           </a>

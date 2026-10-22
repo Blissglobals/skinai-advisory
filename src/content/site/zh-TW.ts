@@ -11,7 +11,7 @@ const zhTW: SiteContent = {
     consultCta: "透過LINE免費諮詢",
     consultBar: "LINE免費諮詢",
     scanCta: "試試免費肌膚分析",
-    scanBar: "肌膚分析",
+    scanBar: "免費肌膚分析",
     comingSoon: "準備中",
     seeAll: "查看全部",
     adLabel: "廣告",
@@ -28,10 +28,10 @@ const zhTW: SiteContent = {
   },
 
   home: {
-    eyebrow: "首爾肌膚療程之旅",
-    heading: "首爾皮膚診所，\n從諮詢到預約\n一次搞定。",
-    subheading: "了解適合您肌膚困擾的療程，並透過免費諮詢事先確認行程與費用。",
-    chips: ["免費諮詢", "免費口譯與預約", "媒合合適診所"],
+    eyebrow: "免費肌膚分析",
+    heading: "一張照片，\n先了解\n自己的肌膚。",
+    subheading: "用一張自拍立即查看色斑與皺紋狀態。想進一步了解，還能免費諮詢首爾診所。",
+    chips: ["免費肌膚分析", "照片僅在手機內分析", "諮詢與口譯免費"],
     marquee: ["皮秒雷射", "水光針", "音波拉提", "電波拉提", "飛梭雷射", "痘痘療程", "血管雷射"],
     quote: "諮詢可以輕鬆問，\n決定留到看診後。",
     quoteBy: "是否接受療程，請在醫師看診後自行決定。",

@@ -71,18 +71,18 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             ))}
           </ul>
           <div className="motion-rise flex flex-col gap-3 pt-2" style={delay(960)}>
-            <a
-              href={lineConsultUrl([c.ui.consultMessage.title])}
-              className="shadow-tinted flex min-h-14 items-center justify-center rounded-2xl bg-brand-primary px-5 text-[15px] font-semibold text-brand-primary-fg hover:opacity-90 active:scale-[0.98]"
-            >
-              {c.ui.consultCta}
-            </a>
             <Link
               href={`/${locale}/analysis`}
+              className="shadow-tinted flex min-h-14 items-center justify-center rounded-2xl bg-brand-primary px-5 text-[15px] font-semibold text-brand-primary-fg hover:opacity-90 active:scale-[0.98]"
+            >
+              {c.ui.scanCta}
+            </Link>
+            <a
+              href={lineConsultUrl([c.ui.consultMessage.title])}
               className="mx-auto text-sm font-medium text-foreground/70 underline decoration-brand-border underline-offset-4 hover:text-foreground"
             >
-              {c.ui.scanCta} →
-            </Link>
+              {c.ui.consultCta} →
+            </a>
           </div>
         </div>
       </section>
