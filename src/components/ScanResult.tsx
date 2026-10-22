@@ -19,6 +19,7 @@ interface ScanResultProps {
   userAge: number | null;
   focusMetric?: SkinMetricKey | null;
   minAgeForConsult: number;
+  onStartPrecision?: () => void;
 }
 
 const RING_RADIUS = 52;
@@ -63,6 +64,7 @@ export default function ScanResult({
   userAge,
   focusMetric,
   minAgeForConsult,
+  onStartPrecision,
 }: ScanResultProps) {
   const metricLabels: Record<SkinMetricKey, string> = {
     pore: dict.metrics.pore.label,
@@ -210,6 +212,17 @@ export default function ScanResult({
             </div>
           </div>
         ))}
+        {onStartPrecision && (
+          <button
+            type="button"
+            onClick={onStartPrecision}
+            className="motion-rise col-span-2 flex min-h-14 flex-col items-center justify-center rounded-2xl bg-brand-primary px-4 py-2 text-brand-primary-fg shadow-tinted active:scale-[0.98]"
+            style={delay(TILE_DELAY + (baseMetrics.length + 1) * TILE_STAGGER)}
+          >
+            <span className="text-[15px] font-semibold">{dict.precision.entry}</span>
+            <span className="text-xs opacity-75">{dict.precision.entryNote}</span>
+          </button>
+        )}
       </div>
 
       {canConsult ? (

@@ -272,7 +272,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* ── FAQ ── */}
-      <section className="flex flex-col gap-5">
+      <section id="faq" className="flex scroll-mt-20 flex-col gap-5">
         <SectionHeader title={c.home.faqTitle} />
         <div className="flex flex-col divide-y divide-brand-border border-y border-brand-border">
           {c.faq.map((f) => (

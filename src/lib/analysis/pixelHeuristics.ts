@@ -4,7 +4,7 @@ import { sigmoidScore } from "./scoring";
 // 값은 "평균 밝기 대비 %"로 정규화해서, 노출(밝기)이 달라도 같은 피부면 비슷하게 나오게 합니다.
 // 필터 반경은 크롭 크기에 대한 고정 픽셀이라 얼굴 크기와 무관합니다.
 
-function luminance(imageData: ImageData): Float32Array {
+export function luminance(imageData: ImageData): Float32Array {
   const { data, width, height } = imageData;
   const out = new Float32Array(width * height);
   for (let i = 0; i < out.length; i++) {
@@ -14,7 +14,7 @@ function luminance(imageData: ImageData): Float32Array {
 }
 
 // 가로→세로 순서의 박스 블러(누적합). 가장자리는 가장 가까운 값으로 채웁니다.
-function boxBlur(src: Float32Array, width: number, height: number, radius: number): Float32Array {
+export function boxBlur(src: Float32Array, width: number, height: number, radius: number): Float32Array {
   if (radius <= 0) return src.slice();
   const tmp = new Float32Array(src.length);
   const out = new Float32Array(src.length);
@@ -42,7 +42,7 @@ function boxBlur(src: Float32Array, width: number, height: number, radius: numbe
   return out;
 }
 
-function mean(values: Float32Array): number {
+export function mean(values: Float32Array): number {
   let sum = 0;
   for (let i = 0; i < values.length; i++) sum += values[i];
   return sum / values.length;

@@ -193,6 +193,18 @@ export function computeFaceAlignment(landmarks: NormalizedLandmark[]): boolean {
   return centeredX && centeredY && sizeOk && yawOffset < MAX_YAW_OFFSET && rollDeg < MAX_ROLL_DEG;
 }
 
+// 홍채 지름은 사람 간 차이가 작아(대부분 11~12.5mm) 실제 크기 기준으로 씁니다.
+// 얼굴 사진이 1mm당 몇 픽셀인지 알면 기기별로 모공이 보일 만한 해상도인지 판단할 수 있습니다.
+const IRIS_DIAMETER_MM = 11.7;
+
+/** 1mm당 픽셀 수(두 눈 홍채 가로 지름 평균 기준). 홍채 랜드마크가 없으면 null. */
+export function pixelsPerMm(landmarks: NormalizedLandmark[], width: number, height: number): number | null {
+  if (landmarks.length < 478) return null;
+  const dist = (a: number, b: number) =>
+    Math.hypot((landmarks[a].x - landmarks[b].x) * width, (landmarks[a].y - landmarks[b].y) * height);
+  return (dist(469, 471) + dist(474, 476)) / 2 / IRIS_DIAMETER_MM;
+}
+
 export function computeSymmetryScore(landmarks: NormalizedLandmark[]): number {
   const axisX = (landmarks[LANDMARK.noseBridge].x + landmarks[LANDMARK.chin].x) / 2;
   const pairs: [number, number][] = [

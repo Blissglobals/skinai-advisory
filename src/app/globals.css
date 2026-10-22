@@ -345,6 +345,20 @@ body:has(.site-theme) {
   animation: scan-sweep 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
 }
 
+/* 확대 사진 결과: 원본 위로 필터 사진이 왼쪽부터 덮이며 드러납니다. */
+@keyframes filter-wipe {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.motion-wipe {
+  animation: filter-wipe 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.3s both;
+}
+
 @keyframes soft-pulse {
   50% {
     opacity: 0.45;
@@ -357,7 +371,8 @@ body:has(.site-theme) {
 
 @media (prefers-reduced-motion: reduce) {
   .motion-scan,
-  .motion-pulse {
+  .motion-pulse,
+  .motion-wipe {
     animation: none;
   }
 }

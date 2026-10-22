@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { analysisEngine } from "@/lib/analysis/mediapipeEngine";
+import { closeupFilter, sharpness, type CloseupKind } from "@/lib/analysis/closeupFilters";
 import type { AnalysisMessages, SkinMetricKey } from "@/lib/analysis/types";
 
 // 정면에 가까운 AI 인물 사진들(실제 사람이 아님). 실제 촬영 데이터가 생기면 교체합니다.
@@ -67,9 +68,30 @@ function renderVariant(img: HTMLImageElement, v: Variant): HTMLCanvasElement {
   return canvas;
 }
 
+// 확대 촬영 필터 미리보기: 얼굴 사진 가운데(볼·코 주변)를 잘라 세 필터를 적용합니다.
+async function renderCloseups(): Promise<{ kind: CloseupKind; original: string; filtered: string; sharp: number }[]> {
+  const img = await loadImage(FACES[3]);
+  const side = Math.round(img.width * 0.3);
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
+  ctx.drawImage(img, img.width * 0.35, img.height * 0.45, side, side, 0, 0, 512, 512);
+  const data = ctx.getImageData(0, 0, 512, 512);
+  const original = canvas.toDataURL("image/jpeg", 0.9);
+  return (["pigment", "wrinkle", "pore"] as CloseupKind[]).map((kind) => {
+    const out = document.createElement("canvas");
+    out.width = 512;
+    out.height = 512;
+    out.getContext("2d")!.putImageData(closeupFilter[kind](data), 0, 0);
+    return { kind, original, filtered: out.toDataURL("image/jpeg", 0.9), sharp: Math.round(sharpness(data) * 10) / 10 };
+  });
+}
+
 export default function EngineCheck({ messages }: { messages: AnalysisMessages }) {
   const [rows, setRows] = useState<Row[]>([]);
   const [running, setRunning] = useState(false);
+  const [closeups, setCloseups] = useState<Awaited<ReturnType<typeof renderCloseups>>>([]);
 
   async function run() {
     setRunning(true);
@@ -128,6 +150,27 @@ export default function EngineCheck({ messages }: { messages: AnalysisMessages }
       >
         {running ? "Running…" : "Run check"}
       </button>
+      <button
+        type="button"
+        onClick={async () => setCloseups(await renderCloseups())}
+        className="mt-3 ml-2 rounded-xl border border-brand-border px-4 py-2 font-semibold"
+      >
+        Close-up filters
+      </button>
+
+      {closeups.length > 0 && (
+        <div id="closeup-filters" className="mt-4 grid grid-cols-2 gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={closeups[0].original} alt="original" className="w-full" />
+          {closeups.map((c) => (
+            <figure key={c.kind}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={c.filtered} alt={c.kind} className="w-full" />
+              <figcaption className="font-mono text-[11px]">{c.kind} · sharpness {c.sharp}</figcaption>
+            </figure>
+          ))}
+        </div>
+      )}
 
       {rows.length > 0 && (
         <>

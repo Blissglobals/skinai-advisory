@@ -4,12 +4,13 @@ import { useRef, useState } from "react";
 import ProgressBar from "@/components/ProgressBar";
 import NeedChip from "@/components/NeedChip";
 import ScanResult from "@/components/ScanResult";
+import PrecisionScan from "@/components/PrecisionScan";
 import { ScanHeader } from "@/components/site/ui";
 import { siteImages } from "@/content/site/images";
 import CameraCapture, { type CameraCaptureHandle } from "@/components/CameraCapture";
 import { analysisEngine } from "@/lib/analysis/mediapipeEngine";
 import type { DeepScanResult, FaceScanResult, SkinMetricKey } from "@/lib/analysis/types";
-import { useCameraStream } from "@/hooks/useCameraStream";
+import { BASE_VIDEO, useCameraStream } from "@/hooks/useCameraStream";
 import type { Dictionary } from "@/i18n/getDictionary";
 
 interface FailureChoice {
@@ -53,8 +54,10 @@ export default function ScanWizard({
   const consecutiveFailuresRef = useRef(0);
   const [retryNotice, setRetryNotice] = useState<string | null>(null);
   const [failureChoice, setFailureChoice] = useState<FailureChoice | null>(null);
+  // 촬영 단계에서만 카메라를 켭니다(결과 화면에서는 꺼짐, 정밀 분석은 자체 스트림).
   const { stream, error: streamError } = useCameraStream(
-    dict.cameraStream.permissionError
+    dict.cameraStream.permissionError,
+    step === 2 ? BASE_VIDEO : null
   );
 
   const cameraRef = useRef<CameraCaptureHandle>(null);
@@ -134,7 +137,7 @@ export default function ScanWizard({
   return (
     <div className="site-theme app-shell gap-5">
       <ScanHeader homeHref={`/${locale}`} brand={brand} />
-      <ProgressBar currentStep={step} labels={dict.scan.stepLabels} />
+      {step <= 3 && <ProgressBar currentStep={step} labels={dict.scan.stepLabels} />}
 
       {errorMsg && (
         <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
@@ -270,6 +273,18 @@ export default function ScanWizard({
           userAge={userAge}
           focusMetric={selectedNeed}
           minAgeForConsult={MIN_AGE_FOR_CONSULT}
+          onStartPrecision={() => {
+            window.scrollTo(0, 0);
+            setStep(4);
+          }}
+        />
+      )}
+
+      {step === 4 && (
+        <PrecisionScan
+          dict={dict}
+          canConsult={userAge === null || userAge >= MIN_AGE_FOR_CONSULT}
+          onBack={() => setStep(3)}
         />
       )}
     </div>

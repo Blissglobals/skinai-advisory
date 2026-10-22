@@ -22,10 +22,10 @@ const zhCN: DeepPartial<Dictionary> = {
     privacyNote: "照片只在本设备上分析，不会被保存到任何地方。",
   },
 
-  // 초안: 법률 검토 전입니다. [ ] 표시는 회사가 확정해야 하는 값입니다(ko.ts privacy 번역).
+  // 초안: 법률 검토 전입니다.(ko.ts privacy 번역).
   privacy: {
     title: "隐私政策",
-    effectiveDate: "施行日期：[公开前确定]",
+    effectiveDate: "施行日期：2026年10月21日",
     intro:
       "블리스글로벌스 주식회사（外国人患者招揽业登记号 A-2025-01-01-06361，以下简称“本公司”）运营皮肤分析服务，以及首尔皮肤诊所咨询・预约说明服务（以下简称“本服务”）。本政策说明本公司如何处理您的个人信息。",
     sections: [
@@ -47,7 +47,7 @@ const zhCN: DeepPartial<Dictionary> = {
       {
         heading: "3. 保存期限与销毁",
         body: [
-          "咨询相关信息自咨询结束之日起保存[1年]，期满后立即销毁。您要求删除时，除非法律规定须保存，否则会立即销毁。服务器日志在[30天]内删除。",
+          "咨询相关信息自咨询结束之日起保存1年，期满后立即销毁。您要求删除时，除非法律规定须保存，否则会立即销毁。服务器日志在30天内删除。",
         ],
       },
       {
@@ -94,7 +94,7 @@ const zhCN: DeepPartial<Dictionary> = {
       },
       {
         heading: "11. 个人信息保护负责人与联系方式",
-        body: ["블리스글로벌스 주식회사 [负责人姓名・职务]", "电子邮箱：blissglobalscs@gmail.com"],
+        body: ["블리스글로벌스 주식회사 个人信息保护负责人 Kim Dongwon（代表）", "电子邮箱：blissglobalscs@gmail.com"],
       },
       {
         heading: "12. 政策变更",
@@ -103,7 +103,7 @@ const zhCN: DeepPartial<Dictionary> = {
         ],
       },
     ],
-    footer: "本政策自[施行日]起适用。",
+    footer: "本政策自2026年10月21日起适用。",
     linkLabel: "隐私政策",
     continueButton: "我已确认，继续",
   },
