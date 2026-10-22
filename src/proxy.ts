@@ -27,7 +27,30 @@ function preferredLocale(request: NextRequest): Locale {
   return defaultLocale;
 }
 
+// 출시 전 잠금: SITE_LOCK_PASSWORD 환경변수가 있는 배포에서만 비밀번호를 묻습니다(아이디는 아무거나).
+// 출시할 때 Vercel에서 이 변수를 지우면 풀립니다. API(LINE 웹훅 등)는 LINE 서버가 불러야 해서 matcher에서 빠져 있습니다.
+function lockedResponse(request: NextRequest): NextResponse | undefined {
+  const password = process.env.SITE_LOCK_PASSWORD;
+  if (!password) return;
+  const [scheme, encoded] = (request.headers.get("authorization") ?? "").split(" ");
+  if (scheme === "Basic" && encoded) {
+    try {
+      const decoded = atob(encoded);
+      if (decoded.slice(decoded.indexOf(":") + 1) === password) return;
+    } catch {
+      // 잘못된 인코딩이면 아래에서 다시 묻습니다.
+    }
+  }
+  return new NextResponse("Authentication required", {
+    status: 401,
+    headers: { "WWW-Authenticate": 'Basic realm="Bliss Globals (pre-launch)", charset="UTF-8"' },
+  });
+}
+
 export function proxy(request: NextRequest) {
+  const locked = lockedResponse(request);
+  if (locked) return locked;
+
   const { pathname } = request.nextUrl;
 
   // API 라우트(LINE 웹훅 등)는 언어 프리픽스와 무관한 고정 경로여야 하므로
