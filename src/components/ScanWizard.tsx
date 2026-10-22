@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import ProgressBar from "@/components/ProgressBar";
 import NeedChip from "@/components/NeedChip";
 import ScanResult from "@/components/ScanResult";
@@ -42,7 +43,6 @@ export default function ScanWizard({
   brand: string;
   aiNotice: string;
 }) {
-  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -51,6 +51,15 @@ export default function ScanWizard({
   const [deepScan, setDeepScan] = useState<DeepScanResult | null>(null);
   const [cameraKey, setCameraKey] = useState(0);
   const [userAge, setUserAge] = useState<number | null>(null);
+  // 단계는 주소(?s=)에 남겨서 휴대폰 뒤로가기가 이전 단계로 가게 합니다.
+  // 데이터 없이 중간 단계 주소로 들어오면(새로고침 등) 처음부터 시작합니다.
+  const urlStep = Number(useSearchParams().get("s")) || 1;
+  const step = (urlStep >= 2 && userAge === null) || (urlStep >= 3 && !deepScan) ? 1 : urlStep;
+  const goStep = (n: number, replace = false) =>
+    window.history[replace ? "replaceState" : "pushState"](null, "", `?s=${n}`);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [step]);
   const consecutiveFailuresRef = useRef(0);
   const [retryNotice, setRetryNotice] = useState<string | null>(null);
   const [failureChoice, setFailureChoice] = useState<FailureChoice | null>(null);
@@ -103,7 +112,8 @@ export default function ScanWizard({
       const { face, deep } = await analysisEngine.scan(video, dict.analysisMessages, metricLabels, forceAccept);
       setFaceScan(face);
       setDeepScan(deep);
-      setStep(3);
+      // 결과에서 뒤로가기를 누르면 촬영(자동 재촬영)이 아니라 처음 화면으로 가도록 바꿔치기합니다.
+      goStep(3, true);
       consecutiveFailuresRef.current = 0;
       setFailureChoice(null);
     } catch (e) {
@@ -228,7 +238,7 @@ export default function ScanWizard({
 
           <button
             type="button"
-            onClick={() => setStep(2)}
+            onClick={() => goStep(2)}
             disabled={!selectedNeed || userAge === null}
             className="min-h-14 w-full rounded-2xl bg-brand-primary px-4 text-[15px] font-semibold text-brand-primary-fg shadow-tinted active:scale-[0.98] disabled:opacity-35 disabled:active:scale-100"
           >
@@ -273,10 +283,7 @@ export default function ScanWizard({
           userAge={userAge}
           focusMetric={selectedNeed}
           minAgeForConsult={MIN_AGE_FOR_CONSULT}
-          onStartPrecision={() => {
-            window.scrollTo(0, 0);
-            setStep(4);
-          }}
+          onStartPrecision={() => goStep(4)}
         />
       )}
 
@@ -284,7 +291,7 @@ export default function ScanWizard({
         <PrecisionScan
           dict={dict}
           canConsult={userAge === null || userAge >= MIN_AGE_FOR_CONSULT}
-          onBack={() => setStep(3)}
+          onBack={() => goStep(3)}
         />
       )}
     </div>

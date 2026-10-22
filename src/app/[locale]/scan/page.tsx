@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/getDictionary";
@@ -14,5 +15,10 @@ export default async function ScanPage({
   const dict = await getDictionary(locale);
 
   const { ui } = getSiteContent(locale);
-  return <ScanWizard dict={dict} locale={locale} brand={ui.brand} aiNotice={ui.aiPageNotice} />;
+  // ScanWizard는 단계를 주소(?s=)에서 읽으므로 Suspense 안에서 렌더링합니다.
+  return (
+    <Suspense>
+      <ScanWizard dict={dict} locale={locale} brand={ui.brand} aiNotice={ui.aiPageNotice} />
+    </Suspense>
+  );
 }

@@ -140,7 +140,9 @@ export default function CloseupCapture({
           muted
           onLoadedMetadata={(e) =>
             onInfo({
-              resolution: `${e.currentTarget.videoWidth}×${e.currentTarget.videoHeight}`,
+              resolution: `${e.currentTarget.videoWidth}×${e.currentTarget.videoHeight}${
+                track?.getSettings().facingMode ? ` · ${track.getSettings().facingMode}` : ""
+              }`,
               torch: hasTorch(track),
             })
           }

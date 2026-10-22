@@ -44,6 +44,8 @@ interface CameraCaptureProps {
   // 촬영 직후 분석이 도는 동안 정지 화면 위에 스캔 연출을 보여줍니다.
   analyzing?: boolean;
   analyzingLabel?: string;
+  // 전면 카메라는 거울처럼 좌우 반전해서 보여줍니다. 후면 카메라는 false.
+  mirror?: boolean;
 }
 
 const HOLD_SECONDS = 3;
@@ -71,6 +73,7 @@ const CameraCapture = forwardRef<CameraCaptureHandle, CameraCaptureProps>(
       dict,
       analyzing = false,
       analyzingLabel,
+      mirror = true,
     },
     ref
   ) {
@@ -133,8 +136,10 @@ const CameraCapture = forwardRef<CameraCaptureHandle, CameraCaptureProps>(
         canvas.height = video.videoHeight;
         const ctx = canvas.getContext("2d");
         if (ctx) {
-          ctx.translate(canvas.width, 0);
-          ctx.scale(-1, 1);
+          if (mirror) {
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+          }
           ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
           const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
           applyWhiteBalance(frame, computeFinalGains());
@@ -316,7 +321,7 @@ const CameraCapture = forwardRef<CameraCaptureHandle, CameraCaptureProps>(
             autoPlay
             playsInline
             muted
-            className="h-full w-full object-cover [transform:scaleX(-1)]"
+            className={`h-full w-full object-cover ${mirror ? "[transform:scaleX(-1)]" : ""}`}
             style={{ filter: `url(#${filterId})` }}
           />
           {freezeFrameUrl && (

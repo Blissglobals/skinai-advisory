@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import CameraCapture, { type CameraCaptureHandle } from "@/components/CameraCapture";
 import CloseupCapture, { type CloseupDeviceInfo, type CloseupShot } from "@/components/CloseupCapture";
 import CountUp from "@/components/CountUp";
@@ -21,12 +22,20 @@ const PRECISION_KEYS: SkinMetricKey[] = ["pore", "wrinkle", "pigment"];
 // 화면 조명(흰 화면)으로 바뀐 밝기에 카메라 자동 노출이 따라올 시간.
 const FLASH_SETTLE_MS = 500;
 
-const FACE_VIDEO: MediaTrackConstraints = { facingMode: "user", width: { ideal: 1920 }, height: { ideal: 1080 } };
-const closeupVideo = (mode: Mode): MediaTrackConstraints => ({
-  facingMode: mode === "helper" ? { ideal: "environment" } : "user",
+// 찍어주는 모드는 전체 얼굴·확대 모두 후면 카메라. exact로 요구하고, 후면이 없는 기기는
+// useCameraStream이 가능한 카메라로 대체합니다(ideal만 주면 일부 안드로이드가 전면을 엽니다).
+const cameraFor = (mode: Mode): MediaTrackConstraints => ({
+  facingMode: mode === "helper" ? { exact: "environment" } : "user",
   width: { ideal: 1920 },
   height: { ideal: 1080 },
 });
+
+const STAGES: Stage[] = ["intro", "face", "pigment", "wrinkle", "pore", "result"];
+
+function trackInfo(stream: MediaStream | null, video: HTMLVideoElement): string {
+  const facing = stream?.getVideoTracks()[0]?.getSettings().facingMode;
+  return `${video.videoWidth}×${video.videoHeight}${facing ? ` · ${facing}` : ""}`;
+}
 
 const isZone = (stage: Stage): stage is CloseupKind => (ZONES as string[]).includes(stage);
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -47,7 +56,6 @@ export default function PrecisionScan({
 }) {
   const p = dict.precision;
   const [mode, setMode] = useState<Mode>("self");
-  const [stage, setStage] = useState<Stage>("intro");
   const [deep, setDeep] = useState<DeepScanResult | null>(null);
   const [faceInfo, setFaceInfo] = useState<{ resolution: string; pxPerMm: number | null } | null>(null);
   const [closeInfo, setCloseInfo] = useState<CloseupDeviceInfo | null>(null);
@@ -57,7 +65,17 @@ export default function PrecisionScan({
   const [cameraKey, setCameraKey] = useState(0);
   const cameraRef = useRef<CameraCaptureHandle>(null);
 
-  const video = stage === "face" ? FACE_VIDEO : isZone(stage) ? closeupVideo(mode) : null;
+  // 단계는 주소(?s=4&p=)에 남겨서 휴대폰 뒤로가기가 이전 촬영 단계로 가게 합니다.
+  const urlStage = useSearchParams().get("p") as Stage | null;
+  const wanted = urlStage && STAGES.includes(urlStage) ? urlStage : "intro";
+  // 전체 얼굴 결과 없이 확대·결과 단계 주소로 들어오면 안내 화면부터 시작합니다.
+  const stage: Stage = wanted !== "intro" && wanted !== "face" && !deep ? "intro" : wanted;
+  const setStage = (next: Stage) => window.history.pushState(null, "", `?s=4&p=${next}`);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [stage]);
+
+  const video = stage === "face" || isZone(stage) ? cameraFor(mode) : null;
   const { stream, error: streamError } = useCameraStream(dict.cameraStream.permissionError, video);
 
   const metricLabels: Record<SkinMetricKey, string> = {
@@ -75,14 +93,16 @@ export default function PrecisionScan({
   async function handleFaceCapture() {
     const v = cameraRef.current?.getVideoElement();
     if (!v) return;
-    setFlashing(true);
+    // 후면 카메라로 찍어줄 때는 화면이 얼굴 반대편이라 화면 조명이 의미가 없습니다.
+    const useScreenLight = mode === "self";
+    setFlashing(useScreenLight);
     setError(null);
     try {
-      await sleep(FLASH_SETTLE_MS);
+      if (useScreenLight) await sleep(FLASH_SETTLE_MS);
       const { deep } = await analysisEngine.scan(v, dict.analysisMessages, metricLabels);
       const landmarks = tryDetectLandmarksForVideoFrame(await getFaceLandmarker(), v, performance.now());
       setFaceInfo({
-        resolution: `${v.videoWidth}×${v.videoHeight}`,
+        resolution: trackInfo(stream, v),
         pxPerMm: landmarks ? pixelsPerMm(landmarks, v.videoWidth, v.videoHeight) : null,
       });
       setDeep(deep);
@@ -95,7 +115,7 @@ export default function PrecisionScan({
   }
 
   // 화면을 흰색 조명처럼 쓰는 단계(전체 얼굴, 혼자 찍는 확대 촬영).
-  const ringLight = stage === "face" || (mode === "self" && isZone(stage));
+  const ringLight = mode === "self" && (stage === "face" || isZone(stage));
 
   return (
     <div
@@ -174,6 +194,7 @@ export default function PrecisionScan({
               ref={cameraRef}
               guideLabel={dict.scan.step1.guideLabel}
               autoCapture={!error}
+              mirror={mode === "self"}
               onAutoCapture={handleFaceCapture}
               stream={stream}
               streamError={streamError}
