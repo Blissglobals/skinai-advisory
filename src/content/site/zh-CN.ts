@@ -15,6 +15,7 @@ const zhCN: SiteContent = {
     comingSoon: "准备中",
     seeAll: "查看全部",
     adLabel: "广告",
+    spotBadges: { visited: "亲自探店", hot: "人气名店" },
     aiPersonLabel: "AI生成虚拟人物",
     aiPageNotice: "本页含有AI生成的虚拟人物照片。",
     languageLabel: "语言",

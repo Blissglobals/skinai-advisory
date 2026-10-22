@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { closeupFilter, sharpness, type CloseupKind } from "@/lib/analysis/closeupFilters";
-import { playShutterClick } from "@/lib/shutterSound";
+import { playBeep, playShutterClick } from "@/lib/shutterSound";
 import type { Dictionary } from "@/i18n/getDictionary";
 
 export interface CloseupShot {
@@ -22,6 +22,11 @@ const CROP_RATIO = 0.6;
 const OUTPUT_MAX_PX = 768;
 const BURST = 4;
 const BURST_GAP_MS = 90;
+// 거울 촬영은 화면을 누르기 어려워 카운트다운 뒤 자동으로 찍습니다.
+// 손이 조금 흔들려도 되도록 더 많이, 더 길게 찍어 가장 선명한 장을 고릅니다.
+const AUTO_SECONDS = 6;
+const AUTO_BURST = 8;
+const AUTO_BURST_GAP_MS = 150;
 // ponytail: 임시 기준값(AI 샘플 기준 추정). 기기별 측정값이 쌓이면 다시 정합니다.
 const SHARP_MIN = 6;
 
@@ -51,6 +56,7 @@ export default function CloseupCapture({
   stream,
   streamError,
   mirror,
+  autoTimer = false,
   dict,
   onDone,
   onSkip,
@@ -60,6 +66,7 @@ export default function CloseupCapture({
   stream: MediaStream | null;
   streamError: string | null;
   mirror: boolean;
+  autoTimer?: boolean;
   dict: Dictionary;
   onDone: (shot: CloseupShot) => void;
   onSkip: () => void;
@@ -72,6 +79,8 @@ export default function CloseupCapture({
   const [torchChoice, setTorchChoice] = useState<boolean | null>(null);
   const [sharp, setSharp] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [count, setCount] = useState(AUTO_SECONDS);
+  const captureRef = useRef<() => Promise<void>>(async () => {});
   const track = stream?.getVideoTracks()[0];
   const torchSupported = hasTorch(track) && !torchFailed;
   const torchOn = torchChoice ?? !!(track?.getSettings() as { torch?: boolean } | undefined)?.torch;
@@ -89,6 +98,21 @@ export default function CloseupCapture({
     return () => clearInterval(interval);
   }, [busy]);
 
+  useEffect(() => {
+    if (!autoTimer || !stream) return;
+    let n = AUTO_SECONDS;
+    const tick = setInterval(() => {
+      n -= 1;
+      playBeep(n === 0 ? 1320 : 880);
+      setCount(n);
+      if (n <= 0) {
+        clearInterval(tick);
+        void captureRef.current();
+      }
+    }, 1000);
+    return () => clearInterval(tick);
+  }, [autoTimer, stream]);
+
   async function toggleTorch() {
     if (!track) return;
     const next = !torchOn;
@@ -105,16 +129,17 @@ export default function CloseupCapture({
     if (!video || video.videoWidth === 0 || busy) return;
     setBusy(true);
     playShutterClick();
+    const burst = autoTimer ? AUTO_BURST : BURST;
     let best: HTMLCanvasElement | null = null;
     let bestScore = -1;
-    for (let i = 0; i < BURST; i++) {
+    for (let i = 0; i < burst; i++) {
       const canvas = grabCenter(video, OUTPUT_MAX_PX);
       const score = sharpness(pixels(canvas));
       if (score > bestScore) {
         best = canvas;
         bestScore = score;
       }
-      if (i < BURST - 1) await sleep(BURST_GAP_MS);
+      if (i < burst - 1) await sleep(autoTimer ? AUTO_BURST_GAP_MS : BURST_GAP_MS);
     }
     const filtered = document.createElement("canvas");
     filtered.width = best!.width;
@@ -128,6 +153,9 @@ export default function CloseupCapture({
     });
   }
 
+  useEffect(() => {
+    captureRef.current = capture;
+  });
   const isSharp = sharp >= SHARP_MIN;
 
   return (
@@ -162,6 +190,15 @@ export default function CloseupCapture({
             style={{ width: `${Math.min(100, (sharp / SHARP_MIN) * 70)}%` }}
           />
         </div>
+        {autoTimer && !busy && count > 0 && (
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+            <span className="font-display text-7xl font-semibold text-white drop-shadow-lg">{count}</span>
+            <span className="mt-1 rounded-full bg-black/40 px-3 py-1 text-xs text-white">
+              {count}
+              {p.autoShot}
+            </span>
+          </div>
+        )}
         {busy && <div className="pointer-events-none absolute inset-0 bg-white camera-flash" />}
         {streamError && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/70 p-4 text-center text-sm text-white">

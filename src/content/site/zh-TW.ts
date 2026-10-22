@@ -15,6 +15,7 @@ const zhTW: SiteContent = {
     comingSoon: "準備中",
     seeAll: "查看全部",
     adLabel: "廣告",
+    spotBadges: { visited: "親自造訪", hot: "人氣名店" },
     aiPersonLabel: "AI生成虛擬人物",
     aiPageNotice: "本頁含有AI生成的虛擬人物照片。",
     languageLabel: "語言",

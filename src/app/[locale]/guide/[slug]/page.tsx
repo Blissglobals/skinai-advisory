@@ -62,16 +62,30 @@ export default async function GuidePage({
                   key={spot.name}
                   className="flex items-start justify-between gap-3 rounded-2xl border border-brand-border bg-brand-surface p-4"
                 >
-                  <div>
-                    <p className="flex items-center gap-2 text-[15px] font-semibold">
+                  <div className="min-w-0 flex-1">
+                    <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] font-semibold">
                       {spot.name}
                       {spot.sponsored && (
                         <span className="rounded bg-foreground/[.08] px-1.5 py-0.5 text-[10px] text-foreground/60">
                           {c.ui.adLabel}
                         </span>
                       )}
+                      {spot.badges?.map((badge) => (
+                        <span
+                          key={badge}
+                          className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                            badge === "visited" ? "bg-brand-secondary text-brand-secondary-fg" : "bg-amber-100 text-amber-800"
+                          }`}
+                        >
+                          {c.ui.spotBadges[badge]}
+                        </span>
+                      ))}
                     </p>
                     <p className="mt-1 text-sm text-foreground/60">{spot.note}</p>
+                    {spot.photo && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={spot.photo} alt={spot.name} loading="lazy" className="mt-3 aspect-[4/3] w-full rounded-xl object-cover" />
+                    )}
                   </div>
                   {spot.mapUrl && (
                     <a

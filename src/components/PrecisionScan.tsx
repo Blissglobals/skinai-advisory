@@ -14,7 +14,9 @@ import { formatScoreOutOf10 } from "@/lib/format";
 import { lineConsultUrl } from "@/lib/line/consult";
 import type { Dictionary } from "@/i18n/getDictionary";
 
-type Mode = "self" | "helper";
+// mirror: 후면 카메라로 거울을 보며 혼자, helper: 다른 사람이 후면으로, self: 전면(정확도 낮음).
+type Mode = "mirror" | "helper" | "self";
+const MODES: Mode[] = ["mirror", "helper", "self"];
 type Stage = "intro" | "face" | CloseupKind | "result";
 
 const ZONES: CloseupKind[] = ["pigment", "wrinkle", "pore"];
@@ -22,10 +24,10 @@ const PRECISION_KEYS: SkinMetricKey[] = ["pore", "wrinkle", "pigment"];
 // 화면 조명(흰 화면)으로 바뀐 밝기에 카메라 자동 노출이 따라올 시간.
 const FLASH_SETTLE_MS = 500;
 
-// 찍어주는 모드는 전체 얼굴·확대 모두 후면 카메라. exact로 요구하고, 후면이 없는 기기는
+// 후면 모드는 전체 얼굴·확대 모두 후면 카메라. exact로 요구하고, 후면이 없는 기기는
 // useCameraStream이 가능한 카메라로 대체합니다(ideal만 주면 일부 안드로이드가 전면을 엽니다).
 const cameraFor = (mode: Mode): MediaTrackConstraints => ({
-  facingMode: mode === "helper" ? { exact: "environment" } : "user",
+  facingMode: mode === "self" ? "user" : { exact: "environment" },
   width: { ideal: 1920 },
   height: { ideal: 1080 },
 });
@@ -59,7 +61,7 @@ export default function PrecisionScan({
 }) {
   const p = dict.precision;
   const backLabel = hasBaseResult ? p.backToBase : p.backToStart;
-  const [mode, setMode] = useState<Mode>("self");
+  const [mode, setMode] = useState<Mode>("mirror");
   const [deep, setDeep] = useState<DeepScanResult | null>(null);
   const [faceInfo, setFaceInfo] = useState<{ resolution: string; pxPerMm: number | null } | null>(null);
   const [closeInfo, setCloseInfo] = useState<CloseupDeviceInfo | null>(null);
@@ -97,7 +99,7 @@ export default function PrecisionScan({
   async function handleFaceCapture() {
     const v = cameraRef.current?.getVideoElement();
     if (!v) return;
-    // 후면 카메라로 찍어줄 때는 화면이 얼굴 반대편이라 화면 조명이 의미가 없습니다.
+    // 후면 카메라일 때는 화면이 얼굴 반대편이라 화면 조명이 의미가 없습니다.
     const useScreenLight = mode === "self";
     setFlashing(useScreenLight);
     setError(null);
@@ -155,22 +157,41 @@ export default function PrecisionScan({
           </ol>
           <div className="flex flex-col gap-2">
             <p className="text-sm font-medium">{p.modeLabel}</p>
-            <div className="grid grid-cols-2 gap-2">
-              {(["self", "helper"] as Mode[]).map((m) => (
-                <button
-                  key={m}
-                  type="button"
-                  onClick={() => setMode(m)}
-                  className={`rounded-2xl border p-3 text-left active:scale-[0.98] ${
-                    mode === m ? "border-brand-accent bg-brand-secondary" : "border-brand-border"
-                  }`}
-                >
-                  <p className="text-sm font-semibold">{m === "self" ? p.modeSelf : p.modeHelper}</p>
-                  <p className="mt-1 text-xs text-foreground/55">{m === "self" ? p.modeSelfHint : p.modeHelperHint}</p>
-                </button>
-              ))}
-            </div>
+            <p className="text-xs text-foreground/55">{p.rearAdvice}</p>
+            {MODES.map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => setMode(m)}
+                className={`rounded-2xl border p-3 text-left active:scale-[0.98] ${
+                  mode === m ? "border-brand-accent bg-brand-secondary" : "border-brand-border"
+                }`}
+              >
+                <p className="flex items-center gap-2 text-sm font-semibold">
+                  {m === "mirror" ? p.modeMirror : m === "helper" ? p.modeHelper : p.modeSelf}
+                  {m !== "self" && (
+                    <span className="rounded-full bg-brand-accent px-2 py-0.5 text-[10px] font-medium text-brand-accent-fg">
+                      {p.recommended}
+                    </span>
+                  )}
+                </p>
+                <p className="mt-1 text-xs text-foreground/55">
+                  {m === "mirror" ? p.modeMirrorHint : m === "helper" ? p.modeHelperHint : p.modeSelfHint}
+                </p>
+              </button>
+            ))}
           </div>
+          {mode === "mirror" && (
+            <div className="rounded-3xl bg-brand-secondary p-4">
+              <p className="text-sm font-semibold">{p.mirrorGuideTitle}</p>
+              <MirrorDiagram labels={p.mirrorDiagram} />
+              <ol className="mt-2 flex list-decimal flex-col gap-1 pl-4 text-xs leading-relaxed text-foreground/70">
+                {p.mirrorGuideSteps.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ol>
+            </div>
+          )}
           <p className="text-xs text-foreground/50">{p.notice}</p>
           <button
             type="button"
@@ -186,7 +207,9 @@ export default function PrecisionScan({
       )}
 
       {stage === "face" && (
-        <>
+        // 거울 모드: 화면 전체를 좌우 반전해 거울에 비친 글자가 바로 읽히게 합니다.
+        // 영상은 CameraCapture에서 한 번 더 반전되어(mirror) 화면상으로는 원래 방향입니다.
+        <div className={`flex flex-col gap-4 ${mode === "mirror" ? "[transform:scaleX(-1)]" : ""}`}>
           <div>
             <p className="text-xs font-medium tracking-wide text-brand-accent">{p.faceBadge}</p>
             <h1 className="font-display mt-1 text-xl font-semibold">{p.faceHeading}</h1>
@@ -198,7 +221,7 @@ export default function PrecisionScan({
               ref={cameraRef}
               guideLabel={dict.scan.step1.guideLabel}
               autoCapture={!error}
-              mirror={mode === "self"}
+              mirror={mode !== "helper"}
               onAutoCapture={handleFaceCapture}
               stream={stream}
               streamError={streamError}
@@ -220,11 +243,11 @@ export default function PrecisionScan({
               </button>
             </div>
           )}
-        </>
+        </div>
       )}
 
       {isZone(stage) && (
-        <>
+        <div className={`flex flex-col gap-4 ${mode === "mirror" ? "[transform:scaleX(-1)]" : ""}`}>
           <div>
             <p className="text-xs font-medium tracking-wide text-brand-accent">{p.zones[stage].badge}</p>
             <h1 className="font-display mt-1 text-xl font-semibold">{p.zones[stage].heading}</h1>
@@ -234,7 +257,8 @@ export default function PrecisionScan({
             kind={stage}
             stream={stream}
             streamError={streamError}
-            mirror={mode === "self"}
+            mirror={mode !== "helper"}
+            autoTimer={mode === "mirror"}
             dict={dict}
             onInfo={setCloseInfo}
             onSkip={() => nextZone(stage)}
@@ -243,7 +267,7 @@ export default function PrecisionScan({
               nextZone(stage);
             }}
           />
-        </>
+        </div>
       )}
 
       {stage === "result" && deep && (
@@ -254,6 +278,7 @@ export default function PrecisionScan({
           faceInfo={faceInfo}
           closeInfo={closeInfo}
           canConsult={canConsult}
+          mode={mode}
           backLabel={backLabel}
           onBack={onBack}
         />
@@ -269,10 +294,12 @@ function PrecisionResult({
   faceInfo,
   closeInfo,
   canConsult,
+  mode,
   backLabel,
   onBack,
 }: {
   dict: Dictionary;
+  mode: Mode;
   backLabel: string;
   deep: DeepScanResult;
   shots: Partial<Record<CloseupKind, CloseupShot>>;
@@ -295,6 +322,7 @@ function PrecisionResult({
     .join(" · ");
 
   const deviceRows: [string, string][] = [
+    [p.device.mode, mode === "mirror" ? p.modeMirror : mode === "helper" ? p.modeHelper : p.modeSelf],
     [p.device.faceRes, faceInfo?.resolution ?? p.unknown],
     [p.device.pxPerMm, faceInfo?.pxPerMm ? faceInfo.pxPerMm.toFixed(1) : p.unknown],
     [p.device.closeRes, closeInfo?.resolution ?? p.unknown],
@@ -312,6 +340,12 @@ function PrecisionResult({
           <span className="ml-1 text-sm font-normal text-foreground/50">{dict.scan.step4.outOf10}</span>
         </h1>
       </div>
+
+      {mode === "self" && (
+        <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
+          {p.frontLowAccuracy}
+        </p>
+      )}
 
       {deep.lowConfidence && (
         <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
@@ -402,5 +436,32 @@ function CloseupCard({ label, shot, dict }: { label: string; shot: CloseupShot; 
         </div>
       </div>
     </div>
+  );
+}
+
+// 거울 촬영 자세 그림(위에서 본 모습): 뒷면 카메라는 얼굴, 화면은 거울 쪽.
+// AI 생성 사진은 렌즈 방향이 반대로(일반 거울 셀카) 나와서 그림으로 안내합니다.
+function MirrorDiagram({ labels }: { labels: { face: string; camera: string; screen: string; mirror: string } }) {
+  return (
+    <svg viewBox="0 0 260 110" className="mt-3 w-full" role="img" aria-label={`${labels.camera} → ${labels.face}, ${labels.screen} → ${labels.mirror}`}>
+      <defs>
+        <marker id="mirror-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--brand-accent)" />
+        </marker>
+      </defs>
+      <g className="text-brand-accent" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="40" cy="55" r="22" fill="var(--brand-surface)" />
+        <path d="M114 55 L66 55" markerEnd="url(#mirror-arrow)" />
+        <rect x="118" y="35" width="10" height="40" rx="3" fill="currentColor" />
+        <path d="M132 55 L222 55" markerEnd="url(#mirror-arrow)" strokeDasharray="4 4" />
+        <line x1="232" y1="10" x2="232" y2="100" strokeWidth="5" opacity="0.5" />
+      </g>
+      <g className="fill-current text-foreground/70" fontSize="10" textAnchor="middle">
+        <text x="40" y="95">{labels.face}</text>
+        <text x="90" y="28">{labels.camera}</text>
+        <text x="178" y="45">{labels.screen}</text>
+        <text x="232" y="108">{labels.mirror}</text>
+      </g>
+    </svg>
   );
 }

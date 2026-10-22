@@ -9,11 +9,17 @@ import zhTW from "./zh-TW";
 // 배열(목록)은 통째로 바뀌므로 번역할 때 목록 전체를 넣어야 합니다.
 // ponytail: 콘텐츠를 코드에 두는 방식 — 직원이 자주 고치게 되면 CMS로 옮깁니다.
 
+// visited = 직원이 직접 가본 곳(직접 찍은 사진을 photo에), hot = 대기 줄이 긴 인기 식당.
+// 실제로 가본 곳에만 visited를 붙입니다.
+export type SpotBadge = "visited" | "hot";
+
 export interface Spot {
   name: string;
   note: string;
   sponsored: boolean;
   mapUrl?: string;
+  badges?: SpotBadge[];
+  photo?: string;
 }
 
 export interface Clinic {
@@ -77,6 +83,7 @@ export interface SiteContent {
     comingSoon: string;
     seeAll: string;
     adLabel: string;
+    spotBadges: Record<SpotBadge, string>;
     aiPersonLabel: string;
     aiPageNotice: string;
     languageLabel: string;
