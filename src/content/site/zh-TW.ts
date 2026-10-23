@@ -6,12 +6,12 @@ const ASK = "諮詢時說明";
 
 const zhTW: SiteContent = {
   ui: {
-    brand: "Bliss Globals",
+    brand: "ZeroLab",
     draftNotice: "範例內容・尚未經醫師審閱",
-    consultCta: "透過LINE免費諮詢",
-    consultBar: "LINE免費諮詢",
-    scanCta: "試試免費肌膚分析",
-    scanBar: "免費肌膚分析",
+    consultCta: "透過LINE諮詢診所",
+    consultBar: "LINE諮詢",
+    scanCta: "開始線上肌膚分析",
+    scanBar: "線上肌膚分析",
     comingSoon: "準備中",
     seeAll: "查看全部",
     adLabel: "廣告",
@@ -19,9 +19,9 @@ const zhTW: SiteContent = {
     aiPersonLabel: "AI生成虛擬人物",
     aiPageNotice: "本頁含有AI生成的虛擬人物照片。",
     languageLabel: "語言",
-    nav: { treatments: "療程", guide: "指南" },
+    nav: { treatments: "療程", guide: "周邊指南" },
     consultMessage: {
-      title: "【免費諮詢申請】",
+      title: "【肌膚分析諮詢申請】",
       interest: "感興趣的療程",
       topic: "想詢問的內容",
       concern: "肌膚困擾",
@@ -29,26 +29,26 @@ const zhTW: SiteContent = {
   },
 
   home: {
-    eyebrow: "免費肌膚分析",
-    heading: "一張照片，\n先了解\n自己的肌膚。",
-    subheading: "用一張自拍立即查看色斑與皺紋狀態。想進一步了解，還能免費諮詢首爾診所。",
-    chips: ["免費肌膚分析", "照片僅在手機內分析", "諮詢與口譯免費"],
+    eyebrow: "ZeroLab診所 線上肌膚分析",
+    heading: "診所打造的\n線上肌膚分析，\n先來試試看。",
+    subheading: "用一張照片查看色斑與皺紋狀態，再帶著精密分析報告諮詢ZeroLab診所。結果僅供參考，並非診斷。",
+    chips: ["線上肌膚分析", "精密分析報告", "帶著報告諮詢診所"],
     marquee: ["皮秒雷射", "水光針", "音波拉提", "電波拉提", "飛梭雷射", "痘痘療程", "血管雷射"],
-    quote: "諮詢可以輕鬆問，\n決定留到看診後。",
-    quoteBy: "是否接受療程，請在醫師看診後自行決定。",
+    quote: "分析在線上，\n診斷在診所。",
+    quoteBy: "是否接受療程，請在院長看診後自行決定。",
     concernsTitle: "您有哪些肌膚困擾？",
     treatmentsTitle: "熱門療程",
     stepsTitle: "服務流程",
-    guideTitle: "首爾療程旅遊指南",
-    clinicTitle: "合作診所",
+    guideTitle: "弘大周邊 & 首爾旅遊指南",
+    clinicTitle: "診所資訊",
     faqTitle: "常見問題",
-    finalTitle: "不確定哪種療程適合自己？",
-    finalBody: "用一張肌膚照片輕鬆看看，或直接透過諮詢詢問我們。",
+    finalTitle: "想在診所仔細看看自己的肌膚嗎？",
+    finalBody: "先用線上分析確認，再帶著報告透過LINE諮詢。",
   },
 
   concernPage: {
     causes: "為什麼會出現？",
-    treatments: "首爾皮膚診所常見的處理方式",
+    treatments: "在診所會這樣處理",
     homeCare: "日常保養這樣做",
     scanTitle: "想了解自己的肌膚狀態？",
     scanBody: "用一張照片輕鬆看看肌膚狀態。照片只會在您的裝置上分析。",
@@ -56,7 +56,7 @@ const zhTW: SiteContent = {
 
   treatmentPage: {
     indexTitle: "療程介紹",
-    indexIntro: "依肌膚困擾整理了首爾皮膚診所常見的療程。",
+    indexIntro: "依肌膚困擾整理了常見的療程。適合的療程會在院長看診後決定。",
     relatedConcerns: "適合這些困擾",
     forWhom: "適合這樣的人",
     facts: "重點整理",
@@ -66,19 +66,19 @@ const zhTW: SiteContent = {
   },
 
   guidePage: {
-    title: "首爾療程旅遊指南",
-    intro: "整理了療程前後適合去的地方，以及值得準備的東西。",
+    title: "弘大周邊 & 首爾旅遊指南",
+    intro: "整理了ZeroLab診所周邊值得順道一去的地方，以及首爾代表性的旅遊景點。",
     lastChecked: "最後確認日期",
     sponsoredNote: "有合作或贊助的店家會標示「廣告」。",
   },
 
   footer: {
-    company: "Bliss Globals（블리스글로벌스 주식회사）",
-    registration: "外國人患者招攬業登錄號碼 A-2025-01-01-06361",
+    company: "ZeroLab診所（제로랩의원）",
+    registration: "代表院長 Kim Dongwon・서울 마포구 양화로 151 욱도빌딩 5~7층・代表電話 1544-5598",
     disclaimer:
-      "本網站資訊僅為一般性說明，並非醫學診斷或處方。是否接受療程，請務必與醫師諮詢後再決定。",
+      "線上肌膚分析僅供參考，並非醫學診斷或處方。肌膚狀態與是否接受療程，請在到診所看診、與院長諮詢後再決定。",
     aiNotice:
-      "本網站的照片皆為AI生成圖像，並非真實人物、診所或療程結果。肌膚分析分數為AI計算的參考資訊。",
+      "本網站的照片皆為AI生成圖像，並非真實人物或療程結果。肌膚分析分數為AI計算的參考資訊。",
     privacy: "隱私權政策",
   },
 
@@ -374,24 +374,51 @@ const zhTW: SiteContent = {
   ],
 
   steps: [
-    { title: "透過LINE諮詢", body: "告訴我們您的肌膚困擾和旅遊行程。" },
-    { title: "診所與報價說明", body: "說明適合您的合作診所與預估費用。" },
-    { title: "預約後來韓", body: "依預約日期前來韓國。" },
-    { title: "看診與療程", body: "經醫師看診後，再決定是否接受療程。" },
-    { title: "回國後照護", body: "有任何問題，都可以繼續透過LINE詢問。" },
+    { title: "線上肌膚分析", body: "用一張照片查看色斑與皺紋狀態。" },
+    { title: "精密分析報告", body: "透過放大拍攝，連毛孔都仔細查看，並取得分析報告。" },
+    { title: "透過LINE諮詢報告", body: "傳送報告後，我們會在諮詢時間（韓國時間10:00～18:00）內回覆您。" },
+    { title: "預約後到診", body: "依您的行程前往ZeroLab診所。" },
+    { title: "看診後決定", body: "經院長看診後，再決定是否接受療程。" },
   ],
 
   guides: [
     {
+      slug: "attractions",
+      ready: true,
+      lastChecked: "2026-10-23",
+      title: "首爾熱門景點",
+      summary: "從弘大入口站搭地鐵就能輕鬆抵達的首爾代表性景點",
+      sections: [
+        {
+          heading: "從弘大入口站出發",
+          body: "所需時間以 Kakao 地圖大眾運輸路線為準，可能因時段而不同。",
+          spots: [
+            { name: "동대문디자인플라자(DDP)（東大門設計廣場）", note: "東大門歷史文化公園站（2、4、5號線）・約17分鐘・搭2號線直達・設計地標與購物", sponsored: false, mapUrl: mapsUrl("동대문디자인플라자") },
+            { name: "북촌한옥마을·인사동（北村韓屋村・仁寺洞）", note: "安國站（3號線）・約19分鐘・韓屋巷弄與傳統工藝街", sponsored: false, mapUrl: mapsUrl("북촌한옥마을") },
+            { name: "경복궁（景福宮）", note: "景福宮站（3號線）・約21分鐘・朝鮮王朝的正宮，韓服體驗熱門地點", sponsored: false, mapUrl: mapsUrl("경복궁") },
+            { name: "명동（明洞）", note: "明洞站（4號線）・約22分鐘・購物與街頭小吃", sponsored: false, mapUrl: mapsUrl("명동") },
+            { name: "여의도한강공원（汝矣島漢江公園）", note: "汝矣渡口站（5號線）・約25分鐘・漢江野餐與夜景", sponsored: false, mapUrl: mapsUrl("여의도한강공원") },
+            { name: "성수동（聖水洞）", note: "聖水站（2號線）・約28分鐘・搭2號線直達・快閃店與咖啡街", sponsored: false, mapUrl: mapsUrl("성수동 카페거리") },
+            { name: "N서울타워（N首爾塔）", note: "從明洞站往南山方向・約37分鐘・首爾觀景地標", sponsored: false, mapUrl: mapsUrl("N서울타워") },
+            { name: "롯데월드타워·롯데월드（樂天世界塔・樂天世界）", note: "蠶室站（2、8號線）・約39分鐘・搭2號線直達・觀景台與主題樂園", sponsored: false, mapUrl: mapsUrl("롯데월드타워") },
+          ],
+        },
+        {
+          heading: "搭配療程行程時",
+          body: "依療程種類，可能會出現泛紅或腫脹。療程剛結束時以室內行程為主，並請務必做好防曬。行程會在諮詢時一起為您安排。",
+        },
+      ],
+    },
+    {
       slug: "pharmacies",
       ready: true,
-      lastChecked: "2026-10-22",
-      title: "藥局 & 美妝店",
-      summary: "療程後要準備的東西，以及診所附近可購買的地點",
+      lastChecked: "2026-10-23",
+      title: "診所周邊藥局",
+      summary: "從ZeroLab診所步行可到的藥局",
       sections: [
         {
           heading: "術後修護包",
-          body: "新產品在醫師同意後再使用比較安全。",
+          body: "新產品在院長同意後再使用比較安全。",
           items: [
             "防曬乳 — 雷射療程後必備",
             "鎮定・保濕霜 — 選擇香料少、刺激性低的產品",
@@ -400,40 +427,14 @@ const zhTW: SiteContent = {
           ],
         },
         {
-          heading: "弘大",
-          body: "제로랩의원附近",
+          heading: "步行10分鐘內",
+          body: "步行時間以ZeroLab診所為起點。",
           spots: [
-            { name: "홍익약국", note: "藥局・可用中文諮詢・出示護照可現場退稅", sponsored: false, mapUrl: mapsUrl("홍익약국 서울 마포구 양화로18길 7") },
-            { name: "레디영약국 홍대", note: "藥局・可辦理退稅", sponsored: false, mapUrl: mapsUrl("레디영약국 홍대 서울 마포구 홍익로6길 8") },
-            { name: "올리브영 홍대타운", note: "美妝店・大型門市", sponsored: false, mapUrl: mapsUrl("올리브영 홍대타운 서울 마포구 홍익로6길 57") },
-          ],
-        },
-        {
-          heading: "江南站",
-          body: "디오레의원附近",
-          spots: [
-            { name: "옵티마웰니스뮤지엄약국 강남", note: "藥局・步行約7分鐘・可用中文、英文、日文諮詢・現場退稅", sponsored: false, mapUrl: mapsUrl("옵티마웰니스뮤지엄약국 강남 서울 강남구 강남대로102길 42") },
-            { name: "강남 레디영약국", note: "藥局・步行約6分鐘・可用中文、英文、日文諮詢・可退稅", sponsored: false, mapUrl: mapsUrl("강남 레디영약국 서울 서초구 서초대로77길 5") },
-            { name: "강남드림약국", note: "藥局・步行約3分鐘・退稅特約店", sponsored: false, mapUrl: mapsUrl("강남드림약국 서울 서초구 강남대로 435") },
-            { name: "올리브영 센트럴 강남 타운", note: "美妝店・步行約5分鐘・有外語服務人員", sponsored: false, mapUrl: mapsUrl("올리브영 센트럴 강남 타운 서울 서초구 강남대로 403") },
-          ],
-        },
-        {
-          heading: "狎鷗亭・新沙",
-          body: "베이드의원・스케줄의원附近・這一區專為外國旅客服務的藥局不多",
-          spots: [
-            { name: "압구정퀸약국", note: "藥局・從베이드의원步行約3分鐘・退稅特約店", sponsored: false, mapUrl: mapsUrl("압구정퀸약국 서울 강남구 논현로 853") },
-            { name: "올리브영 압구정", note: "美妝店・從베이드의원步行約2分鐘", sponsored: false, mapUrl: mapsUrl("올리브영 압구정 서울 강남구 논현로 842") },
-            { name: "올리브영 압구정로데오역점", note: "美妝店・從스케줄의원步行約7分鐘", sponsored: false, mapUrl: mapsUrl("올리브영 압구정로데오역점 서울 강남구 선릉로 817") },
-          ],
-        },
-        {
-          heading: "明洞",
-          body: "觀光路線上・專為外國旅客服務的藥局集中區",
-          spots: [
-            { name: "명동레디영약국", note: "藥局・有會說中文、英文、日文的店員・可辦理退稅", sponsored: false, mapUrl: mapsUrl("명동레디영약국 서울 중구 명동8나길 7") },
-            { name: "명동타운 레디영약국", note: "藥局・可用中文、英文、日文諮詢・可用微信支付、支付寶", sponsored: false, mapUrl: mapsUrl("명동타운 레디영약국 서울 중구 명동8가길 31") },
-            { name: "올리브영 명동타운", note: "美妝店・大型門市", sponsored: false, mapUrl: mapsUrl("올리브영 명동타운 서울 중구 명동길 53") },
+            { name: "홍익약국", note: "步行約5分鐘・外國客人多・經藥師諮詢後販售醫學美容保養品", sponsored: false, mapUrl: mapsUrl("홍익약국 서울 마포구 양화로18길 7") },
+            { name: "홍대 베리뉴약국", note: "步行約5分鐘", sponsored: false, mapUrl: mapsUrl("홍대 베리뉴약국 서울 마포구 양화로18길 12") },
+            { name: "광명약국", note: "步行約7分鐘", sponsored: false, mapUrl: mapsUrl("광명약국 서울 마포구 양화로 191") },
+            { name: "연남약국", note: "步行約7分鐘・延南洞方向", sponsored: false, mapUrl: mapsUrl("연남약국 서울 마포구 양화로21길 31") },
+            { name: "홍익플라자약국", note: "步行約8分鐘", sponsored: false, mapUrl: mapsUrl("홍익플라자약국 서울 마포구 양화로 192") },
           ],
         },
         {
@@ -446,56 +447,22 @@ const zhTW: SiteContent = {
         },
         {
           heading: "小提醒",
-          body: "退稅方式（現場退稅・事後退稅）與營業時間可能因店家情況而變動。造訪前請先在地圖上確認，辦理退稅請務必攜帶護照。以上資訊與店家沒有任何合作或贊助關係。",
-        },
-      ],
-    },
-    {
-      slug: "must-buy",
-      ready: true,
-      lastChecked: "2026-10-21",
-      title: "韓國必買推薦",
-      summary: "旅行途中值得買的保養品",
-      sections: [
-        {
-          heading: "熱門購買品項",
-          items: [
-            "防曬乳 — 種類多，很多質地輕薄好推開",
-            "片狀面膜 — 也很適合當伴手禮",
-            "鎮定霜 — 有很多敏感肌適用的產品",
-            "清潔產品 — 卸妝油・洗面乳",
-            "護唇・護手保濕產品",
-          ],
-        },
-        {
-          heading: "在哪裡買？",
-          items: [
-            "美妝藥妝店（H&B）— 品項最多",
-            "藥局 — 療程後保養用產品",
-            "免稅店 — 出國前順路逛很方便",
-          ],
-        },
-        {
-          heading: "購買小提醒",
-          items: [
-            "療程剛結束時，不要立刻使用新產品，請先詢問醫師。",
-            "是否能辦理外國人退稅，請在店內確認。",
-          ],
+          body: "是否可退稅與營業時間可能因店家情況而變動。造訪前請先在地圖上確認，辦理退稅請務必攜帶護照。以上資訊與店家沒有任何合作或贊助關係。步行時間以 Kakao 地圖步行路線為準。",
         },
       ],
     },
     {
       slug: "food",
       ready: true,
-      lastChecked: "2026-10-22",
-      title: "療程後飲食指南",
-      summary: "依地鐵站整理・無業配推薦餐廳",
+      lastChecked: "2026-10-23",
+      title: "診所周邊美食",
+      summary: "合井・弘大入口・無業配推薦餐廳",
       sections: [
         {
           heading: "療程剛結束時這樣做",
-          body: "依療程種類而不同，請優先遵照醫師的指示。",
+          body: "依療程種類而不同，請優先遵照院長的指示。",
           items: [
-            "在醫師說可以之前，請避免飲酒。",
+            "在院長說可以之前，請避免飲酒。",
             "三溫暖、汗蒸幕等會讓身體發熱的地方，請先延後。",
             "很辣或很燙的食物，可能讓臉部發熱泛紅。",
           ],
@@ -512,68 +479,63 @@ const zhTW: SiteContent = {
           ],
         },
         {
-          heading: "教大・江南區廳・鶴洞",
-          body: "2、3號線教大站・7號線江南區廳站、鶴洞站",
-          spots: [
-            { name: "3대 삼계장인", note: "教大站14號出口步行4分鐘・蔘雞湯・可能需要排隊", sponsored: false, badges: ["hot"], mapUrl: mapsUrl("3대 삼계장인 서울 서초구 반포대로28길 56-3") },
-            { name: "진미평양냉면 본관", note: "江南區廳站3號出口步行7分鐘・平壤冷麵・餃子", sponsored: false, mapUrl: mapsUrl("진미평양냉면 본관 서울 강남구 학동로 307") },
-            { name: "유정식당（有情餐館）", note: "鶴洞站步行12分鐘・包飯套餐・辣炒豬肉和泡菜偏辣・2人以上供餐", sponsored: false, mapUrl: mapsUrl("유정식당 서울 강남구 도산대로28길 14") },
-          ],
-        },
-        {
-          heading: "明洞・乙支路",
-          body: "4號線明洞站・2號線乙支路入口站・2、5號線乙支路4街站",
-          spots: [
-            { name: "우래옥 본점", note: "乙支路4街站4號出口步行2分鐘・平壤冷麵", sponsored: false, mapUrl: mapsUrl("우래옥 본점 서울 중구 창경궁로 62-29") },
-            { name: "명동교자 본점（明洞餃子）", note: "明洞站9號出口步行2分鐘・韓式刀切麵・泡菜蒜味較重・排隊人潮多", sponsored: false, badges: ["hot"], mapUrl: mapsUrl("명동교자 본점 서울 중구 퇴계로 129") },
-            { name: "영양센타 본점（明洞營養中心）", note: "明洞站6號出口步行3分鐘・蔘雞湯・電烤全雞", sponsored: false, mapUrl: mapsUrl("영양센타 본점 서울 중구 명동2길 52") },
-            { name: "하동관（河東館）", note: "乙支路入口站5號出口步行5分鐘・牛骨湯・下午較早打烊，週日公休", sponsored: false, mapUrl: mapsUrl("하동관 서울 중구 명동9길 12") },
-            { name: "신선설농탕 명동점（神仙雪濃湯）", note: "明洞站8號出口步行6分鐘・雪濃湯", sponsored: false, mapUrl: mapsUrl("신선설농탕 명동점 서울 중구 명동길 56") },
-            { name: "능라도 명동점（綾羅島冷麵）", note: "明洞站8號出口步行6分鐘・平壤冷麵・溫湯飯", sponsored: false, mapUrl: mapsUrl("능라도 명동점 서울 중구 명동길 53") },
-          ],
-        },
-        {
-          heading: "聖水",
-          body: "2號線聖水站",
-          spots: [
-            { name: "조조칼국수 성수점（朝朝刀削麵）", note: "聖水站2號出口步行2分鐘・蛤蜊刀切麵", sponsored: false, mapUrl: mapsUrl("조조칼국수 성수점 서울 성동구 성수일로8길 55") },
-            { name: "능동미나리 성수점（陵洞水芹菜）", note: "聖水站4號出口步行5分鐘・牛骨湯", sponsored: false, mapUrl: mapsUrl("능동미나리 성수점 서울 성동구 연무장길 42") },
-            { name: "꿉당 성수점", note: "聖水站步行5分鐘・烤豬肉・療程後不久，最好避開油膩的燒烤", sponsored: false, mapUrl: mapsUrl("꿉당 성수점 서울 성동구 성수이로20길 10") },
-            { name: "성수다락", note: "聖水站步行11分鐘・蛋包飯", sponsored: false, mapUrl: mapsUrl("성수다락 서울 성동구 뚝섬로9길 20") },
-          ],
-        },
-        {
           heading: "小提醒",
-          body: "熱門店家可能要排隊很久，營業時間和公休日也常有變動。造訪前請先在地圖上確認。以上資訊與店家沒有任何合作或贊助關係。步行時間以 Kakao 地圖步行路線為準。",
+          body: "「親自造訪」是我們親自去過的店家，「人氣名店」是排隊人潮很長的熱門餐廳。營業時間和公休日常有變動，造訪前請先在地圖上確認。以上資訊與店家沒有任何合作或贊助關係。步行時間以 Kakao 地圖步行路線為準。",
         },
       ],
     },
     {
-      slug: "itinerary",
+      slug: "cosmetics",
       ready: true,
-      lastChecked: "2026-10-21",
-      title: "療程＋旅遊 4天3夜",
-      summary: "考量恢復期的行程範例",
+      lastChecked: "2026-10-23",
+      title: "周邊美妝店",
+      summary: "從ZeroLab診所步行可到的美妝門市",
       sections: [
         {
-          heading: "第1天・抵達",
-          items: ["入住住宿", "簡單吃個晚餐、休息", "確認隔天的看診時間"],
+          heading: "步行10分鐘內",
+          body: "步行時間以ZeroLab診所為起點。",
+          spots: [
+            { name: "올리브영 홍대입구역점", note: "步行約4分鐘・美妝藥妝店", sponsored: false, mapUrl: mapsUrl("올리브영 홍대입구역점 서울 마포구 양화로 156") },
+            { name: "메디큐브 홍대", note: "步行約5分鐘・保養品品牌門市", sponsored: false, mapUrl: mapsUrl("메디큐브 홍대 서울 마포구 홍익로6길 27") },
+            { name: "다이소 홍대입구점", note: "步行約6分鐘・生活用品・平價保養品", sponsored: false, mapUrl: mapsUrl("다이소 홍대입구점 서울 마포구 홍익로 25") },
+            { name: "무신사 뷰티 홍대", note: "步行約6分鐘・美妝選品店", sponsored: false, mapUrl: mapsUrl("무신사 뷰티 홍대 서울 마포구 홍익로 18") },
+            { name: "올리브영 홍대정문점", note: "步行約9分鐘・美妝藥妝店", sponsored: false, mapUrl: mapsUrl("올리브영 홍대정문점 서울 마포구 홍익로 4") },
+          ],
         },
         {
-          heading: "第2天・看診與療程",
-          items: ["經醫師看診後進行療程", "在藥局準備術後修護包", "安排不勉強的室內行程"],
+          heading: "熱門購買品項",
+          items: [
+            "防曬乳 — 種類多，很多質地輕薄好推開",
+            "片狀面膜 — 也很適合當伴手禮",
+            "鎮定霜 — 有很多敏感肌適用的產品",
+            "卸妝油・洗面乳",
+          ],
         },
         {
-          heading: "第3天・輕鬆觀光",
-          items: ["以購物中心、美術館等室內行程為主", "確實做好防曬", "需要時回診"],
+          heading: "購買小提醒",
+          items: [
+            "療程剛結束時，不要立刻使用新產品，請先詢問院長。",
+            "是否能辦理外國人退稅，請在店內確認。",
+          ],
         },
+      ],
+    },
+    {
+      slug: "shopping",
+      ready: true,
+      lastChecked: "2026-10-23",
+      title: "周邊購物景點",
+      summary: "弘大・延南・合井適合散步逛街的購物街區",
+      sections: [
         {
-          heading: "第4天・回國",
-          items: ["免稅店購物", "回國後有問題，請透過LINE詢問"],
-        },
-        {
-          heading: "請務必確認",
-          body: "每種療程的恢復期都不同。需要配合回國日期安排療程時間，請在預約前先透過諮詢確認。",
+          heading: "離診所很近",
+          body: "步行時間以ZeroLab診所為起點。",
+          spots: [
+            { name: "홍대 걷고싶은거리", note: "步行約7分鐘・弘大代表性的步行街，街頭表演與商店街", sponsored: false, mapUrl: mapsUrl("홍대 걷고싶은거리") },
+            { name: "경의선숲길 (연남동)", note: "步行約7分鐘・由舊鐵道改建的散步道，一路連到延南洞的咖啡廳與雜貨小店", sponsored: false, mapUrl: mapsUrl("경의선숲길 연남동") },
+            { name: "AK플라자 홍대", note: "步行約8分鐘・與弘大入口站相連的購物中心", sponsored: false, mapUrl: mapsUrl("AK플라자 홍대 서울 마포구 양화로 188") },
+            { name: "메세나폴리스몰", note: "合井站・地鐵一站・複合式購物中心", sponsored: false, mapUrl: mapsUrl("메세나폴리스몰 서울 마포구 양화로 45") },
+          ],
         },
       ],
     },
@@ -592,48 +554,15 @@ const zhTW: SiteContent = {
       languages: "中文（簡體・繁體）、英文、日文、泰文介紹頁面",
       links: [{ label: "Instagram", url: "https://www.instagram.com/zerolabclinic_global/" }],
     },
-    {
-      slug: "diore",
-      name: "디오레의원",
-      area: "江南站・新論峴",
-      address: "서울 강남구 강남대로 428 만이빌딩 9층",
-      station: "新論峴站6號出口・江南站11號出口步行5分鐘",
-      phone: "02-553-5533",
-      homepage: "https://dioreclinic.com/ko",
-      languages: "英文、日文、中文、泰文官網",
-      links: [{ label: "Instagram", url: "https://www.instagram.com/diore_clinic_eng/" }],
-    },
-    {
-      slug: "baid",
-      name: "베이드의원",
-      area: "狎鷗亭・新沙",
-      address: "서울 강남구 논현로 839 서원식스 4층",
-      station: "狎鷗亭站4號出口步行2分鐘",
-      phone: "02-511-1985",
-      homepage: "https://www.baidclinic.com",
-      languages: "外語服務範圍於諮詢時說明",
-      links: [{ label: "Instagram", url: "https://www.instagram.com/baidclinic_kor/" }],
-    },
-    {
-      slug: "schedule",
-      name: "스케줄의원",
-      area: "狎鷗亭羅德奧・島山公園",
-      address: "서울 강남구 도산대로49길 11 IVY빌딩 3층",
-      station: "狎鷗亭羅德奧站5號出口",
-      phone: "02-511-7773",
-      homepage: "http://scheduleclinic.kr",
-      languages: "外語服務範圍於諮詢時說明",
-      links: [{ label: "Instagram", url: "https://www.instagram.com/schedule_clinic/" }],
-    },
   ],
 
   clinicPage: {
-    title: "合作診所",
-    intro: "我們會在諮詢時，依您的困擾和行程介紹合適的診所。看診時間與療程資訊可在各診所官網查看。",
+    title: "診所資訊",
+    intro: "看診時間與療程資訊可在ZeroLab診所官網查看。",
     address: "地址",
     station: "最近車站",
     phone: "電話",
-    languages: "外語服務",
+    languages: "外語介紹",
     homepage: "診所官網",
     map: "在地圖上查看",
     formerName: "原名",
@@ -643,32 +572,28 @@ const zhTW: SiteContent = {
 
   faq: [
     {
-      q: "諮詢真的免費嗎？",
-      a: "是的，LINE諮詢免費。療程費用依診所與療程而不同，會在諮詢時說明。",
+      q: "線上肌膚分析是免費的嗎？",
+      a: "是的，線上分析與精密分析報告都免費。療程費用依療程而不同，會在諮詢時說明。",
     },
     {
-      q: "會介紹哪些診所？",
-      a: "會從合作診所中，介紹適合您困擾和行程的診所。",
+      q: "可以用分析結果當作診斷嗎？",
+      a: "不行。線上分析僅供參考，並非診斷。實際狀態需到診所由院長看診確認。",
+    },
+    {
+      q: "LINE諮詢什麼時候會回覆？",
+      a: "諮詢時間為韓國時間10:00～18:00。其他時段留下的詢問，會在隔天依序回覆。",
     },
     {
       q: "不會韓文也沒關係嗎？",
-      a: "沒關係。看診口譯和預約代辦都免費協助。",
-    },
-    {
-      q: "免費口譯與預約代辦，每個人都能使用嗎？",
-      a: "適用對象為未加入韓國健保、無韓國外國人登錄的短期訪客。諮詢時會簡單確認。",
+      a: "外語服務範圍會在諮詢時說明。",
     },
     {
       q: "要怎麼付款？",
-      a: "付款方式與時間依診所而不同，會在諮詢時說明。",
+      a: "付款方式與時間會在諮詢時說明。",
     },
     {
       q: "回國後如果出現問題怎麼辦？",
-      a: "請透過LINE詢問，我們會協助聯繫您看診的診所。（術後照護範圍待確認）",
-    },
-    {
-      q: "肌膚分析結果可以當作診斷嗎？",
-      a: "不行。肌膚分析結果僅供參考，並非診斷。實際狀態需經醫師看診確認。",
+      a: "請透過LINE詢問。（術後照護範圍待確認）",
     },
   ],
 };

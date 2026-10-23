@@ -253,7 +253,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </div>
       </section>
 
-      {/* ── 제휴 의원 ── */}
+      {/* ── 병원 안내 ── */}
       <section className="flex flex-col gap-5">
         <SectionHeader title={c.home.clinicTitle} href={`/${locale}/clinics`} linkLabel={c.ui.seeAll} />
         <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-brand-border bg-brand-border">

@@ -46,7 +46,7 @@ export default function SiteShell({
         <div className="mx-auto flex w-full max-w-xl flex-col gap-2 px-5 py-10 text-xs leading-relaxed text-foreground/50">
           <p className="font-display text-base font-semibold text-foreground/80">{footer.company}</p>
           <p>{footer.registration}</p>
-          <p>blissglobalscs@gmail.com</p>
+          <p>info@zerolabclinic.com</p>
           <p className="max-w-[60ch]">{footer.disclaimer}</p>
           <p className="max-w-[60ch]">{footer.aiNotice}</p>
           <Link href={`/${locale}/privacy`} className="w-fit underline underline-offset-2">

@@ -3,8 +3,8 @@ import type { DeepPartial } from "../deepMerge";
 
 const zhTW: DeepPartial<Dictionary> = {
   meta: {
-    title: "SkinAI Advisory",
-    description: "AI驅動的個人化肌膚診斷與保養資訊服務",
+    title: "ZeroLab 線上肌膚分析",
+    description: "ZeroLab診所提供的線上肌膚分析・結果僅供參考，並非診斷",
   },
 
   home: {
@@ -25,15 +25,15 @@ const zhTW: DeepPartial<Dictionary> = {
   // 초안: 법률 검토 전입니다.(ko.ts privacy 번역).
   privacy: {
     title: "隱私權政策",
-    effectiveDate: "施行日期：2026年10月21日",
+    effectiveDate: "施行日期：2026年10月23日",
     intro:
-      "블리스글로벌스 주식회사（外國人患者招攬業登錄號碼 A-2025-01-01-06361，以下簡稱「本公司」）經營肌膚分析服務，以及首爾皮膚診所諮詢・預約說明服務（以下簡稱「本服務」）。本政策說明本公司如何處理您的個人資料。",
+      "ZeroLab診所（제로랩의원，以下簡稱「本診所」）經營線上肌膚分析，以及LINE諮詢・看診預約說明服務（以下簡稱「本服務」）。本政策說明本診所在本服務中如何處理您的個人資料。",
     sections: [
       {
         heading: "1. 處理的個人資料與處理方式",
         body: [
-          "· 肌膚分析：相機影像、分析分數及您輸入的年齡，只在您的裝置（瀏覽器）內處理，不會傳送到本公司伺服器，也不會被儲存。",
-          "· LINE諮詢：只有在您按下「LINE免費諮詢」按鈕並自行傳送訊息時，本公司才會透過LINE官方帳號取得您的LINE顯示名稱、大頭貼、LINE使用者識別碼、您傳送的訊息內容（感興趣的療程、肌膚困擾、分析分數摘要等），以及諮詢過程中您提供的資訊（來韓行程、希望前往的診所等）。",
+          "· 肌膚分析：相機影像、分析分數及您輸入的年齡，只在您的裝置（瀏覽器）內處理，不會傳送到本診所伺服器，也不會被儲存。",
+          "· LINE諮詢：只有在您按下「LINE諮詢」按鈕並自行傳送訊息時，本診所才會透過LINE官方帳號取得您的LINE顯示名稱、大頭貼、LINE使用者識別碼、您傳送的訊息內容（感興趣的療程、肌膚困擾、分析分數摘要等），以及諮詢過程中您提供的資訊（來韓行程、希望的看診日期等）。",
           "· 加入或封鎖LINE官方帳號時，LINE使用者識別碼可能會留在服務運作紀錄（伺服器日誌）中。",
           "· 連線使用本服務時，主機服務業者會處理IP位址、連線時間、瀏覽器資訊等連線紀錄。",
         ],
@@ -41,7 +41,7 @@ const zhTW: DeepPartial<Dictionary> = {
       {
         heading: "2. 使用目的",
         body: [
-          "回覆諮詢、介紹合作診所與代辦預約、提供口譯等來韓便利服務，以及維護服務穩定與安全。只有在您另外同意時，才會傳送服務消息給您。",
+          "回覆諮詢、說明看診預約，以及維護服務穩定與安全。只有在您另外同意時，才會傳送本診所的消息給您。",
         ],
       },
       {
@@ -53,7 +53,7 @@ const zhTW: DeepPartial<Dictionary> = {
       {
         heading: "4. 提供給第三方",
         body: [
-          "進行預約時，會在取得您的同意後，將姓名、聯絡方式、希望的療程與造訪日期提供給該合作診所。未經您同意，不會提供給第三方。",
+          "本診所不會將您的個人資料提供給第三方，但依法令規定者除外。",
         ],
       },
       {
@@ -66,7 +66,7 @@ const zhTW: DeepPartial<Dictionary> = {
       },
       {
         heading: "6. Cookie等自動收集機制",
-        body: ["本公司不使用以使用分析或廣告為目的的Cookie。"],
+        body: ["本診所在本服務中不使用以使用分析或廣告為目的的Cookie。"],
       },
       {
         heading: "7. 您的權利與行使方式",
@@ -83,7 +83,7 @@ const zhTW: DeepPartial<Dictionary> = {
       {
         heading: "9. 未成年人",
         body: [
-          "諮詢與預約說明服務以年滿19歲者為對象。本公司不收集未滿14歲兒童的個人資料。",
+          "諮詢與預約說明服務以年滿19歲者為對象。本診所不收集未滿14歲兒童的個人資料。",
         ],
       },
       {
@@ -94,7 +94,7 @@ const zhTW: DeepPartial<Dictionary> = {
       },
       {
         heading: "11. 個人資料保護負責人與聯絡窗口",
-        body: ["블리스글로벌스 주식회사 個人資料保護負責人 Kim Dongwon（代表）", "電子郵件：blissglobalscs@gmail.com"],
+        body: ["ZeroLab診所（제로랩의원） 個人資料保護負責人 Kim Dongwon（代表院長）", "電子郵件：info@zerolabclinic.com"],
       },
       {
         heading: "12. 政策變更",
@@ -103,17 +103,92 @@ const zhTW: DeepPartial<Dictionary> = {
         ],
       },
     ],
-    footer: "本政策自2026年10月21日起適用。",
+    footer: "本政策自2026年10月23日起適用。",
     linkLabel: "隱私權政策",
     continueButton: "我已確認，繼續",
   },
 
+  precision: {
+    entry: "試試精密分析",
+    entryNote: "測試版・4張照片・約2分鐘",
+    directEntry: "LINE登入後直接進行精密分析",
+    directEntryNote: "4張照片・約2分鐘・目前為測試版，不需登入即可直接開始",
+    backToStart: "回到起始畫面",
+    badge: "精密分析・測試版",
+    introHeading: "用4張照片\n看得更仔細",
+    introSteps: [
+      "全臉・正面一張",
+      "顴骨周圍放大・色素",
+      "眼周放大・皺紋",
+      "鼻翼旁臉頰放大・毛孔",
+    ],
+    modeLabel: "要怎麼拍？",
+    rearAdvice: "精密分析用後鏡頭準確許多。前鏡頭受畫質與對焦限制，誤差較大。",
+    recommended: "推薦",
+    modeMirror: "對著鏡子自己拍",
+    modeMirrorHint: "後鏡頭・看著鏡子裡映出的畫面拍攝",
+    modeHelper: "請別人幫忙拍",
+    modeHelperHint: "後鏡頭・最清晰，還能使用補光燈",
+    modeSelf: "用前鏡頭輕鬆拍",
+    modeSelfHint: "沒有鏡子時・準確度較低，僅供參考",
+    mirrorGuideTitle: "對鏡拍攝方法",
+    mirrorGuideSteps: [
+      "將手機背面的鏡頭朝向臉部。",
+      "手機螢幕（正面）朝向鏡子，鏡子裡就會映出螢幕畫面。",
+      "眼睛看著鏡子裡映出的畫面，把臉對準引導框。對準後會自動拍攝。",
+    ],
+    mirrorGuideNote: "放大拍攝會在倒數音效結束後自動拍攝。",
+    mirrorGuideAlt: "在鏡子前將手機背面鏡頭朝向臉部，看著鏡中映出的螢幕畫面",
+    autoShot: "秒後自動拍攝",
+    frontLowAccuracy: "這是用前鏡頭拍攝的結果。受畫質與對焦限制，誤差可能較大，請當作參考。",
+    start: "開始",
+    notice:
+      "放大照片的濾鏡是為了讓色素、皺紋、膚質更明顯而加強對比的呈現效果，並非UV等特殊光源拍攝，也不是醫療診斷。",
+    faceBadge: "1/4・全臉精密拍攝",
+    faceHeading: "螢幕會亮起強光，請看向正面",
+    faceFlash: "正在精密拍攝，請不要移動",
+    zones: {
+      pigment: { badge: "2/4・色素", heading: "請將顴骨上方的臉頰對準方框", filter: "色素強調濾鏡" },
+      wrinkle: { badge: "3/4・皺紋", heading: "請將眼尾外側對準方框", filter: "皺紋強調濾鏡" },
+      pore: { badge: "4/4・毛孔", heading: "請將鼻翼旁的臉頰（蝴蝶區）對準方框", filter: "膚質強調濾鏡" },
+    },
+    distanceHint: "請距離肌膚10～15公分，對焦清楚後再拍。",
+    sharp: "對焦良好",
+    blurry: "對焦中",
+    torchOn: "開啟補光燈",
+    torchOff: "關閉補光燈",
+    torchUnsupported: "此裝置無法透過網頁開啟補光燈，請在明亮處拍攝。",
+    shutter: "拍攝",
+    skip: "跳過這個部位",
+    retry: "重試",
+    resultBadge: "結果・精密分析（測試）",
+    resultHeading: "精密肌膚分數",
+    closeupTitle: "放大拍攝",
+    showOriginal: "原圖",
+    showFilter: "濾鏡",
+    deviceTitle: "裝置測量值（測試用）",
+    deviceNote: "為了訂定各裝置能否進行精密分析的標準而收集的數值。",
+    device: {
+      faceRes: "前鏡頭解析度",
+      pxPerMm: "臉部每1mm的像素",
+      closeRes: "放大拍攝解析度",
+      torch: "補光燈",
+      sharpness: "放大照片清晰度",
+      mode: "拍攝方式",
+    },
+    supported: "支援",
+    unsupported: "不支援",
+    unknown: "無法測量",
+    consultTag: "精密分析結果",
+    backToBase: "返回基本結果",
+  },
+
   consult: {
-    cta: "透過LINE免費諮詢",
-    note: "按下按鈕後，LINE諮詢視窗會自動填入您的分析結果，按下傳送即可開始諮詢。",
+    cta: "透過LINE諮詢診所",
+    note: "按下按鈕後，LINE諮詢視窗會預先填入含有您分析結果的訊息。諮詢時間為韓國時間10:00～18:00。",
     ageRestricted: "療程諮詢僅限年滿19歲的使用者。",
     message: {
-      title: "【免費諮詢申請】",
+      title: "【肌膚分析諮詢申請】",
       concern: "在意的部位",
       overall: "綜合分數",
       outOf: "/ 10",
@@ -122,7 +197,7 @@ const zhTW: DeepPartial<Dictionary> = {
 
   promo: {
     title: "想了解肌膚諮詢嗎?",
-    body: "歡迎透過 Bliss Globals 合作診所預約免費諮詢。",
+    body: "帶著分析結果，透過LINE諮詢ZeroLab診所吧。",
     cta: "透過LINE諮詢",
   },
 

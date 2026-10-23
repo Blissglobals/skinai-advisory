@@ -18,10 +18,12 @@ export const siteImages = {
   } as Record<string, string>,
   // 정밀 분석 거울 촬영 안내 일러스트(AI 생성 일러스트, 실제 인물 아님)
   mirrorShot: `${base}/guide-mirror.webp`,
+  // 제로랩 가이드는 기존 분위기 이미지를 재활용합니다(필요하면 전용 이미지로 교체).
   guide: {
+    attractions: `${base}/guide-itinerary.webp`,
     pharmacies: `${base}/guide-pharmacies.webp`,
-    "must-buy": `${base}/guide-must-buy.webp`,
     food: `${base}/guide-food.webp`,
-    itinerary: `${base}/guide-itinerary.webp`,
+    cosmetics: `${base}/guide-must-buy.webp`,
+    shopping: `${base}/space.webp`,
   } as Record<string, string>,
 };

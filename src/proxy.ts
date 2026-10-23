@@ -43,7 +43,7 @@ function lockedResponse(request: NextRequest): NextResponse | undefined {
   }
   return new NextResponse("Authentication required", {
     status: 401,
-    headers: { "WWW-Authenticate": 'Basic realm="Bliss Globals (pre-launch)", charset="UTF-8"' },
+    headers: { "WWW-Authenticate": 'Basic realm="ZeroLab (pre-launch)", charset="UTF-8"' },
   });
 }
 

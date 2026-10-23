@@ -71,7 +71,7 @@ export async function generateMetadata({
     title: dict.meta.title,
     description: dict.meta.description,
     openGraph: {
-      images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Bliss Globals (AI-generated image)" }],
+      images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "ZeroLab online skin analysis (AI-generated image)" }],
     },
   };
 }

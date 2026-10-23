@@ -1,5 +1,6 @@
 import { mapsUrl, type SiteContent } from "./index";
 
+// 제로랩의원 온라인 피부 분석 랜딩(블리스글로벌스 버전은 git 태그 bliss-v1에 보관).
 // 원칙: 확인되지 않은 사실(가격, 횟수, 의원·업체 정보, 등록번호 등)은 지어내지
 // 않고 "상담 시 안내" / "확인 필요"로 남깁니다. 시술 설명은 일반적인 원리
 // 수준이며, 공개 전 의료진 검수가 필요합니다.
@@ -7,12 +8,12 @@ const ASK = "상담 시 안내";
 
 const ko: SiteContent = {
   ui: {
-    brand: "Bliss Globals",
+    brand: "ZeroLab",
     draftNotice: "예시 콘텐츠 · 의료진 검수 전",
-    consultCta: "LINE으로 무료 상담 받기",
-    consultBar: "LINE 무료 상담",
-    scanCta: "무료 피부 분석 해보기",
-    scanBar: "무료 피부 분석",
+    consultCta: "LINE으로 병원 상담하기",
+    consultBar: "LINE 상담",
+    scanCta: "온라인 피부 분석 시작하기",
+    scanBar: "온라인 피부 분석",
     comingSoon: "준비 중",
     seeAll: "전체 보기",
     adLabel: "광고",
@@ -20,9 +21,9 @@ const ko: SiteContent = {
     aiPersonLabel: "AI 생성 가상인물",
     aiPageNotice: "본 페이지에는 AI로 생성한 가상 인물 사진이 포함되어 있습니다.",
     languageLabel: "언어",
-    nav: { treatments: "시술", guide: "가이드" },
+    nav: { treatments: "시술", guide: "주변 가이드" },
     consultMessage: {
-      title: "[무료 상담 신청]",
+      title: "[피부 분석 상담 신청]",
       interest: "관심 시술",
       topic: "궁금한 내용",
       concern: "피부 고민",
@@ -30,26 +31,26 @@ const ko: SiteContent = {
   },
 
   home: {
-    eyebrow: "무료 피부 분석",
-    heading: "사진 한 장으로\n내 피부 먼저\n알아보세요.",
-    subheading: "셀카 한 장으로 색소·주름 상태를 바로 확인해 보세요. 결과가 궁금하면 서울 의원 상담까지 무료로 이어갈 수 있어요.",
-    chips: ["무료 피부 분석", "사진은 기기 안에서만 분석", "상담·통역 무료"],
+    eyebrow: "제로랩의원 온라인 피부 분석",
+    heading: "병원이 만든\n온라인 피부 분석,\n먼저 해보세요.",
+    subheading: "사진 한 장으로 색소·주름 상태를 확인하고, 정밀 분석 리포트로 제로랩의원 상담까지 이어가세요. 결과는 진단이 아닌 참고용 분석이에요.",
+    chips: ["온라인 피부 분석", "정밀 분석 리포트", "리포트로 병원 상담"],
     marquee: ["피코토닝", "스킨부스터", "초음파 리프팅", "고주파 리프팅", "프락셔널 레이저", "여드름 관리", "혈관 레이저"],
-    quote: "상담은 가볍게,\n결정은 진료 후에.",
-    quoteBy: "시술 여부는 의료진 진료 후 직접 결정하세요.",
+    quote: "분석은 온라인에서,\n진단은 병원에서.",
+    quoteBy: "시술 여부는 원장 진료 후 직접 결정하세요.",
     concernsTitle: "어떤 고민이 있으세요?",
     treatmentsTitle: "많이 찾는 시술",
     stepsTitle: "이렇게 진행돼요",
-    guideTitle: "서울 시술 여행 가이드",
-    clinicTitle: "제휴 의원",
+    guideTitle: "홍대 주변 & 서울 여행 가이드",
+    clinicTitle: "병원 안내",
     faqTitle: "자주 묻는 질문",
-    finalTitle: "어떤 시술이 맞을지 모르겠다면",
-    finalBody: "피부 사진 한 장으로 가볍게 확인해보거나, 바로 상담으로 물어보세요.",
+    finalTitle: "내 피부, 병원에서 자세히 보고 싶다면",
+    finalBody: "온라인 분석으로 먼저 확인하고, 리포트를 들고 LINE으로 상담해 보세요.",
   },
 
   concernPage: {
     causes: "왜 생길까요?",
-    treatments: "서울 피부 클리닉에서는 이렇게 관리해요",
+    treatments: "병원에서는 이렇게 관리해요",
     homeCare: "평소에 이렇게 관리해요",
     scanTitle: "내 피부 상태가 궁금하다면",
     scanBody: "사진 한 장으로 피부 상태를 가볍게 확인해보세요. 사진은 기기 안에서만 분석돼요.",
@@ -57,7 +58,7 @@ const ko: SiteContent = {
 
   treatmentPage: {
     indexTitle: "시술 안내",
-    indexIntro: "서울 피부 클리닉에서 많이 받는 시술을 고민별로 정리했어요.",
+    indexIntro: "피부 고민별로 많이 받는 시술을 정리했어요. 맞는 시술은 원장 진료 후 결정해요.",
     relatedConcerns: "이런 고민에",
     forWhom: "이런 분께 맞아요",
     facts: "한눈에 보기",
@@ -67,19 +68,19 @@ const ko: SiteContent = {
   },
 
   guidePage: {
-    title: "서울 시술 여행 가이드",
-    intro: "시술 전후로 들르기 좋은 곳과 챙기면 좋은 것들을 모았어요.",
+    title: "홍대 주변 & 서울 여행 가이드",
+    intro: "제로랩의원 주변에서 들르기 좋은 곳과 서울 대표 여행지를 모았어요.",
     lastChecked: "최종 확인일",
     sponsoredNote: "제휴·협찬이 있는 곳은 '광고'로 표시합니다.",
   },
 
   footer: {
-    company: "블리스글로벌스 주식회사",
-    registration: "외국인환자 유치업 등록번호 A-2025-01-01-06361",
+    company: "제로랩의원",
+    registration: "대표원장 김동원 · 서울 마포구 양화로 151 욱도빌딩 5~7층 · 대표전화 1544-5598",
     disclaimer:
-      "본 사이트의 정보는 일반적인 안내이며 의학적 진단이나 처방이 아닙니다. 시술 여부는 반드시 의료진과 상담 후 결정하세요.",
+      "온라인 피부 분석은 참고용 정보이며 의학적 진단이나 처방이 아닙니다. 피부 상태와 시술 여부는 내원 진료에서 원장과 상담 후 결정하세요.",
     aiNotice:
-      "이 사이트의 사진은 AI로 생성한 이미지이며, 실제 인물·의원·시술 결과가 아닙니다. 피부 분석 점수는 AI가 계산한 참고용 정보입니다.",
+      "이 사이트의 사진은 AI로 생성한 이미지이며, 실제 인물·시술 결과가 아닙니다. 피부 분석 점수는 AI가 계산한 참고용 정보입니다.",
     privacy: "개인정보처리방침",
   },
 
@@ -376,24 +377,53 @@ const ko: SiteContent = {
   ],
 
   steps: [
-    { title: "LINE으로 상담", body: "피부 고민과 여행 일정을 알려주세요." },
-    { title: "의원·견적 안내", body: "고민에 맞는 제휴 의원과 예상 비용을 안내해요." },
-    { title: "예약 후 방한", body: "예약 일정에 맞춰 한국에 오세요." },
-    { title: "진료·시술", body: "의료진 진료 후 시술 여부를 결정해요." },
-    { title: "귀국 후 관리", body: "궁금한 점은 LINE으로 계속 물어보세요." },
+    { title: "온라인 피부 분석", body: "사진 한 장으로 색소·주름 상태를 확인해요." },
+    { title: "정밀 분석 리포트", body: "확대 촬영으로 모공까지 자세히 보고 리포트를 받아요." },
+    { title: "LINE으로 리포트 상담", body: "리포트를 보내면 상담 시간(한국 10:00~18:00)에 답해드려요." },
+    { title: "예약 후 내원", body: "일정에 맞춰 제로랩의원을 방문해요." },
+    { title: "진료 후 결정", body: "원장 진료 후 시술 여부를 결정해요." },
   ],
 
+  // 장소 정보: 카카오맵 조회(2026-10-23). 도보 시간은 카카오 도보 경로 기준, 관광지 소요 시간은
+  // 카카오 대중교통 길찾기(홍대입구역 출발) 기준. 가격·영업시간은 바뀌기 쉬워 싣지 않습니다.
   guides: [
+    {
+      slug: "attractions",
+      ready: true,
+      lastChecked: "2026-10-23",
+      title: "서울 주요 관광지",
+      summary: "홍대입구역에서 지하철로 가기 좋은 서울 대표 여행지",
+      sections: [
+        {
+          heading: "홍대입구역에서 출발",
+          body: "소요 시간은 카카오맵 대중교통 길찾기 기준이에요. 시간대에 따라 달라질 수 있어요.",
+          spots: [
+            { name: "동대문디자인플라자(DDP)", note: "동대문역사문화공원역(2·4·5호선) · 약 17분 · 2호선 한 번에 · 디자인 랜드마크와 쇼핑", sponsored: false, mapUrl: mapsUrl("동대문디자인플라자") },
+            { name: "북촌한옥마을·인사동", note: "안국역(3호선) · 약 19분 · 한옥 골목과 전통 공예 거리", sponsored: false, mapUrl: mapsUrl("북촌한옥마을") },
+            { name: "경복궁", note: "경복궁역(3호선) · 약 21분 · 조선의 정궁, 한복 체험 명소", sponsored: false, mapUrl: mapsUrl("경복궁") },
+            { name: "명동", note: "명동역(4호선) · 약 22분 · 쇼핑과 길거리 음식", sponsored: false, mapUrl: mapsUrl("명동") },
+            { name: "여의도한강공원", note: "여의나루역(5호선) · 약 25분 · 한강 피크닉과 야경", sponsored: false, mapUrl: mapsUrl("여의도한강공원") },
+            { name: "성수동", note: "성수역(2호선) · 약 28분 · 2호선 한 번에 · 팝업스토어와 카페 거리", sponsored: false, mapUrl: mapsUrl("성수동 카페거리") },
+            { name: "N서울타워", note: "명동역에서 남산 방면 · 약 37분 · 서울 전망 랜드마크", sponsored: false, mapUrl: mapsUrl("N서울타워") },
+            { name: "롯데월드타워·롯데월드", note: "잠실역(2·8호선) · 약 39분 · 2호선 한 번에 · 전망대와 테마파크", sponsored: false, mapUrl: mapsUrl("롯데월드타워") },
+          ],
+        },
+        {
+          heading: "시술 일정과 함께라면",
+          body: "시술 종류에 따라 붉은기·붓기가 있을 수 있어요. 시술 직후에는 실내 위주로, 자외선 차단을 꼭 챙겨주세요. 일정은 상담에서 함께 맞춰드려요.",
+        },
+      ],
+    },
     {
       slug: "pharmacies",
       ready: true,
-      lastChecked: "2026-10-22",
-      title: "약국 & 코스메틱 스토어",
-      summary: "시술 후 챙길 것과 의원 근처에서 살 수 있는 곳",
+      lastChecked: "2026-10-23",
+      title: "병원 주변 약국",
+      summary: "제로랩의원에서 걸어서 갈 수 있는 약국",
       sections: [
         {
           heading: "시술 후 회복 키트",
-          body: "새 제품은 의료진이 괜찮다고 한 뒤에 쓰는 게 안전해요.",
+          body: "새 제품은 원장이 괜찮다고 한 뒤에 쓰는 게 안전해요.",
           items: [
             "자외선 차단제 — 레이저 시술 후 필수",
             "진정·보습 크림 — 향과 자극이 적은 제품",
@@ -402,40 +432,14 @@ const ko: SiteContent = {
           ],
         },
         {
-          heading: "홍대",
-          body: "제로랩의원 근처",
+          heading: "걸어서 10분 이내",
+          body: "도보 시간은 제로랩의원 기준이에요.",
           spots: [
-            { name: "홍익약국", note: "약국 · 중국어 상담 가능 · 여권 제시 시 즉시 환급", sponsored: false, mapUrl: mapsUrl("홍익약국 서울 마포구 양화로18길 7") },
-            { name: "레디영약국 홍대", note: "약국 · 택스리펀 가능", sponsored: false, mapUrl: mapsUrl("레디영약국 홍대 서울 마포구 홍익로6길 8") },
-            { name: "올리브영 홍대타운", note: "코스메틱 스토어 · 대형 매장", sponsored: false, mapUrl: mapsUrl("올리브영 홍대타운 서울 마포구 홍익로6길 57") },
-          ],
-        },
-        {
-          heading: "강남역",
-          body: "디오레의원 근처",
-          spots: [
-            { name: "옵티마웰니스뮤지엄약국 강남", note: "약국 · 도보 약 7분 · 중국어·영어·일본어 상담 · 즉시 환급", sponsored: false, mapUrl: mapsUrl("옵티마웰니스뮤지엄약국 강남 서울 강남구 강남대로102길 42") },
-            { name: "강남 레디영약국", note: "약국 · 도보 약 6분 · 중국어·영어·일본어 상담 · 택스프리", sponsored: false, mapUrl: mapsUrl("강남 레디영약국 서울 서초구 서초대로77길 5") },
-            { name: "강남드림약국", note: "약국 · 도보 약 3분 · 택스리펀 가맹점", sponsored: false, mapUrl: mapsUrl("강남드림약국 서울 서초구 강남대로 435") },
-            { name: "올리브영 센트럴 강남 타운", note: "코스메틱 스토어 · 도보 약 5분 · 외국어 응대 직원", sponsored: false, mapUrl: mapsUrl("올리브영 센트럴 강남 타운 서울 서초구 강남대로 403") },
-          ],
-        },
-        {
-          heading: "압구정·신사",
-          body: "베이드·스케줄의원 근처 · 외국인 전문 약국은 많지 않은 지역이에요",
-          spots: [
-            { name: "압구정퀸약국", note: "약국 · 베이드의원에서 도보 약 3분 · 택스리펀 가맹점", sponsored: false, mapUrl: mapsUrl("압구정퀸약국 서울 강남구 논현로 853") },
-            { name: "올리브영 압구정", note: "코스메틱 스토어 · 베이드의원에서 도보 약 2분", sponsored: false, mapUrl: mapsUrl("올리브영 압구정 서울 강남구 논현로 842") },
-            { name: "올리브영 압구정로데오역점", note: "코스메틱 스토어 · 스케줄의원에서 도보 약 7분", sponsored: false, mapUrl: mapsUrl("올리브영 압구정로데오역점 서울 강남구 선릉로 817") },
-          ],
-        },
-        {
-          heading: "명동",
-          body: "관광 동선 · 외국인 대상 약국이 모여 있는 곳",
-          spots: [
-            { name: "명동레디영약국", note: "약국 · 중국어·영어·일본어 직원 · 택스리펀 가능", sponsored: false, mapUrl: mapsUrl("명동레디영약국 서울 중구 명동8나길 7") },
-            { name: "명동타운 레디영약국", note: "약국 · 중국어·영어·일본어 상담 · 위챗페이·알리페이", sponsored: false, mapUrl: mapsUrl("명동타운 레디영약국 서울 중구 명동8가길 31") },
-            { name: "올리브영 명동타운", note: "코스메틱 스토어 · 대형 매장", sponsored: false, mapUrl: mapsUrl("올리브영 명동타운 서울 중구 명동길 53") },
+            { name: "홍익약국", note: "도보 약 5분 · 외국인 손님이 많고 약사 상담 후 더마 화장품 판매", sponsored: false, mapUrl: mapsUrl("홍익약국 서울 마포구 양화로18길 7") },
+            { name: "홍대 베리뉴약국", note: "도보 약 5분", sponsored: false, mapUrl: mapsUrl("홍대 베리뉴약국 서울 마포구 양화로18길 12") },
+            { name: "광명약국", note: "도보 약 7분", sponsored: false, mapUrl: mapsUrl("광명약국 서울 마포구 양화로 191") },
+            { name: "연남약국", note: "도보 약 7분 · 연남동 방면", sponsored: false, mapUrl: mapsUrl("연남약국 서울 마포구 양화로21길 31") },
+            { name: "홍익플라자약국", note: "도보 약 8분", sponsored: false, mapUrl: mapsUrl("홍익플라자약국 서울 마포구 양화로 192") },
           ],
         },
         {
@@ -448,56 +452,22 @@ const ko: SiteContent = {
         },
         {
           heading: "알아두세요",
-          body: "환급 방식(즉시·사후)과 영업시간은 매장 사정에 따라 바뀔 수 있어요. 방문 전에 지도에서 확인하고, 환급은 여권을 꼭 챙겨주세요. 제휴·협찬 관계가 없는 정보예요.",
-        },
-      ],
-    },
-    {
-      slug: "must-buy",
-      ready: true,
-      lastChecked: "2026-10-21",
-      title: "한국 필수 추천템",
-      summary: "여행 중 사면 좋은 스킨케어",
-      sections: [
-        {
-          heading: "많이 사가는 제품군",
-          items: [
-            "선크림 — 종류가 다양하고 가볍게 발리는 제품이 많아요",
-            "시트 마스크팩 — 여행 선물로도 좋아요",
-            "진정 크림 — 민감한 피부용 제품이 많아요",
-            "클렌징 제품 — 클렌징 오일·폼",
-            "립·핸드 보습제",
-          ],
-        },
-        {
-          heading: "어디서 사나요?",
-          items: [
-            "드럭스토어(H&B 스토어) — 종류가 가장 많아요",
-            "약국 — 피부 시술 후 관리용 제품",
-            "면세점 — 출국 전에 들르기 좋아요",
-          ],
-        },
-        {
-          heading: "구매 팁",
-          items: [
-            "시술 직후에는 새로운 제품을 바로 쓰지 말고 의료진에게 먼저 확인해요.",
-            "외국인 세금 환급 가능 여부는 매장에서 확인해요.",
-          ],
+          body: "세금 환급 가능 여부와 영업시간은 매장 사정에 따라 바뀔 수 있어요. 방문 전에 지도에서 확인하고, 환급은 여권을 꼭 챙겨주세요. 제휴·협찬 관계가 없는 정보예요. 도보 시간은 카카오맵 도보 경로 기준이에요.",
         },
       ],
     },
     {
       slug: "food",
       ready: true,
-      lastChecked: "2026-10-22",
-      title: "시술 후 식사 가이드",
-      summary: "지하철역 기준 · 협찬 없이 고른 식당",
+      lastChecked: "2026-10-23",
+      title: "병원 주변 맛집",
+      summary: "합정·홍대입구 · 협찬 없이 고른 식당",
       sections: [
         {
           heading: "시술 직후에는 이렇게",
-          body: "시술 종류에 따라 다르니 의료진 안내를 가장 먼저 따라주세요.",
+          body: "시술 종류에 따라 다르니 원장 안내를 가장 먼저 따라주세요.",
           items: [
-            "음주는 의료진이 괜찮다고 할 때까지 피해요.",
+            "음주는 원장이 괜찮다고 할 때까지 피해요.",
             "사우나·찜질방처럼 열이 오르는 곳은 미뤄요.",
             "아주 맵거나 뜨거운 음식은 얼굴이 달아오를 수 있어요.",
           ],
@@ -514,75 +484,69 @@ const ko: SiteContent = {
           ],
         },
         {
-          heading: "교대·강남구청·학동",
-          body: "2·3호선 교대역, 7호선 강남구청역·학동역",
-          spots: [
-            { name: "3대 삼계장인", note: "교대역 14번 출구 도보 4분 · 삼계탕 · 대기가 있을 수 있어요", sponsored: false, badges: ["hot"], mapUrl: mapsUrl("3대 삼계장인 서울 서초구 반포대로28길 56-3") },
-            { name: "진미평양냉면 본관", note: "강남구청역 3번 출구 도보 7분 · 평양냉면·만두", sponsored: false, mapUrl: mapsUrl("진미평양냉면 본관 서울 강남구 학동로 307") },
-            { name: "유정식당", note: "학동역 도보 12분 · 쌈밥 정식 · 제육·김치는 매운 편 · 2인 이상", sponsored: false, mapUrl: mapsUrl("유정식당 서울 강남구 도산대로28길 14") },
-          ],
-        },
-        {
-          heading: "명동·을지로",
-          body: "4호선 명동역, 2호선 을지로입구역, 2·5호선 을지로4가역",
-          spots: [
-            { name: "우래옥 본점", note: "을지로4가역 4번 출구 도보 2분 · 평양냉면", sponsored: false, mapUrl: mapsUrl("우래옥 본점 서울 중구 창경궁로 62-29") },
-            { name: "명동교자 본점", note: "명동역 9번 출구 도보 2분 · 칼국수 · 김치 마늘이 강한 편 · 대기 줄이 길어요", sponsored: false, badges: ["hot"], mapUrl: mapsUrl("명동교자 본점 서울 중구 퇴계로 129") },
-            { name: "영양센타 본점", note: "명동역 6번 출구 도보 3분 · 삼계탕·전기구이 통닭", sponsored: false, mapUrl: mapsUrl("영양센타 본점 서울 중구 명동2길 52") },
-            { name: "하동관", note: "을지로입구역 5번 출구 도보 5분 · 곰탕 · 오후 일찍 닫고 일요일 휴무", sponsored: false, mapUrl: mapsUrl("하동관 서울 중구 명동9길 12") },
-            { name: "신선설농탕 명동점", note: "명동역 8번 출구 도보 6분 · 설렁탕", sponsored: false, mapUrl: mapsUrl("신선설농탕 명동점 서울 중구 명동길 56") },
-            { name: "능라도 명동점", note: "명동역 8번 출구 도보 6분 · 평양냉면·온반", sponsored: false, mapUrl: mapsUrl("능라도 명동점 서울 중구 명동길 53") },
-          ],
-        },
-        {
-          heading: "성수",
-          body: "2호선 성수역",
-          spots: [
-            { name: "조조칼국수 성수점", note: "성수역 2번 출구 도보 2분 · 조개칼국수", sponsored: false, mapUrl: mapsUrl("조조칼국수 성수점 서울 성동구 성수일로8길 55") },
-            { name: "능동미나리 성수점", note: "성수역 4번 출구 도보 5분 · 곰탕", sponsored: false, mapUrl: mapsUrl("능동미나리 성수점 서울 성동구 연무장길 42") },
-            { name: "꿉당 성수점", note: "성수역 도보 5분 · 돼지고기 구이 · 시술 직후에는 기름진 구이를 피하는 게 좋아요", sponsored: false, mapUrl: mapsUrl("꿉당 성수점 서울 성동구 성수이로20길 10") },
-            { name: "성수다락", note: "성수역 도보 11분 · 오므라이스", sponsored: false, mapUrl: mapsUrl("성수다락 서울 성동구 뚝섬로9길 20") },
-          ],
-        },
-        {
           heading: "알아두세요",
-          body: "유명한 곳은 대기가 길 수 있고, 영업시간·휴무는 자주 바뀌어요. 방문 전에 지도에서 확인해주세요. 제휴·협찬 관계가 없는 정보예요. 도보 시간은 카카오맵 도보 경로 기준이에요.",
+          body: "'직접 가봤어요'는 저희가 직접 방문한 곳, '핫플'은 대기 줄이 긴 인기 식당이에요. 영업시간·휴무는 자주 바뀌니 방문 전에 지도에서 확인해주세요. 제휴·협찬 관계가 없는 정보예요. 도보 시간은 카카오맵 도보 경로 기준이에요.",
         },
       ],
     },
     {
-      slug: "itinerary",
+      slug: "cosmetics",
       ready: true,
-      lastChecked: "2026-10-21",
-      title: "시술 + 여행 3박 4일",
-      summary: "회복 기간을 고려한 일정 예시",
+      lastChecked: "2026-10-23",
+      title: "주변 코스메틱 숍",
+      summary: "제로랩의원에서 걸어서 갈 수 있는 화장품 매장",
       sections: [
         {
-          heading: "1일차 · 도착",
-          items: ["숙소 체크인", "가벼운 저녁과 휴식", "다음 날 진료 시간 확인"],
+          heading: "걸어서 10분 이내",
+          body: "도보 시간은 제로랩의원 기준이에요.",
+          spots: [
+            { name: "올리브영 홍대입구역점", note: "도보 약 4분 · 드럭스토어", sponsored: false, mapUrl: mapsUrl("올리브영 홍대입구역점 서울 마포구 양화로 156") },
+            { name: "메디큐브 홍대", note: "도보 약 5분 · 화장품 브랜드 매장", sponsored: false, mapUrl: mapsUrl("메디큐브 홍대 서울 마포구 홍익로6길 27") },
+            { name: "다이소 홍대입구점", note: "도보 약 6분 · 생활용품·저가 화장품", sponsored: false, mapUrl: mapsUrl("다이소 홍대입구점 서울 마포구 홍익로 25") },
+            { name: "무신사 뷰티 홍대", note: "도보 약 6분 · 뷰티 편집숍", sponsored: false, mapUrl: mapsUrl("무신사 뷰티 홍대 서울 마포구 홍익로 18") },
+            { name: "올리브영 홍대정문점", note: "도보 약 9분 · 드럭스토어", sponsored: false, mapUrl: mapsUrl("올리브영 홍대정문점 서울 마포구 홍익로 4") },
+          ],
         },
         {
-          heading: "2일차 · 진료와 시술",
-          items: ["의료진 진료 후 시술", "약국에서 회복 키트 준비", "무리하지 않는 실내 일정"],
+          heading: "많이 사가는 제품군",
+          items: [
+            "선크림 — 종류가 다양하고 가볍게 발리는 제품이 많아요",
+            "시트 마스크팩 — 여행 선물로도 좋아요",
+            "진정 크림 — 민감한 피부용 제품이 많아요",
+            "클렌징 오일·폼",
+          ],
         },
         {
-          heading: "3일차 · 가벼운 관광",
-          items: ["쇼핑몰·미술관 등 실내 위주", "자외선 차단 철저히", "필요하면 재진료"],
+          heading: "구매 팁",
+          items: [
+            "시술 직후에는 새 제품을 바로 쓰지 말고 원장에게 먼저 확인해요.",
+            "외국인 세금 환급 가능 여부는 매장에서 확인해요.",
+          ],
         },
+      ],
+    },
+    {
+      slug: "shopping",
+      ready: true,
+      lastChecked: "2026-10-23",
+      title: "주변 쇼핑 명소",
+      summary: "홍대·연남·합정에서 걷기 좋은 쇼핑 거리",
+      sections: [
         {
-          heading: "4일차 · 귀국",
-          items: ["면세점 쇼핑", "귀국 후 궁금한 점은 LINE으로 문의"],
-        },
-        {
-          heading: "꼭 확인하세요",
-          body: "회복 기간은 시술마다 달라요. 귀국일에 맞춰 시술 일정을 정해야 하니 예약 전에 상담으로 확인해주세요.",
+          heading: "병원에서 가까운 곳",
+          body: "도보 시간은 제로랩의원 기준이에요.",
+          spots: [
+            { name: "홍대 걷고싶은거리", note: "도보 약 7분 · 홍대 대표 보행 거리, 버스킹과 상점가", sponsored: false, mapUrl: mapsUrl("홍대 걷고싶은거리") },
+            { name: "경의선숲길 (연남동)", note: "도보 약 7분 · 옛 철길 산책로, 연남동 카페·소품숍으로 이어져요", sponsored: false, mapUrl: mapsUrl("경의선숲길 연남동") },
+            { name: "AK플라자 홍대", note: "도보 약 8분 · 홍대입구역 연결 쇼핑몰", sponsored: false, mapUrl: mapsUrl("AK플라자 홍대 서울 마포구 양화로 188") },
+            { name: "메세나폴리스몰", note: "합정역 · 지하철 한 정거장 · 복합 쇼핑몰", sponsored: false, mapUrl: mapsUrl("메세나폴리스몰 서울 마포구 양화로 45") },
+          ],
         },
       ],
     },
   ],
 
-  // 출처: 각 의원 공식 홈페이지·카카오맵(2026-10-22 조사). 진료시간은 출처마다
-  // 달라서 싣지 않고 공식 홈페이지로 안내합니다. 시술 목록도 의원 광고 영역이라 싣지 않습니다.
+  // 출처: 제로랩의원 공식 홈페이지·카카오맵(2026-10-22 조사).
   clinics: [
     {
       slug: "zerolab",
@@ -596,83 +560,46 @@ const ko: SiteContent = {
       languages: "중국어(간체·번체)·영어·일본어·태국어 안내 페이지",
       links: [{ label: "Instagram", url: "https://www.instagram.com/zerolabclinic_global/" }],
     },
-    {
-      slug: "diore",
-      name: "디오레의원",
-      area: "강남역·신논현",
-      address: "서울 강남구 강남대로 428 만이빌딩 9층",
-      station: "신논현역 6번 출구 · 강남역 11번 출구 도보 5분",
-      phone: "02-553-5533",
-      homepage: "https://dioreclinic.com/ko",
-      languages: "영어·일본어·중국어·태국어 홈페이지",
-      links: [{ label: "Instagram", url: "https://www.instagram.com/diore_clinic_eng/" }],
-    },
-    {
-      slug: "baid",
-      name: "베이드의원",
-      area: "압구정·신사",
-      address: "서울 강남구 논현로 839 서원식스 4층",
-      station: "압구정역 4번 출구 도보 2분",
-      phone: "02-511-1985",
-      homepage: "https://www.baidclinic.com",
-      languages: "외국어 응대 범위는 상담 시 안내",
-      links: [{ label: "Instagram", url: "https://www.instagram.com/baidclinic_kor/" }],
-    },
-    {
-      slug: "schedule",
-      name: "스케줄의원",
-      area: "압구정로데오·도산공원",
-      address: "서울 강남구 도산대로49길 11 IVY빌딩 3층",
-      station: "압구정로데오역 5번 출구",
-      phone: "02-511-7773",
-      homepage: "http://scheduleclinic.kr",
-      languages: "외국어 응대 범위는 상담 시 안내",
-      links: [{ label: "Instagram", url: "https://www.instagram.com/schedule_clinic/" }],
-    },
   ],
 
   clinicPage: {
-    title: "제휴 의원",
-    intro: "고민과 일정에 맞는 의원을 상담에서 안내해드려요. 진료시간과 시술 정보는 각 의원 홈페이지에서 확인할 수 있어요.",
+    title: "병원 안내",
+    intro: "진료시간과 시술 정보는 제로랩의원 홈페이지에서 확인할 수 있어요.",
     address: "주소",
     station: "가까운 역",
     phone: "전화",
     languages: "외국어 안내",
-    homepage: "의원 홈페이지",
+    homepage: "병원 홈페이지",
     map: "지도에서 보기",
     formerName: "구",
-    detailNote: "진료시간·시술 정보는 의원 홈페이지 기준이며 바뀔 수 있어요. 방문 전 상담에서 다시 확인해드려요.",
+    detailNote: "진료시간·시술 정보는 병원 홈페이지 기준이며 바뀔 수 있어요. 방문 전 상담에서 다시 확인해드려요.",
     consultInterest: "희망 의원",
   },
 
   faq: [
     {
-      q: "상담은 정말 무료인가요?",
-      a: "네, LINE 상담은 무료예요. 시술 비용은 의원과 시술에 따라 달라서 상담 때 안내해드려요.",
+      q: "온라인 피부 분석은 무료인가요?",
+      a: "네, 온라인 분석과 정밀 분석 리포트는 무료예요. 시술 비용은 시술에 따라 달라서 상담 때 안내해드려요.",
     },
     {
-      q: "어떤 의원을 소개받나요?",
-      a: "제휴 의원 중에서 고민과 일정에 맞는 곳을 안내해드려요.",
+      q: "분석 결과로 진단을 받을 수 있나요?",
+      a: "아니요. 온라인 분석은 참고용 정보이며 진단이 아니에요. 정확한 상태는 내원 진료에서 원장이 확인해요.",
+    },
+    {
+      q: "LINE 상담은 언제 답변받을 수 있나요?",
+      a: "상담 시간은 한국 시간 10:00~18:00예요. 그 외 시간에 남긴 문의는 다음 날 순서대로 답해드려요.",
     },
     {
       q: "한국어를 못해도 괜찮나요?",
-      a: "괜찮아요. 진료 통역과 예약 대행은 무료로 도와드려요.",
-    },
-    {
-      q: "무료 통역·예약 대행은 누구나 받을 수 있나요?",
-      a: "한국 건강보험에 가입하지 않았고 한국 외국인등록이 없는 단기 방문객이 대상이에요. 상담 때 간단히 확인해드려요.",
+      a: "외국어 응대 범위는 상담 때 안내해드려요.",
     },
     {
       q: "결제는 어떻게 하나요?",
-      a: "결제 방법과 시점은 의원마다 달라서 상담 때 안내해드려요.",
+      a: "결제 방법과 시점은 상담 때 안내해드려요.",
     },
     {
       q: "귀국 후에 문제가 생기면요?",
-      a: "LINE으로 문의해주시면 진료받은 의원과 연결해드려요. (사후 관리 범위 확인 필요)",
-    },
-    {
-      q: "피부 분석 결과로 진단을 받을 수 있나요?",
-      a: "아니요. 피부 분석 결과는 참고용 정보이며 진단이 아니에요. 정확한 상태는 의료진 진료로 확인해요.",
+      a: "LINE으로 문의해주세요. (사후 관리 범위 확인 필요)",
     },
   ],
 };
