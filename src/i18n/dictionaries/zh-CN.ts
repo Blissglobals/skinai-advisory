@@ -61,6 +61,7 @@ const zhCN: DeepPartial<Dictionary> = {
         body: [
           "· LY Corporation（日本）：LINE消息的收发与保存。使用LINE时，LINE的隐私政策也同时适用。",
           "· Vercel Inc.（美国）：服务托管与访问记录处理。",
+          "· Anthropic PBC（美国）：生成LINE AI咨询回复。仅在您同意时，才会传送LINE消息内容（可能包含皮肤困扰等健康相关信息）；咨询记录与状态信息由Upstash Inc.保存最长30天。若不同意，将不使用AI，改由专人咨询。",
           "上述信息会在您使用服务时通过网络传输，并按照委托合同或各服务商条款规定的期限保存。如果您不希望信息跨境传输，可以不使用LINE咨询；即便如此，仍可使用皮肤分析。",
         ],
       },
