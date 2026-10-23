@@ -28,9 +28,9 @@ const CONSENT_REPLY: LineTextMessage = {
 
 const AFTER_CONSENT = "謝謝您！請直接輸入想詢問的內容。";
 const NO_CONSENT =
-  "了解，我們不會使用 AI 處理您的訊息。將由專人回覆（韓國時間 10:00～18:00，其他時間的訊息會在隔天依序回覆）。";
+  "了解，我們不會使用 AI 處理您的訊息。將由專人回覆（韓國時間平日10:00～18:00、週末10:00～16:00，其他時間的訊息會在隔天依序回覆）。";
 const AI_DOWN =
-  "目前 AI 諮詢暫時無法使用，已為您轉由專人回覆（韓國時間 10:00～18:00，其他時間的訊息會在隔天依序回覆）。";
+  "目前 AI 諮詢暫時無法使用，已為您轉由專人回覆（韓國時間平日10:00～18:00、週末10:00～16:00，其他時間的訊息會在隔天依序回覆）。";
 
 export async function handleLineEvent(event: LineWebhookEvent): Promise<void> {
   const userId = event.source.userId;

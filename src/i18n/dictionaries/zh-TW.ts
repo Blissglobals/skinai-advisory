@@ -186,7 +186,7 @@ const zhTW: DeepPartial<Dictionary> = {
 
   consult: {
     cta: "透過LINE諮詢診所",
-    note: "按下按鈕後，LINE諮詢視窗會預先填入含有您分析結果的訊息。諮詢時間為韓國時間10:00～18:00。",
+    note: "按下按鈕後，LINE諮詢視窗會預先填入含有您分析結果的訊息。諮詢時間為韓國時間平日10:00～18:00、週末10:00～16:00。",
     ageRestricted: "療程諮詢僅限年滿19歲的使用者。",
     message: {
       title: "【肌膚分析諮詢申請】",

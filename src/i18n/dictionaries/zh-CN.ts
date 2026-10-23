@@ -186,7 +186,7 @@ const zhCN: DeepPartial<Dictionary> = {
 
   consult: {
     cta: "通过LINE咨询诊所",
-    note: "点击按钮后，LINE咨询窗口会预先填好包含您分析结果的消息。咨询时间为韩国时间10:00～18:00。",
+    note: "点击按钮后，LINE咨询窗口会预先填好包含您分析结果的消息。咨询时间为韩国时间工作日10:00～18:00、周末10:00～16:00。",
     ageRestricted: "项目咨询仅限年满19岁的用户。",
     message: {
       title: "【皮肤分析咨询申请】",
